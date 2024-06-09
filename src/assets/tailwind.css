@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100..900&family=Noto+Serif+SC:wght@200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Galada&family=Pacifico&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+h1{
+    font-family: "Noto Serif SC", serif;
+    font-weight: 700;
+    @apply line-clamp-1;
+}
+
+h2{
+    font-family: 'Noto Sans SC', sans-serif; 
+    font-weight: 600;
+    -webkit-box-orient: vertical; 
+    -webkit-line-clamp: 1; 
+    display: -webkit-box;
+}
+
+.galada-regular {
+  font-family: "Galada", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.pacifico-regular {
+  font-family: "Pacifico", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+
+.normalAnimation{
+  @apply transition-all duration-300 ease-in-out
+}
+
+.content{
+    font-family: 'Noto Sans SC', sans-serif; 
+}
+
