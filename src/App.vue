@@ -17,7 +17,7 @@
     <BaseHeader v-if="!hideOthers"  @startSearching="startSearching()" @doSearching="doSearching" :show-all-button="isNormal"></BaseHeader>
     
 
-    <div  class="w-full h-auto z-0 flex justify-center items-center"  :class="{'px-24':isNormal,'px-8':!isNormal}">
+    <div ref="cont" class="w-full h-auto z-0 flex justify-center items-center"  :class="{'px-24':isNormal,'px-8':!isNormal}">
       <RouterView ref="view"  @showDetailWindow="showDetailWindow"   @leaveHome="leaveHome()" @backHome="backHome" :search-content="searchContent" :is-wide="isWide" @edit="showEditWindow" @create="getCreate" @notCreator="notCreator" @inReader="inReader"></RouterView>
     </div>
 
@@ -65,7 +65,8 @@ const editBid = ref();
 const editWindow = ref(false)
 const loginWindow = ref(false)
 const isCreatorView = ref(false)
-const hideOthers=ref(false)
+const hideOthers = ref(false)
+const cont=ref()
 window.addEventListener('resize', () => {
   if (window.innerWidth < 750) {
     isNormal.value=false
@@ -185,7 +186,10 @@ function notCreator() {
 }
 
 function inReader() {
-  hideOthers.value=true
+  hideOthers.value = true
+  cont.value.classList.remove('h-auto')
+  cont.value.classList.add('h-screen')
+
 }
 </script>
 
