@@ -32,17 +32,17 @@
 
         <div class="container flex flex-col" :class="{'ml-44':isWide}">
             <div v-if="route.query.cate=='武侠'" class="flex p-2 mx-4 justify-start">
-                <button @click="doGetLittleTag('旧派武侠')" class="h-10 px-2  m-2 rounded-full flex justify-cente" :class="{'bg-sky-900/75':aaa,'shadow-lg':aaa ,'bg-white':!aaa}">
+                <button @click="doGetLittleTag('旧派武侠')" class="h-10 px-2 w-24  m-2 rounded-full flex justify-cente" :class="{'bg-sky-900/75':aaa,'shadow-lg':aaa ,'bg-white':!aaa}">
                     <h1 class="my-auto text-lg " :class="{'text-white':aaa}">
                         旧派武侠
                     </h1>
                 </button>
-                <button @click="doGetLittleTag('新派武侠')" class="h-10 px-2 m-2 rounded-full flex justify-center" :class="{'bg-sky-900/75':bbb,'shadow-lg':bbb,'bg-white':!bbb}">
+                <button @click="doGetLittleTag('新派武侠')" class="h-10 px-2 w-24 m-2 rounded-full flex justify-center" :class="{'bg-sky-900/75':bbb,'shadow-lg':bbb,'bg-white':!bbb}">
                     <h1 class="my-auto text-lg " :class="{'text-white':bbb}">
                         新派武侠
                     </h1>
                 </button>
-                <button @click="doGetLittleTag('古仙武侠')" class="h-10 px-2 m-2 rounded-full flex justify-center" :class="{'bg-sky-900/75':ccc,'shadow-lg':ccc,'bg-white':!ccc}">
+                <button @click="doGetLittleTag('古仙武侠')" class="h-10 px-2 w-24 m-2 rounded-full flex justify-center" :class="{'bg-sky-900/75':ccc,'shadow-lg':ccc,'bg-white':!ccc}">
                     <h1 class="my-auto text-lg " :class="{'text-white':ccc}">
                         古仙武侠
                     </h1>
