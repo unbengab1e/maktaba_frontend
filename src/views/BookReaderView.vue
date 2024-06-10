@@ -179,12 +179,8 @@ const renderChapter = (chapterDetail: string, content: string): number => {
     curChapter.words.push(content.length);
     const pageTitle = document.createElement("div");
     pageTitle.className = "page-title";
-    pageTitle.innerText = chapterDetail;
-    const pageNumber = document.createElement("div");
-    pageNumber.className = "page-number";
-    pageNumber.innerText = bookName;
+    pageTitle.innerText = `${bookName} ${chapterDetail}`;
     page.appendChild(pageTitle);
-    page.appendChild(pageNumber);
     curChapter.pages.push(page);
     return 1;
   } else {
