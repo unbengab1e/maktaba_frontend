@@ -17,7 +17,14 @@ onMounted(async ()=>{
   let res = await getMyComment('张三')
   console.log(res)
   comments.value = res.data.data;
+  for(let i = 0; i < comments.value.length; i++) {
+    if(comments.value[i].chapter=='all'){
 
+    }
+    else{
+      comments.value[i].bookname=comments.value[i].bookname+' 第'+comments.value[i].chapter+'章';
+    }
+  }
 
 });
 

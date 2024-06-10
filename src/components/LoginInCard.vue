@@ -97,7 +97,7 @@ const forgetPasswordVerify = ref();
 const signInUsername = ref();
 const signInPassword = ref();
 const alternativePassword = ref('Password')
-
+const emit = defineEmits(['signInSuccess'])
 
 const clearInputs=()=>{
   signUpUsername.value = "";
@@ -115,6 +115,7 @@ async function handleSignIn() {
 
     Cookies.set('username',signInUsername.value,{expires:7});
     Cookies.set('user_id',response.id);
+    emit("signInSuccess");
 
     // 在这里可以根据后端返回的数据进行相应的处理，例如跳转到登录成功后的页面等
   } catch (error) {

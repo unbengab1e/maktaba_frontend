@@ -4,7 +4,7 @@
 
     </div>
     <div ref="bkdtwd" class="transition-all duration-300 ease-in-out window fixed flex flex-col w-[768px] h-[70%] shadow-lg overflow-hidden rounded-2xl opacity-0 " @click.stop>
-      <LoginInCard class="w-full h-full ml-auto my-auto"></LoginInCard>
+      <LoginInCard @signInSuccess="$emit('signInSuccess')" class="w-full h-full ml-auto my-auto"></LoginInCard>
     </div>
 
   </div>
