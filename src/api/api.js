@@ -539,4 +539,15 @@ export function getMyComment(username) {
             },
             timeout: 10000,
         });
-    }
+}
+    
+export function getReadingNum(username) {
+        return service({
+            method: 'GET',
+            url: '/center/myReading',
+            params: {
+                username,
+            },
+            timeout: 10000,
+        });
+}

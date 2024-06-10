@@ -14,7 +14,7 @@
     <div v-if="showSearchBlur" ref="searchBlur" class="transition-all fixed  flex h-screen w-screen z-[90]" @click="stopSearching()">
     </div>
 
-    <BaseHeader v-if="!hideOthers"  @startSearching="startSearching()" @doSearching="doSearching" :show-all-button="isNormal" @tryLogin="showLoginWindow" :already-login="isLogin"></BaseHeader>
+    <BaseHeader v-if="!hideOthers"  @startSearching="startSearching()" @doSearching="doSearching" :show-all-button="isNormal" @tryLogin="showLoginWindow" :already-login="isLogin" @signOut="signOut"></BaseHeader>
     
 
     <div ref="cont" class="w-full h-auto z-0 flex justify-center items-center"  :class="{'px-24':isNormal,'px-8':!isNormal}">
@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import { ref,watch,nextTick,computed } from "vue";
+import { ref,watch,nextTick,computed,onMounted } from "vue";
 import { RouterView,useRoute } from 'vue-router'
 import BaseHeader from './components/BaseHeader.vue';
 import Dock from './components/Dock.vue';
@@ -47,9 +47,8 @@ import LoginWindow from "@/components/LoginWindow.vue";
 import { recordReading } from '@/api/api.js';
 
 // 设置 Cookie
-Cookies.set('username', 'nobody', { expires: 7 });
-Cookies.set('userid', '14', { expires: 7 });
-
+// Cookies.set('username', '未登录', { expires: 7 });
+// Cookies.set('userid', '14', { expires: 7 });
 const detailWindow = ref(false)
 const route = useRoute()
 const showSearchBlur = ref(false)
@@ -66,7 +65,16 @@ const loginWindow = ref(false)
 const isCreatorView = ref(false)
 const hideOthers = ref(false)
 const cont = ref()
-const isLogin = ref(Cookies.get('username')!='nobody')
+const isLogin = ref(false)
+
+onMounted(() => {
+  // console.log(getCookie('username'))
+  if (getCookie('username') == null) {
+    isLogin.value=false
+  } else {
+    isLogin.value=true
+  }
+})
 
 window.addEventListener('resize', () => {
   if (window.innerWidth < 750) {
@@ -194,6 +202,23 @@ function signInSuccess() {
   isLogin.value=true
   console.log(isLogin)
   console.log(Cookies.get('username'))
+}
+
+function getCookie(user) {
+  var cookieArr = document.cookie.split(';');
+  for (var i = 0; i < cookieArr.length; i++) {
+    var cookiePair = cookieArr[i].split('=');
+    if (user == cookiePair[0].trim()) {
+      return decodeURIComponent(cookiePair[1]);
+    }
+  }
+  return null;
+}
+
+function signOut() {
+  Cookies.remove('username')
+  Cookies.remove('userid')
+  isLogin.value = false
 }
 
 watch(route, () => {

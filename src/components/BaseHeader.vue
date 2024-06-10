@@ -63,20 +63,20 @@
   <!-- 用户下拉菜单 -->
   <div ref="usmn" @mouseleave="leaveUserMenu()" class="transition-all duration-300 ease-in-out flex flex-col justify-around fixed z-40 h-auto w-60 rounded-xl mt-24 bg-white right-24 p-2 shadow-md opacity-0 -translate-y-[600px] pt-12">
     <!-- id -->
-    <div class="w-full h-12 rounded-md flex flex-col p-2 py-1">
+    <div class="w-full h-24 rounded-md flex flex-col p-2 py-1">
       <div class="flex justify-center"> 
         <h1 class="text-3xl">{{username}}</h1>
       </div>
       <div class="border-[1px]"></div>
-      <!-- <div class="flex justify-center w-full h-full mt-1"> 
-        <RouterLink to="/Individual/IndividualIndex/IndividualFocus" class="flex-grow h-full flex justify-center mt-1">
-          <span class="text-sm">关注 200</span>
-        </RouterLink>
+      <div class="flex justify-center w-full h-full mt-1"> 
+        <div to="/Individual/IndividualIndex/IndividualFocus" class="flex-grow h-full flex justify-center mt-1">
+          <h2 class="text-md">阅读时长 {{readingTime}}h</h2>
+        </div>
         <div class="border-[1px]"></div>
-        <RouterLink to="#" class="flex-grow h-full flex justify-center mt-1">
-          <span class="text-sm">时长 30h</span>
-        </RouterLink>
-      </div> -->
+        <div to="#" class="flex-grow h-full flex justify-center mt-1">
+          <h2 class="text-md">读书数目 {{readingNum}}</h2>
+        </div>
+      </div>
     </div>
 
     <RouterLink v-for="menuItem in menuItems" :to="menuItem['to']" class="w-full h-10 bg-gray-200 rounded-md shadow-sm my-1 flex justify-between p-2">
@@ -88,7 +88,7 @@
     <div class="border-[1px] my-1 -mx-2"></div>
 
     <div class="w-full h-10 my-1 flex justify-around">
-      <button class="text-gray-400 hover:text-black" @click="isLogin=!isLogin">
+      <button class="text-gray-400 hover:text-black" @click="$emit('signOut')">
         <i class="icon-[uil--signout]" />
         退出登录
       </button>
@@ -134,7 +134,7 @@
 import { onMounted, computed, ref ,watch} from "vue"
 import { mousePosition } from "../main.js";
 import Cookies from 'js-cookie'
-import { getNewChap,checkNewChap,readMessage } from '@/api/api.js';
+import { getNewChap,checkNewChap,readMessage,getMyAvatar,getReadingTime,getReadingNum } from '@/api/api.js';
 import { toast } from "vue3-toastify";
 
 const showUserMenu = ref(false)
@@ -175,19 +175,34 @@ const username = ref(Cookies.get('username'))
 const userid=ref(Cookies.get('userid'))
 const messmenu = ref()
 const newChaps = ref([])
-const hasNewChap=ref(false)
+const hasNewChap = ref(false)
+const headSrc = ref('')
+const readingTime = ref(0)
+const readingNum=ref(0)
 let cnt=0
 
 onMounted(async () => {
   let res1 = await checkNewChap(userid)
-  console.log(res1)
+  // console.log(res1)
   hasNewChap.value = (res1.data.message.match('存在未读消息'))
   console.log(hasNewChap.value)
   
 
   let res2 = await getNewChap(userid)
-  console.log(res2)
+  // console.log(res2)
   newChaps.value = res2.data.message
+
+  if (!isLogin.value) {
+    username.value='未登录'
+  } else {
+    let res3 = await getReadingTime(username.value)
+    console.log(res3)
+    readingTime.value = Object.getOwnPropertyNames(res3.data).length
+
+    let res4 = await getReadingNum(username.value)
+    console.log(res4)
+    readingNum.value = res4.data.count
+  }
 })
 
 //  决定是否show用户菜单
@@ -225,9 +240,12 @@ watch(showAllButton, (newShow) => {
 })
 
 //检查是否登录
-watch(isLogin, () => {
+watch(isLogin,async () => {
   username.value = Cookies.get('username')
-  userid.value=Cookies.get('userid')
+  userid.value = Cookies.get('userid')
+  let res2 = await getMyAvatar(username)
+  console.log(res2)
+  headSrc.value = res2.data.avatar
 })
 
 //已读消息
