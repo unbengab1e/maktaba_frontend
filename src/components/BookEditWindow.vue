@@ -40,7 +40,7 @@
               </div>
 
             </div>
-
+            <input v-if="isCreating" type="file" ref="uploadFile">
             <button v-if="!isCreating" class="gradient-blue ml-[15px] hover:drop-shadow-xl shadow-md hover:bg-blue-600 ml-auto my-auto " @click="!isUploading&&toggleUploading();handleOpen();" >
               <icon class="icon-[solar--upload-outline] ml-[4px] bg-white"></icon>
               <span class="ml-[18px] text-white font-bold">上传</span>
@@ -151,6 +151,7 @@ const bookName = ref('书籍名称');
 const bookMess = ref('简介');
 const bookTag = ref();
 const bookLittleTag = ref();
+const uploadFile = ref()
 const bookInfo = ref({
   name: '工科数学分析',
   // cover: '../assests/books/shufen.jpg',
@@ -195,8 +196,7 @@ const res2 = useFileSystemAccess({
 })
 
 async function handleCreate() {
-  return new Promise((resolve, reject) => {
-    res2.open().then(async () => {
+
       console.log(res2.file.value);
       uploadFileName.value = res2.fileName;
 
@@ -207,7 +207,7 @@ async function handleCreate() {
       formData.append('tag',bookTag.value);
       formData.append('little_tag',bookLittleTag.value);
       formData.append('mess',bookMess.value);
-      formData.append('image', res2.file.value); // 添加文件到 FormData
+      formData.append('image', uploadFile.value.files[0]); // 添加文件到 FormData
 
       let ares = await postNewBook(formData); // 传递 FormData 对象
       console.log(ares);
@@ -216,15 +216,11 @@ async function handleCreate() {
         toast.success('创建成功')
       }
       resolve(); // 执行成功后调用 resolve
-    }).catch(error => {
-      reject(error); // 执行失败时调用 reject
-    });
-  });
+
 }
 async function handleOpen() {
   console.log(bid);
-  return new Promise((resolve, reject) => {
-    res.open().then(async () => {
+
       console.log(res.file.value);
       uploadFileName.value = res.fileName;
 
@@ -241,10 +237,8 @@ async function handleOpen() {
         toast.success('上传成功')
       }
       resolve(); // 执行成功后调用 resolve
-    }).catch(error => {
-      reject(error); // 执行失败时调用 reject
-    });
-  });
+
+
 }
 
 
