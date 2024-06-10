@@ -14,7 +14,7 @@
     <div v-if="showSearchBlur" ref="searchBlur" class="transition-all fixed  flex h-screen w-screen z-[90]" @click="stopSearching()">
     </div>
 
-    <BaseHeader v-if="!hideOthers"  @startSearching="startSearching()" @doSearching="doSearching" :show-all-button="isNormal" @tryLogin="showLoginWindow"></BaseHeader>
+    <BaseHeader v-if="!hideOthers"  @startSearching="startSearching()" @doSearching="doSearching" :show-all-button="isNormal" @tryLogin="showLoginWindow" :already-login="isLogin"></BaseHeader>
     
 
     <div ref="cont" class="w-full h-auto z-0 flex justify-center items-center"  :class="{'px-24':isNormal,'px-8':!isNormal}">
@@ -28,14 +28,14 @@
 <BookEditWindow v-if="editWindow" class="fixed top-0 left-0" @closeEditWindow="closeEditWindow()" :bid="editBid" :is-creating="isCreating">
 
 </BookEditWindow>
-<LoginWindow v-if="loginWindow" class="fixed top-0 left-0 z-50" @closeLoginWindow="closeLoginWindow()">
+<LoginWindow v-if="loginWindow" class="fixed top-0 left-0 z-50" @closeLoginWindow="closeLoginWindow()" @signInSuccess="signInSuccess">
 
 </LoginWindow>
 
 </template>
 
 <script setup>
-import { ref,watch,nextTick } from "vue";
+import { ref,watch,nextTick,computed } from "vue";
 import { RouterView,useRoute } from 'vue-router'
 import BaseHeader from './components/BaseHeader.vue';
 import Dock from './components/Dock.vue';
@@ -47,7 +47,7 @@ import LoginWindow from "@/components/LoginWindow.vue";
 import { recordReading } from '@/api/api.js';
 
 // 设置 Cookie
-Cookies.set('username', '张三', { expires: 7 });
+Cookies.set('username', 'nobody', { expires: 7 });
 Cookies.set('userid', '14', { expires: 7 });
 // Cookies.set('userid', '14', { expires: 7 });
 
@@ -66,7 +66,15 @@ const editWindow = ref(false)
 const loginWindow = ref(false)
 const isCreatorView = ref(false)
 const hideOthers = ref(false)
-const cont=ref()
+const cont = ref()
+const isLogin = computed(() => {
+  if (Cookies.get('username')=='nobody') {
+    return false
+  } else {
+    return true
+  }
+})
+
 window.addEventListener('resize', () => {
   if (window.innerWidth < 750) {
     isNormal.value=false
@@ -187,6 +195,11 @@ function closeLoginWindow() {
 }
 function notCreator() {
   isCreatorView.value=true
+}
+
+function signInSuccess() {
+  // isLogin.value=true
+  console.log(isLogin)
 }
 
 watch(route, () => {

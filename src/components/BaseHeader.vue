@@ -139,10 +139,12 @@ import { toast } from "vue3-toastify";
 
 const showUserMenu = ref(false)
 const showSearchButton = ref(false)
-const isLogin = ref(false)
+const isLogin = computed(() => {
+  return props.alreadyLogin
+})
 const holdLogin = ref(false)
 const showLoginView = ref(false)
-const props = defineProps(['showAllButton'])
+const props = defineProps(['showAllButton','alreadyLogin'])
 const emit = defineEmits(['search'])
 const showAllButton = computed(() => props.showAllButton)
 const sb = ref()
