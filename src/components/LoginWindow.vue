@@ -1,9 +1,9 @@
 <template>
-  <div ref="windowBlur" class="transition-all duration-300 ease-in-out fixed w-screen h-screen flex-col flex justify-center z-50" @click="hideWindow()" @scroll.stop>
+  <div ref="windowBlur" class="transition-all duration-300 ease-in-out fixed w-screen h-screen flex-col flex justify-center items-center z-50" @click="hideWindow()" @scroll.stop>
     <div class="absolute bg-black opacity-30 w-full h-full">
 
     </div>
-    <div ref="bkdtwd" class="transition-all duration-300 ease-in-out window fixed flex flex-col w-[768px] h-[70%] shadow-lg overflow-hidden rounded-2xl opacity-0 left-[400px]" @click.stop>
+    <div ref="bkdtwd" class="transition-all duration-300 ease-in-out window fixed flex flex-col w-[768px] h-[70%] shadow-lg overflow-hidden rounded-2xl opacity-0 " @click.stop>
       <LoginInCard class="w-full h-full ml-auto my-auto"></LoginInCard>
     </div>
 
