@@ -27,15 +27,13 @@
           <span data-placeholder="Confirm Password" ></span>
         </div>
         <div class="flex ">
-          <div class="txt-one w-[45%]">
+          <div class="txt-one w-[75%]">
             <input v-model="signUpVerify" maxlength="20">
             <span data-placeholder="Verify" ></span>
           </div>
-          <button class="mb-[5px] button1 w-[55%]" @click="isSignUp ? handleSignUp() : handleForgetPassword()">
-            <h1 class="text-white">
+          <span class="mx-auto h-[50px] hhh text-2xl" @click="isSignUp ? handleSignUp() : handleForgetPassword()">
               获取验证码
-            </h1>
-          </button>
+          </span>
         </div>
 
         <button @click="isSignUp ? handleActivate() : handleFindPassword();">注册</button>

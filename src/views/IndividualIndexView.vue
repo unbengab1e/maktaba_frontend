@@ -4,10 +4,10 @@
     <div class="w-full flex bg-white  parent-div " :class="{'flex-col':!showLine, 'min-h-[300px] h-[300px]':showLine}">
       <div class="w-1/3 my-auto">
         <div class="w-full h-1/2 flex mt-1">
-          <div class=" h-full flex justify-start items-center">
-            <div class="rounded-full  w-[75px] h-[75px] min-w-[75px] hover:scale-110 z-50 hover:shadow-xl" @click="handleUpload">
+          <div class=" h-full flex justify-start items-center flex-col">
+
               <img class="circle-image" :src="imgSrc">
-            </div>
+            <input type="file" ref="fileInput" class="  w-[80px] h-[30px] min-w-[80px] hover:scale-110 z-50 hover:shadow-xl" @change="handleUpload">
           </div>
         <div class="w-[100px] min-w-[100px] h-full flex flex-col ml-[8px]">
         <span class="w-full h-1/2 font-bold mb-auto text-left">
@@ -30,7 +30,7 @@
            收藏数
           </span>
           <span class="w-full text-center">
-            <span class="font-bold">{{collectCnt}}</span>
+            <span class="font-bold">{{4}}</span>
             <span class="font-light text-gray-500">本</span>
           </span>
         </div>
@@ -118,29 +118,25 @@ import {toast} from "vue3-toastify";
 import Cookies from "js-cookie";
 const currentRoute = useRoute();
 const emit=defineEmits(['changeHead'])
-async function handleUpload(){
-  return new Promise((resolve, reject) => {
-    res.open().then(async () => {
-      console.log(res.file.value);
+const fileInput = ref();
+const handleUpload = async () => {
+  const formData = new FormData();
+  formData.append('user_id', userid);
+  formData.append('avatar', fileInput.value.files[0]);
 
-      const formData = new FormData();
-      formData.append('user_id', userid);
-      formData.append('avatar', res.file.value); // 添加文件到 FormData
-
-      let ares = await postUploadAvatar(formData); // 传递 FormData 对象
-      console.log(ares);
-      if(ares.status==200)
-      {
-        toast.success('上传成功')
-      }
-      await getAvatar();
-      emit('changeHead')
-      resolve(); // 执行成功后调用 resolve
-    }).catch(error => {
-      reject(error); // 执行失败时调用 reject
-    });
-  });
-}
+  try {
+    const ares = await postUploadAvatar(formData);
+    console.log(ares);
+    if (ares.status === 200) {
+      toast.success('上传成功');
+    }
+    await getAvatar()
+    // 调用其他函数等
+  } catch (error) {
+    console.error('上传失败：', error);
+    // 错误处理逻辑
+  }
+};
 
 </script>
 <style scoped>
