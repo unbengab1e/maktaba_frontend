@@ -176,29 +176,10 @@ onMounted(async ()=>{
   console.log(bookInfo.value);
 
 });
-const res = useFileSystemAccess({
-  types: [{
-    description: 'text',
-    accept: {
-      'text/plain': ['.txt', '.html'],
-    },
-  }],
-  excludeAcceptAllOption: true,
-})
-const res2 = useFileSystemAccess({
-  types: [{
-    description: 'img',
-    accept: {
-      'text/plain': ['.jpg', '.png'],
-    },
-  }],
-  excludeAcceptAllOption: true,
-})
 
 async function handleCreate() {
 
-      console.log(res2.file.value);
-      uploadFileName.value = res2.fileName;
+
 
       const formData = new FormData();
       formData.append('name', bookName.value);
@@ -215,20 +196,18 @@ async function handleCreate() {
       {
         toast.success('创建成功')
       }
-      resolve(); // 执行成功后调用 resolve
 
 }
 async function handleOpen() {
   console.log(bid);
 
-      console.log(res.file.value);
-      uploadFileName.value = res.fileName;
+
 
       const formData = new FormData();
       formData.append('name', chapterName.value);
       formData.append('user_id', userID);
       formData.append('id', '10611');
-      formData.append('file', res.file.value); // 添加文件到 FormData
+      formData.append('file',uploadFile.value.files[0]); // 添加文件到 FormData
 
       let ares = await postNewChapter(formData); // 传递 FormData 对象
       console.log(ares);
@@ -236,7 +215,6 @@ async function handleOpen() {
       {
         toast.success('上传成功')
       }
-      resolve(); // 执行成功后调用 resolve
 
 
 }
