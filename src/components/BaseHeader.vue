@@ -102,8 +102,10 @@
   <!-- 通知菜单 -->
   <div ref="messmenu" class="transition-all duration-300 ease-in-out justify-around fixed z-40 h-96 w-64 rounded-xl mt-24 bg-white right-12 p-4 shadow-md opacity-0 -translate-y-[600px] ">
     <div class="flex justify-between">
-      <button class="h-8 flex justify-center rounded-md w-20" @click="showMessages=!showMessages">
+      <button class="h-8 flex justify-center rounded-md w-24"  @click="showMessages=!showMessages">
         <h2 class="my-auto">更新提醒</h2>
+        <icon v-if="showMessages" class="icon-[fluent-mdl2--ringer] w-5 h-5 my-[6px] ml-1" />
+        <icon v-if="!showMessages" class="icon-[fluent-mdl2--ringer-off] w-5 h-5 my-[6px] ml-1" />
       </button>
       <button class="hover:bg-gray-300 h-8 flex justify-center rounded-md w-20" @click="readAll()">
         <h2 class="my-auto">全部已读</h2>

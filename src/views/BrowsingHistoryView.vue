@@ -28,6 +28,8 @@ const bookArray= ref([
 const username = Cookies.get('username')
 const userid = Cookies.get('user_id')
 const tempCopy = ref();
+const jumpToChapter = ref(1)
+const jumpToOffset=ref(0)
 onMounted(async ()=> {
   let res = await getBrowsingHistory(username);
   console.log(res);
@@ -38,7 +40,9 @@ onMounted(async ()=> {
     if(rres.data.message==="还未阅读过本书"){
       bookArray.value[i].author = rres.data.message
     }else{
-      bookArray.value[i].author = "已阅读到第"+rres.data.message[0].chapter+"章"
+      bookArray.value[i].author = "已阅读到第" + rres.data.message[0].chapter + "章"
+      jumpToChapter.value=rres.data.message[0].chapter
+      jumpToOffset.value=rres.data.message[0].offset
     }
 
     let dres = await getDetail(username,bookArray.value[i].bid);
@@ -48,7 +52,7 @@ onMounted(async ()=> {
 
 })
 function jump(name,bid) {
-  window.location.replace('/reader/?bookName='+name+'&bid='+bid+'&chapter=1&offset=0')
+  window.location.replace('/reader/?bookName='+name+'&bid='+bid+'&chapter='+jumpToChapter.value+'&offset='+jumpToOffset.value)
 }
 emit('leaveHome')
 </script>

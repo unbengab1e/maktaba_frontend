@@ -10,7 +10,7 @@
             <ul ref="dir" class="transition-all duration-300 ease-in-out absolute right-0 h-full w-80 bg-base-200 z-[100] rounded-2xl p-4 min-h-full text-base-content translate-x-80 overflow-y-scroll window felx flex-col ">
                 <li v-for="chapter in directory" class="my-2">
                     <button @click="jumpToReader(chapter['id'])"> 
-                        <h2 class="">
+                        <h2 class="w-20 text-left">
                             第{{ chapter['id'] }}章: 
                         </h2>
                         <span>
@@ -99,7 +99,7 @@
                 <div class="container border-t-2"></div>
                 <div class="container sticky bg-base-200 p-4 z-[80]" style="top:calc(100% - 80px)">
                     <label class="input input-bordered flex items-center rounded-full">
-                        <input v-model="myComment" type="text" class="grow" placeholder="Search" />
+                        <input v-model="myComment" type="text" class="grow" placeholder="发一条友善的评论吧~" />
                         <button class="badge badge-info h-4/5 my-[10%] -mr-[12px] rounded-full font-bold text-lg bg-sky-400" @click="doComment">发布</button>
                     </label>
                 </div>
