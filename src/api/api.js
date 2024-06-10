@@ -283,13 +283,12 @@ export function getMyWorks(user_name) {
         timeout:10000,
     });
 }
-export function getMyCollect(user_id,type) {
+export function getMyCollect(user_id) {
     return service({
         method: 'GET',
         url: '/center/getbookshelf',
         params: {
             user_id:user_id,
-            type:type
         },
         timeout:10000,
     });
@@ -459,3 +458,17 @@ export function getIsAuthor(username) {
         timeout: 10000,
     });
 }
+
+export function postReadingProgress(bid, chapter, offset) {
+    return service({
+        method: "POST",
+        url: "/reader/readingProgress/",
+        data: {
+            bid,
+            chapter,
+            offset,
+        },
+        timeout: 10000,
+    });
+}
+

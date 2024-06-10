@@ -66,10 +66,10 @@
 <script setup lang="ts">
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue'
 import { ref } from 'vue';
-import { Setting } from '../models/book';
+import { Chapter, Setting, Tag } from '../models/book';
 
-const nav = defineModel<String[]>('nav');
-const tags = defineModel<Number>('tags');
+const nav = defineModel<Chapter[]>('nav');
+const tags = defineModel<Tag[]>('tags');
 const setting = defineModel<Setting>('setting');
 
 const emit = defineEmits(['jump', 'jumpTag']);

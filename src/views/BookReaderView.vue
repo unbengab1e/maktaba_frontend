@@ -3,24 +3,18 @@
     <input id="my-drawer" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content">
       <div ref="bookReader" class="h-full flex flex-row justify-stretch items-stretch overflow-hidden"
-        :style="`background-color: ${setting.backgroundColor}; color: ${setting.textColor}`" id="book-reader"
-        @mouseup="setTooltip">
+        :style="`background-color: ${setting.backgroundColor}; color: ${setting.textColor}; font-size: ${setting.fontSize};`"
+        id="book-reader" @mouseup="setTooltip">
         <SelectionTooltip :selection="selection" :bid="bid" :chapter="curChapter.chapter" :offset="selectionOffset"
           :direction="changeDirection" v-model:mode="modeStr" :curTag="curTag" :user_id="user_id"
           @updateNotes="renderAllTag()" />
         <ModalDialog />
-        <label ref="navigatorIcon" for="my-drawer" class="label-btn navigator absolute z-50">
-          <Icon class="h-5 w-5" icon="fluent:navigation-location-target-20-filled" />
-        </label>
-        <button ref="commentIcon" for="comment" class="label-btn setting absolute z-50" onclick="comment.showModal()">
-          <Icon class="h-5 w-5" icon="mdi:comment-processing-outline" />
-        </button>
-        <button ref="settingIcon" for="setting" class="label-btn setting absolute z-50" onclick="setting.showModal()">
-          <Icon class="h-5 w-5" icon="solar:settings-minimalistic-linear" />
-        </button>
         <SettingModal v-model:setting="setting" @refresh="refresh()" />
-        <CommentModal @refresh="refresh()" />
+        <CommentModal :bid="bid" :chapter="curChapter.chapter" />
       </div>
+    </div>
+    <div class="fixed right-0 w-auto h-[100vh] flex flex-col justify-center z-50">
+      <ReaderDock />
     </div>
     <div class="drawer-side">
       <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
@@ -28,12 +22,6 @@
         @jumpTag="jumpTag" />
     </div>
   </div>
-  <!-- <div class="drawer drawer-end h-full absolute left-0 top-0 z-40 w-1/4">
-    <div class="drawer-side w-1/4 z-40">
-      <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
-      <ChapterNavigation v-model:nav="nav" v-model:tags="tags" @jump="renderBook" @jumpTag="jumpTag" />
-    </div>
-  </div> -->
 </template>
 
 <script setup lang="ts">
@@ -52,11 +40,21 @@ import { toast } from 'vue3-toastify';
 import Cookies from 'js-cookie';
 import SettingModal from '../components/SettingModal.vue';
 import CommentModal from '../components/CommentModal.vue';
+import ReaderDock from '@/components/ReaderDock.vue';
 
-let bookName;
-let bid;
-let chapter;
-let offset;
+let route = useRoute();
+let bookName = route.query.bookName as string;
+let bid = parseInt(route.query.bid as string);
+let chapter = parseInt(route.query.chapter as string);
+let offset = parseInt(route.query.offset as string);
+
+let tooltip: HTMLElement;
+// 选中的文字
+const selection: Ref<string> = ref("");
+// tooltip 箭头指向
+const changeDirection = ref(false);
+// 选中文字偏移量
+const selectionOffset: Ref<number> = ref(0);
 
 const curChapter = reactive<Chapter>({
   chapter,
@@ -80,12 +78,8 @@ const setting = reactive<Setting>({
 })
 const nav: Ref<String[]> = ref([])
 const bookReader: Ref<HTMLElement | null> = ref(null)
-const navigatorIcon: Ref<HTMLElement | null> = ref(null)
-const commentIcon: Ref<HTMLElement | null> = ref(null)
-const settingIcon: Ref<HTMLElement | null> = ref(null)
 const modeStr = ref("FunctionMenu")
 const curTag = ref()
-const emit=defineEmits(['inReader'])
 
 let tags: Ref<Tag[]> = ref([]);
 let user_id: string;
@@ -132,6 +126,7 @@ const renderChapter = (chapterDetail: string, content: string): number => {
   paginator.style.columns = `${w}px auto`
   paginator.style.columnFill = 'auto'
   paginator.style.columnGap = '0'
+  paginator.style.fontSize = `${setting.fontSize}px`
   paginator.style.height = `${h}px`
   paginator.style.position = 'absolute'
   paginator.style.textAlign = 'justify'
@@ -140,6 +135,11 @@ const renderChapter = (chapterDetail: string, content: string): number => {
   paginator.innerText = content;
 
   let title = document.createElement('h1');
+  title.style.textAlign = 'center';
+  title.style.fontSize = '24px';
+  title.style.fontWeight = '700';
+  title.style.margin = '2.5%';
+
   title.innerText = chapterDetail;
   title.style.userSelect = 'none';
   paginator.insertBefore(title, paginator.firstChild);
@@ -170,23 +170,23 @@ const renderChapter = (chapterDetail: string, content: string): number => {
   bookReader.value!.removeChild(paginator)
 
   pageContents.forEach((p, i) => {
-    const page = document.createElement('div')
-    page.className = 'my-page'
-    page.appendChild(p)
+    const page = document.createElement('div');
+    page.className = 'my-page';
+    page.appendChild(p);
     curChapter.words.push(page.innerText.length);
 
-    const pageTitle = document.createElement('div')
-    pageTitle.className = 'page-title'
+    const pageTitle = document.createElement('div');
+    pageTitle.className = 'page-title';
     if (i % 2 === 1) {
-      pageTitle.innerText = chapterDetail
+      pageTitle.innerText = chapterDetail;
     } else {
       pageTitle.innerText = bookName;
     }
-    const pageNumber = document.createElement('div')
-    pageNumber.className = 'page-number'
-    pageNumber.innerText = (i + 1).toString()
-    page.appendChild(pageTitle)
-    page.appendChild(pageNumber)
+    const pageNumber = document.createElement('div');
+    pageNumber.className = 'page-number';
+    pageNumber.innerText = (i + 1).toString();
+    page.appendChild(pageTitle);
+    page.appendChild(pageNumber);
     curChapter.pages.push(page);
   });
   return pageNum;
@@ -230,7 +230,7 @@ const createPageFlip = (pages, startPage: number) => {
   book.id = 'book';
   book.className = 'm-auto';
   pageFlip?.on('flip', () => { })
-  console.log(width,height)
+  console.log(width, height)
 
   pageFlip = new PageFlip(book, {
     startPage,
@@ -257,16 +257,10 @@ const createPageFlip = (pages, startPage: number) => {
     }
   });
 
-  navigatorIcon.value!.style.left = `${window.innerWidth * 0.79}px`
-  navigatorIcon.value!.style.bottom = `${window.innerHeight * 0.9}px`
-  commentIcon.value!.style.left = `${window.innerWidth * 0.81}px`
-  commentIcon.value!.style.bottom = `${window.innerHeight * 0.9}px`
-  settingIcon.value!.style.left = `${window.innerWidth * 0.83}px`
-  settingIcon.value!.style.bottom = `${window.innerHeight * 0.9}px`
-
-  // curChapter.pages.forEach((e) => {
-  //   e.style.backgroundColor = setting.backgroundColor;
-  // })
+  document.querySelectorAll('.my-page').forEach((e) => {
+    console.log(e.getAttribute('style'))
+    e.setAttribute('style', `background-color: ${setting.backgroundColor}`);
+  })
 }
 
 async function loadBookIndex(bid: number) {
@@ -436,7 +430,6 @@ const refresh = () => {
   for (let index = 0; index < pageIndex; index++) {
     offset += curChapter.words[index];
   }
-  // console.log(1)
   renderBook(curChapter.chapter, offset);
 }
 
@@ -454,21 +447,13 @@ const parseSetting = () => {
   }
 }
 
-let route = useRoute()
-bookName = route.query.bookName
-bid = parseInt(route.query.bid)
-chapter = parseInt(route.query.chapter)
-offset = parseInt(route.query.offset)
-
 onMounted(async () => {
-  emit('inReader')
-  Cookies.set('user_id', '2');
   user_id = Cookies.get('user_id');
   parseSetting();
   createPageFlip([], 0);
   tooltip = document.getElementById('tooltip')!;
   await loadBookIndex(bid);
-  await renderBook(chapter, 'first');
+  await renderBook(chapter, offset);
 })
 
 // 更改大小后刷新整个页面
@@ -502,16 +487,6 @@ document.addEventListener('keydown', (e: KeyboardEvent) => {
       break;
   }
 })
-
-
-
-let tooltip: HTMLElement;
-// 选中的文字
-const selection: Ref<String> = ref("");
-// tooltip 箭头指向
-const changeDirection = ref(false);
-// 选中文字偏移量
-const selectionOffset: Ref<Number> = ref(0);
 
 function getRangeOffset(range: Range) {
   let res = 0;
@@ -596,7 +571,21 @@ function getHtmlPosition(rect: DOMRect) {
 
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
+* {
+  font-family: "Noto Serif SC", serif;
+}
+
+// html:has(.drawer-toggle:checked), 
+// html:has(.modal:checked)
+// {
+//   scrollbar-gutter: auto;
+// }
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
 .my-page {
   /* text-align: center; */
   padding: 4%;
