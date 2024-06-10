@@ -14,8 +14,8 @@
         </div>
 
         <div class="flex flex-col-reverse w-3/5 bg-white">
-          <div class="w-full h-[500px] border-t-2 flex justify-between transition-all" :class="{'h-[500px]': isUploading, 'h-[80px] max-h-[80px]' : !isUploading}" >
-            <div class="m-2 flex">
+          <div class="w-full h-[80px] border-t-2 flex justify-between transition-all items-center gap-2" >
+            <div class="m-2 flex flex-grow">
 <!--              <VueDraggable v-if="isUploading" v-model="files" :scroll="true" target=".sort-target" class="bg-gray-100 h-auto">-->
 <!--                <TransitionGroup name="fade" class="sort-target" type="transition" tag="ul">-->
 <!--                  <li v-for="(file,index) in files ":key="file.id" class="txt-one mt-[4px] bg-gray-200" >-->
@@ -35,29 +35,29 @@
 <!--              <span>-->
 <!--                {{uploadFileName}}-->
 <!--              </span>-->
-              <div>
-                <div v-if="!isCreating" class="txt-one w-full h-[60px]">
+              <div class="flex-grow">
+                <div v-if="!isCreating" class="txt-one w-full flex-grow h-[60px]">
                   <input v-model="chapterName" type="email" >
-                  <span data-placeholder="chapterName"></span>
+                  <span data-placeholder="输入章节标题"></span>
                 </div>
-                <input ref="uploadFile" type="file" class="mt-[80%]">
+                <input style="display: none;" ref="uploadFile" type="file" class="mt-[80%]" @change="handleOpen()">
               </div>
 
 
             </div>
-            <input style="display: none;" v-if="isCreating" type="file" ref="uploadFile" class="mr-auto" @change="handleCreate()">
+            <input style="display: none;" v-if="isCreating" type="file" ref="uploadFile" @change="handleCreate()">
             <div>
-              <button v-if="!isCreating" class="gradient-blue ml-[15px] hover:drop-shadow-xl shadow-md hover:bg-blue-600 ml-auto my-auto " @click="!isUploading&&toggleUploading()" >
+              <!-- <button v-if="!isCreating" class="gradient-blue ml-[15px] hover:drop-shadow-xl shadow-md hover:bg-blue-600 ml-auto my-auto " @click="!isUploading&&toggleUploading()" >
 
                 <span class="ml-[34px] text-white font-bold">展开</span>
-              </button>
-              <button v-if="!isCreating&&isUploading" class="gradient-blue ml-[15px] hover:drop-shadow-xl shadow-md hover:bg-blue-600 ml-auto mt-[70%] " @click="handleOpen()" >
+              </button> -->
+              <button v-if="!isCreating" class="gradient-blue hover:drop-shadow-xl shadow-md hover:bg-blue-600 mr-3" @click="uploadFile.click();" >
                 <icon class="icon-[solar--upload-outline] ml-[4px] bg-white"></icon>
                 <span class="ml-[18px] text-white font-bold">上传</span>
               </button>
             </div>
 
-            <button v-if="isCreating" class="gradient-blue ml-[15px] mr-[15px] hover:drop-shadow-xl shadow-md hover:bg-blue-600 ml-auto my-auto "@click="uploadFile.click(); handleCreate()" >
+            <button v-if="isCreating" class="gradient-blue hover:drop-shadow-xl shadow-md hover:bg-blue-600"@click="uploadFile.click(); handleCreate()" >
               <icon class="icon-[solar--upload-outline] ml-[4px] bg-white"></icon>
               <span class="ml-[18px] text-white font-bold">创建</span>
             </button>
@@ -162,8 +162,8 @@ const userID = Cookies.get('user_id');
 const userName = Cookies.get('username')
 const bookName = ref('书籍名称');
 const bookMess = ref('简介');
-const bookTag = ref();
-const bookLittleTag = ref();
+const bookTag = ref('武侠');
+const bookLittleTag = ref('新派武侠');
 const uploadFile = ref()
 const bookInfo = ref({
   name: '工科数学分析',
@@ -416,8 +416,6 @@ setTimeout(function () {
   position: relative;
   align-items: center;
 
-  min-width: 300px;
-  width: 300px;
   height: 30px;
   display: flex;
 }
