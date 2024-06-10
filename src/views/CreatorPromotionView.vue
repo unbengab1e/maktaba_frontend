@@ -40,7 +40,7 @@ onMounted(() => {
 
 async function fetchData() {
   try {
-    const res = await getMyWorks('张三');
+    const res = await getMyWorks(username);
     console.log(res);
     myWorks.value = res.data.message;
     console.log(myWorks.value);

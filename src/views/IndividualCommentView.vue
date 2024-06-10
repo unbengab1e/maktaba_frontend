@@ -12,9 +12,11 @@
 import CommentCard from "@/components/CommentCard.vue";
 import {onMounted, ref} from "vue";
 import {getDetail, getMyComment} from "@/api/api.js";
+import Cookies from "js-cookie";
 const comments = ref([]);
+const username = Cookies.get("username");
 onMounted(async ()=>{
-  let res = await getMyComment('张三')
+  let res = await getMyComment(username)
   console.log(res)
   comments.value = res.data.data;
   for(let i = 0; i < comments.value.length; i++) {

@@ -188,7 +188,7 @@ function hideDirectory() {
 }
 
 async function rating(param) {
-  let res = await bookRating('张三',props.bid,param/2);
+  let res = await bookRating(name,props.bid,param/2);
   if (res.status == 200) {
         toast.success('评分成功')
     }

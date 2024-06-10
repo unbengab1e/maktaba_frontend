@@ -11,13 +11,14 @@
 import { ref, onMounted } from 'vue';
 import * as echarts from 'echarts';
 import { getReadingTime } from "@/api/api.js";
+import Cookies from "js-cookie";
 
 const lineChart = ref(null);
 const lineChartData = ref([0,0,0,0,0,0,0]);
 const data = ref([]);
-
+const username = Cookies.get("username");
 onMounted(async () => {
-  let res = await getReadingTime('张三');
+  let res = await getReadingTime(username);
   data.value = res.data;
 
   if (Object.keys(data.value).length < 7) {

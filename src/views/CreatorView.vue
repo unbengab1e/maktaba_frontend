@@ -20,10 +20,12 @@ import NormalBookCard from '@/components/NormalBookCard.vue';
 import SideBar from "@/components/SideBar1.vue";
 import PosterView from "@/views/PosterView.vue";
 import {getIsAuthor} from "@/api/api.js";
+import Cookies from "js-cookie";
 const props = defineProps(['isWide', 'isNormal'])
 
 const  emit  = defineEmits(['leaveHome', 'edit','notCreator']);
 const isCreator = ref(false);
+const username = Cookies.get('username')
 function doEdit(param) {
   emit('edit', param);
 }
@@ -33,7 +35,7 @@ function beCreator()
 }
 emit('leaveHome');
 onMounted(async () => {
-  let res = await getIsAuthor('张三')
+  let res = await getIsAuthor(username)
   console.log(res);
   if(res.data.message=='是作者')
     isCreator.value = true;
