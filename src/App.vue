@@ -106,9 +106,11 @@ function closeDetailWindow(param) {
   detailWindow.value = false
   console.log(param)
   Move()
-  nextTick(() => {
-    window.location.replace(param)
-  })
+  if (param != undefined) {
+    nextTick(() => {
+      window.location.replace(param)
+    })
+  }
 }
 
 function leaveHome() {

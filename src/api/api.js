@@ -462,3 +462,13 @@ export function postReadingProgress(bid, chapter, offset) {
     });
 }
 
+export function getLittleTag(littletag) {
+    return service({
+        method: 'GET',
+        url: '/doclib/detail_category',
+        params: {
+            littletag,
+        },
+        timeout: 10000,
+    });
+}

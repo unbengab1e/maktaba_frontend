@@ -17,8 +17,8 @@
         <!-- 容器 -->
         <div class="w-full h-[290px] flex flex-col justify-between">
           <!-- 标题 -->
-          <div class="flex mb-[10px] pb-[6px] m overflow-hidden cursor-pointer" :title="bookName" @click="$emit('show')">
-            <h1 class="text-4xl text-left">{{ bookName }}</h1>
+          <div class=" pb-2 h-20 overflow-hidden cursor-pointer flex justify-start" :title="bookName" @click="$emit('show')">
+            <h1 class="text-4xl my-auto">{{ bookName }}</h1>
           </div>
           <!-- 作者 -->
           <RouterLink :to="'/Creator/CreatorMenu/?uname='+bookAuthor" class="flex mb-2">
@@ -32,7 +32,9 @@
           </div>
           <!-- 简介 -->
           <div class="flex cursor-pointer" @click="$emit('show')">
-            <p class="content text-lg overflow-hidden h-[140px] lg:mr-4 " style="text-align: justify; -webkit-box-orient: vertical; -webkit-line-clamp: 5; display: -webkit-box;" >从"三皇五帝到明清，为你揭开流行野史中的历史真相！ 本书分析了中国历史中自三代五帝到明清的22个流行野史传闻，通过情景再现、史料爬梳、逻辑推理，揭开流行野史中的历史真相。 秦始皇生父是不是吕不韦？宋太宗是不是弑兄篡位？ 郑和下西洋是不是为了寻找建文帝？雍正即位是不是矫诏夺嫡？ 假扮公主二十多年却无一人发现？南北2个“崇祯太子”到底谁才是赝品？ …… 传言不会凭空出现，真相往往藏于其中。</p>
+            <p class="content text-lg overflow-hidden h-[140px] lg:mr-4 " style="text-align: justify; -webkit-box-orient: vertical; -webkit-line-clamp: 5; display: -webkit-box;" >
+            {{ bookReference }}
+            </p>
           </div>
         </div>
       </div>
@@ -92,12 +94,9 @@ transition: all 1s;
 
 .cont_text_ingredients {
 position: relative;
-  /* width: 0px; */
 top: 10px;
-/* left: 200px; */
-  /* margin-left: 10px; */
   height: 330px;
-  float: left; 
+  /* float: left;  */
   border-radius:5px ;
 z-index: 3;
 box-shadow: 1px 1px  20px  -5px  rgba(0,0,0,0.2);

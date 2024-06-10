@@ -1,5 +1,3 @@
-
-
 <template>
   <div class="w-full flex-col h-auto flex">
     <CommentCard v-for="comment in comments"  :comment="comment.content" :username="comment.username" class="m-3 mx-auto"/>

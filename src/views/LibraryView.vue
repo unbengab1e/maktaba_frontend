@@ -31,12 +31,22 @@
         </div>
 
         <div class="container flex flex-col" :class="{'ml-44':isWide}">
-            <div class="flex p-2 mx-4 justify-start">
-                <RouterLink v-for="littleTag in littleTags" :to="'/Library/?cate=武侠&tag='+littleTag" class="h-10 px-2 bg-white m-2 rounded-full flex justify-center">
-                    <h1 class="my-auto text-lg">
-                        {{ littleTag }}
+            <div v-if="route.query.cate=='武侠'" class="flex p-2 mx-4 justify-start">
+                <button @click="doGetLittleTag('旧派武侠')" class="h-10 px-2  m-2 rounded-full flex justify-cente" :class="{'bg-sky-900/75':aaa,'shadow-lg':aaa ,'bg-white':!aaa}">
+                    <h1 class="my-auto text-lg " :class="{'text-white':aaa}">
+                        旧派武侠
                     </h1>
-                </RouterLink>
+                </button>
+                <button @click="doGetLittleTag('新派武侠')" class="h-10 px-2 m-2 rounded-full flex justify-center" :class="{'bg-sky-900/75':bbb,'shadow-lg':bbb,'bg-white':!bbb}">
+                    <h1 class="my-auto text-lg " :class="{'text-white':bbb}">
+                        新派武侠
+                    </h1>
+                </button>
+                <button @click="doGetLittleTag('古仙武侠')" class="h-10 px-2 m-2 rounded-full flex justify-center" :class="{'bg-sky-900/75':ccc,'shadow-lg':ccc,'bg-white':!ccc}">
+                    <h1 class="my-auto text-lg " :class="{'text-white':ccc}">
+                        古仙武侠
+                    </h1>
+                </button>
             </div>
             <div class="container flex flex-wrap justify-left" >
                 <NormalBookCard v-for="book in bookArray" @click="$emit('showDetailWindow',book['bid'])" :img-src="book['img']" :book-name="book['name']" :book-author="book['author']" :book-tag="book['tag']" :book-score="book['score']" :book-reference="book['mess']">
@@ -53,7 +63,7 @@
 import NormalBookCard from "../components/NormalBookCard.vue";
 import { ref, onMounted,watch } from "vue";
 import {RadioGroup,RadioGroupLabel,RadioGroupDescription,RadioGroupOption} from '@headlessui/vue'
-import { getCate, recordReading, getAll } from '@/api/api.js';
+import { getCate, recordReading, getAll,getLittleTag } from '@/api/api.js';
 import { useRoute } from "vue-router";
 
 const bookArray = ref()
@@ -132,7 +142,29 @@ const littleTags = ref([
         '新派武侠',
         '古仙武侠',
 ])
+const aaa = ref(false)
+const bbb = ref(false)
+const ccc = ref(false)
 emit('leaveHome')
+
+async function doGetLittleTag(tagname) {
+    let res = await getLittleTag(tagname);
+    console.log(res);
+    bookArray.value = res.data.data;
+    if (tagname == '旧派武侠') {
+        aaa.value = true
+        bbb.value = false
+        ccc.value = false
+    } else if (tagname == '新派武侠') {
+        aaa.value = false
+        bbb.value = true
+        ccc.value = false
+    } else { 
+        aaa.value = false
+        bbb.value = false
+        ccc.value=true
+    }
+}
 
 watch(route, async () => {
     let cate = route.query.cate

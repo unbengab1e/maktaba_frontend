@@ -162,7 +162,7 @@ onMounted(async () => {
 })
 
 function hideWindow(toURL) {
-    console.log(toURL)
+    // console.log(toURL)
     bkdtwd.value.classList.add("opacity-0")
     bkdtwd.value.classList.add("translate-y-60")
     windowBlur.value.classList.remove('backdrop-blur-sm')
