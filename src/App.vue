@@ -49,6 +49,9 @@ import { recordReading } from '@/api/api.js';
 // 设置 Cookie
 // Cookies.set('username', '未登录', { expires: 7 });
 // Cookies.set('userid', '14', { expires: 7 });
+
+// Cookies.remove('username')
+// Cookies.remove('userid')
 const detailWindow = ref(false)
 const route = useRoute()
 const showSearchBlur = ref(false)

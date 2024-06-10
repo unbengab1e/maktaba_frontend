@@ -243,7 +243,7 @@ watch(showAllButton, (newShow) => {
 watch(isLogin,async () => {
   username.value = Cookies.get('username')
   userid.value = Cookies.get('userid')
-  let res2 = await getMyAvatar(username)
+  let res2 = await getMyAvatar(username.value)
   console.log(res2)
   headSrc.value = res2.data.avatar
 })
