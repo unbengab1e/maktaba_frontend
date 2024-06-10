@@ -7,16 +7,21 @@
         <div ref="bkdtwd" class="transition-all duration-500 ease-in-out window fixed flex flex-col w-[90%] md:w-3/4 h-4/5 mx-[5%] md:mx-[12.5%] shadow-lg overflow-y-auto overflow-x-hidden rounded-2xl opacity-0 translate-y-60" @click.stop>
             <div ref="dirbg" class="transition-[opacity] duration-300 ease-in-out absolute right-0 h-full w-full bg-black opacity-0 z-[99] translate-x-full" @click="hideDirectory">
             </div>
-            <ul ref="dir" class="transition-all duration-300 ease-in-out absolute right-0 h-full w-80 bg-base-200 z-[100] rounded-2xl menu p-4 min-h-full text-base-content translate-x-80">
-                <li v-for="chapter in directory">
-                    <RouterLink :to="'/reader/?bookName='+bookInfo['name']+'&bid='+bid+'&chapter='+chapter['id']+'&offset=0'"> 
-                        {{chapter['chapteDetail']}}
-                    </RouterLink>
+            <ul ref="dir" class="transition-all duration-300 ease-in-out absolute right-0 h-full w-80 bg-base-200 z-[100] rounded-2xl p-4 min-h-full text-base-content translate-x-80 overflow-y-scroll window felx flex-col ">
+                <li v-for="chapter in directory" class="my-2">
+                    <button @click="jumpToReader(chapter['id'])"> 
+                        <h2 class="">
+                            第{{ chapter['id'] }}章: 
+                        </h2>
+                        <span>
+                            {{chapter['chapteDetail']}}
+                        </span>
+                    </button>
                 </li>
             </ul>
             
             <!-- 简介区 -->
-            <div class="flex container h-[400px] min-h-[400px] md:h-[500px] md:min-h-[500px] lg:h-[600px] lg:min-h-[600px]">
+            <div class="flex w-full h-[400px] min-h-[400px] md:h-[500px] md:min-h-[500px] lg:h-[600px] lg:min-h-[600px]">
                 <!-- 封面 -->
                 <div class="h-full aspect-[5/7] bg-white flex justify-center border-r-2">
                     <img :src="bookInfo['img']" alt="书籍封面" class="w-full aspect-[5/7]">
@@ -156,12 +161,13 @@ onMounted(async () => {
     directory.value = res2.data.message;
 })
 
-function hideWindow() {
+function hideWindow(toURL) {
+    console.log(toURL)
     bkdtwd.value.classList.add("opacity-0")
     bkdtwd.value.classList.add("translate-y-60")
     windowBlur.value.classList.remove('backdrop-blur-sm')
     setTimeout(() => {
-        emit('closeDetailWindow')
+        emit('closeDetailWindow',toURL)
     },300)
 }
 
@@ -200,10 +206,13 @@ async function doComment() {
 
 async function doFavorite() {
     let res = await postFavorite(uid,props.bid);
-    // console.log(res);
     if (res.status == 200) {
         toast.success('收藏成功')
     }
+}
+
+function jumpToReader(chapterId) {
+    hideWindow('/reader/?bookName='+bookInfo.value['name']+'&bid='+props.bid+'&chapter='+chapterId+'&offset=0')
 }
 
 setTimeout(()=> {

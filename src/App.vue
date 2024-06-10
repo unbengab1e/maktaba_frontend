@@ -18,12 +18,12 @@
     
 
     <div ref="cont" class="w-full h-auto z-0 flex justify-center items-center"  :class="{'px-24':isNormal,'px-8':!isNormal}">
-      <RouterView ref="view"  @showDetailWindow="showDetailWindow"   @leaveHome="leaveHome()" @backHome="backHome" :search-content="searchContent" :is-wide="isWide" @edit="showEditWindow" @create="getCreate" @notCreator="notCreator" @inReader="inReader"></RouterView>
+      <RouterView ref="view"  @showDetailWindow="showDetailWindow"   @leaveHome="leaveHome()" @backHome="backHome" :search-content="searchContent" :is-wide="isWide" @edit="showEditWindow" @create="getCreate" @notCreator="notCreator"></RouterView>
     </div>
 
   </div>
 
-<BookDetailWindow id="detail" v-if="detailWindow" class="fixed top-0 left-0" :bid="bid" @closeDetailWindow="closeDetailWindow()"></BookDetailWindow>
+<BookDetailWindow id="detail" v-if="detailWindow" class="fixed top-0 left-0" :bid="bid" @closeDetailWindow="closeDetailWindow"></BookDetailWindow>
 
 <BookEditWindow v-if="editWindow" class="fixed top-0 left-0" @closeEditWindow="closeEditWindow()" :bid="editBid" :is-creating="isCreating">
 
@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import { ref,watch } from "vue";
+import { ref,watch,nextTick } from "vue";
 import { RouterView,useRoute } from 'vue-router'
 import BaseHeader from './components/BaseHeader.vue';
 import Dock from './components/Dock.vue';
@@ -102,9 +102,13 @@ async function showDetailWindow(param) {
   // bookArray.value = res.data.data.books;
 }
 
-function closeDetailWindow() {
+function closeDetailWindow(param) {
   detailWindow.value = false
+  console.log(param)
   Move()
+  nextTick(() => {
+    window.location.replace(param)
+  })
 }
 
 function leaveHome() {
@@ -185,12 +189,19 @@ function notCreator() {
   isCreatorView.value=true
 }
 
-function inReader() {
-  hideOthers.value = true
-  cont.value.classList.remove('h-auto')
-  cont.value.classList.add('h-screen')
-
-}
+watch(route, () => {
+  if (route.path.match('/reader/')) {
+    hideOthers.value = true
+    cont.value.classList.remove('h-auto')
+    cont.value.classList.add('h-screen')
+  } else {
+    hideOthers.value = false
+    if (cont.value.classList.contains('h-screen')) {
+      cont.value.classList.add('h-auto')
+      cont.value.classList.remove('h-screen') 
+    }
+  }
+})
 </script>
 
 
