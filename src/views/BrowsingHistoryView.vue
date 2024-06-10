@@ -7,8 +7,8 @@
     </div>
     <div class="h-[1px] w-full bg-gray-200 mt-2" >
     </div>
-    <div class="w-full h-full flex flex-wrap ml-5">
-      <NormalBookCard v-for="(book,index) in bookArray" @click="$emit('show',book['bid'])"  :img-src="book['img']" :book-name="book['name']" :book-author="book['author']" :book-tag="book['tag']" :reader-cnt="book['reading']" :book-score="book['score']" type="Praise" class="m-4">
+    <div class="container w-full h-full flex flex-wrap ml-5">
+      <NormalBookCard v-for="(book,index) in bookArray" @click="$emit('show',book['bid'])"  :img-src="book['img']" :book-name="book['name']" :book-author="book['author']" :book-tag="book['tag']" :reader-cnt="book['reading']" :book-score="book['score']" type="Praise" class="m-4 max-h-[350px]">
 
       </NormalBookCard>
     </div>
@@ -27,7 +27,7 @@ const bookArray= ref([
 onMounted(async ()=> {
   let res = await getBrowsingHistory('张三');
   console.log(res);
-  bookArray.value = res.data;
+  bookArray.value = res.data.data;
   console.log(bookArray.value);
 })
 

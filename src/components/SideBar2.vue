@@ -24,10 +24,10 @@ const sideBarItems = ref([
   }, {
     content: "浏览历史",
     icon: "icon-[lucide--circle-plus]",
-    path: "/BrowsingHistory"
+    path: "/Individual/IndividualHistory"
   }, {
     content: "数据统计",
-    icon: "icon-[lucide--circle-plus]",
+    icon: "icon-[akar-icons--statistic-up]",
     path: "/Individual/IndividualInformation"
   },
 

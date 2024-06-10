@@ -27,29 +27,29 @@
       <div class="w-1/2  mx-auto flex flex-wrap " :class="{'flex-nowrap':!showLine}">
         <div class="w-1/2 h-1/2 flex flex-col justify-center items-center">
           <span class="w-full text-center font-light text-gray-500 flex-grow flex items-end justify-center">
-           粉丝数
+           收藏数
           </span>
           <span class="w-full text-center">
-            <span class="font-bold">200</span>
-            <span class="font-light text-gray-500">人</span>
+            <span class="font-bold">{{collectCnt}}</span>
+            <span class="font-light text-gray-500">本</span>
           </span>
         </div>
         <div class="w-1/2 h-1/2 flex flex-col justify-center items-center">
           <span class="w-full text-center font-light text-gray-500 flex-grow flex items-end justify-center">
-           创作天数
+           阅读时长
           </span>
           <span class="w-full text-center">
-            <span class="font-bold">200</span>
-            <span class="font-light text-gray-500">天</span>
+            <span class="font-bold">10</span>
+            <span class="font-light text-gray-500">h</span>
           </span>
         </div>
         <div class="w-1/2 h-1/2 flex flex-col justify-center items-center">
           <span class="w-full text-center font-light text-gray-500 flex-grow flex items-end justify-center">
-           关注
+
           </span>
           <span class="w-full text-center">
-            <span class="font-bold">200</span>
-            <span class="font-light text-gray-500">人</span>
+            <span class="font-bold"></span>
+            <span class="font-light text-gray-500"></span>
           </span>
         </div>
 
@@ -76,6 +76,8 @@
 </template>
 <script setup>
 import {useRoute} from "vue-router";
+const collectCnt = ref(5);
+
 const res = useFileSystemAccess({
   types: [{
     description: 'img',
