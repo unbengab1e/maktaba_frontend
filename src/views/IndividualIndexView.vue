@@ -40,7 +40,7 @@
           </span>
           <span class="w-full text-center">
             <span class="font-bold">{{ readingTime.toFixed(1) }}</span>
-            <span class="font-light text-gray-500">h</span>
+            <span class="font-light text-gray-500">min</span>
           </span>
         </div>
         <div class="w-1/2 h-1/2 flex flex-col justify-center items-center">
@@ -78,7 +78,7 @@
 import {useRoute} from "vue-router";
 const collectCnt = ref();
 const imgSrc = ref();
-const readingTime = ref();
+const readingTime = ref(0);
 const readings =ref([])
 onMounted(async () => {
   await getAvatar()
