@@ -552,3 +552,14 @@ export function getReadingNum(username) {
             timeout: 10000,
         });
 }
+export function getReadingProcess(userid,bid) {
+    return service({
+        method: 'GET',
+        url: '/center/myReading',
+        params: {
+            userid:userid,
+            bid:bid,
+        },
+        timeout: 10000,
+    });
+}
