@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full h-full flex flex-col">
+  <div class="w-full h-full flex flex-col bg-white">
 
-    <div class="w-full flex bg-white  parent-div " :class="{'flex-col':!showLine, 'h-[300px]':showLine}">
+    <div class="w-full flex   parent-div " :class="{'flex-col':!showLine, 'h-[300px]':showLine}">
       <div class="w-1/3 my-auto flex " :class="{'flex-col':showLine }">
         <div class="w-full h-1/2 flex mt-1">
           <div class=" h-full flex justify-start items-center">
@@ -11,7 +11,7 @@
           </div>
           <div class="w-[100px] min-w-[100px] h-full flex flex-col ml-[8px]">
         <span class="w-full h-1/2 font-bold mb-auto text-left">
-          张三
+          {{username}}
         </span>
             <span class="w-auto h-auto font-light text-gray-500 text-left ">
           今天我，寒夜里看雪飘过~
@@ -86,16 +86,18 @@
   import {useRoute} from "vue-router";
   const userName = Cookies.get("username");
   const authorScore = ref();
-  let route = useRoute();
+let route = useRoute();
+const emit=defineEmits(['leaveHome'])
+emit('leaveHome')
   // let username = Cookies.get("username");
   const username = ref();
   async function getAvatar(){
-    let res = await getMyAvatar('张三');
+    let res = await getMyAvatar(username.value);
     console.log(res)
     imgSrc.value=res.data.avatar;
   }
   onMounted(async ()=>{
-    await getAvatar();
+    
     let res = await getMyWorks(route.query.uname);
     username.value=route.query.uname;
     if(username === userName)
@@ -106,6 +108,7 @@
     {
       isMine.value = false;
     }
+    await getAvatar();
     console.log(res);
     myWorks.value=res.data.message;
     console.log(myWorks.value);

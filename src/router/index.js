@@ -141,6 +141,11 @@ const router = createRouter({
       name: "reader",
       component: BookReaderView,
     },
+    {
+      path: "/CreatorMenu",
+      name: "menu",
+      component:CreatorIndexView
+    }
   ]
 })
 

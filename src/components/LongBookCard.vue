@@ -21,7 +21,7 @@
             <h1 class="text-4xl my-auto">{{ bookName }}</h1>
           </div>
           <!-- 作者 -->
-          <RouterLink :to="'/Creator/CreatorMenu/?uname='+bookAuthor" class="flex mb-2">
+          <RouterLink :to="'/CreatorMenu/?uname='+bookAuthor" class="flex mb-2">
             <span class="text-xl">{{ bookAuthor }}</span>
           </RouterLink>
           <!-- 指标 -->

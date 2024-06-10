@@ -37,7 +37,7 @@
     </div>
     <!-- 投稿 -->
     <div class="h-11 w-11 my-auto rounded-full flex justify-center bg-sky-500/80 shadow-sm shadow-sky-500 z-[51]">
-      <RouterLink to="/Creator/CreatorIndex" class="w-6 h-6 my-auto">
+      <RouterLink :to="'/Creator/CreatorIndex/?uname='+username" class="w-6 h-6 my-auto">
         <icon class="icon-[material-symbols--upload] h-6 w-6 bg-white" />
       </RouterLink>
     </div>
@@ -182,13 +182,13 @@ const readingNum=ref(0)
 let cnt=0
 
 onMounted(async () => {
-  let res1 = await checkNewChap(userid)
+  let res1 = await checkNewChap(userid.value)
   // console.log(res1)
   hasNewChap.value = (res1.data.message.match('存在未读消息'))
   console.log(hasNewChap.value)
   
 
-  let res2 = await getNewChap(userid)
+  let res2 = await getNewChap(userid.value)
   // console.log(res2)
   newChaps.value = res2.data.message
 
@@ -246,6 +246,9 @@ watch(isLogin,async () => {
   let res2 = await getMyAvatar(username.value)
   console.log(res2)
   headSrc.value = res2.data.avatar
+  let res3 = await getNewChap(userid.value)
+  // console.log(res2)
+  newChaps.value = res3.data.message
 })
 
 //已读消息
@@ -260,7 +263,6 @@ async function doReadMessage(message_id) {
         chap['alreadyRead']=true
       }
     }
-    toast.success('成功')
   }
 }
 

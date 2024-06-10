@@ -20,7 +20,8 @@
 <script setup>
 import { computed, ref,watch } from "vue"
 import Cookies from "js-cookie";
-const uname=Cookies.get('username')
+import { get } from "@vueuse/core";
+const uname = ref(Cookies.get('username'))
 const dockItems = ref([
     {
         icon: "icon-[material-symbols--home]",
@@ -36,15 +37,20 @@ const dockItems = ref([
         path:"/Bookshelf"
     },{
         icon: "icon-[lucide--circle-plus]",
-        path:"/Creator/CreatorIndex/?uname="+uname
+        path:"/Creator/CreatorIndex/?uname="+uname.value
     },])
 const isDark = ref(false)
 const theme = computed(() => {
     return isDark.value ? 'icon-[ph--moon-bold]' : 'icon-[ph--sun-bold]';
 })
-const props=defineProps(['showDock'])
+const props=defineProps(['showDock','changeUserName'])
 const showDock = computed(() => props.showDock)
-const dock=ref()
+const dock = ref()
+const changeUserName = computed(() => props.changeUserName)
+
+watch(changeUserName, () => {
+    uname.value=Cookies.get('username')
+})
 
 watch(showDock, (newShow, oldShow) => {
     if (newShow) {

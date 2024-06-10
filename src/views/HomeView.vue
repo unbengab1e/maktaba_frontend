@@ -6,17 +6,27 @@
 </template>
 
 <script setup>
-import { ref,onMounted, onBeforeMount,watch } from 'vue';
+import { ref,onMounted, onBeforeMount,watch,computed } from 'vue';
 import NormalBookCard from '@/components/NormalBookCard.vue';
 import { getRec } from '@/api/api.js';
+import Cookies from "js-cookie";
 
 const emit = defineEmits(['backHome', 'showDeatailWindow'])
-const props=defineProps(['searchContent','doSearching'])
+const props=defineProps(['searchContent','doSearching','changeUserName'])
 const bookArray = ref()
+const username=ref(Cookies.get('username'))
 emit('backHome')
 
+const changeUserName = computed(() => props.changeUserName)
+watch(changeUserName, async() => {
+  username.value = Cookies.get('username')
+    let res = await getRec(username.value,'per');
+  console.log(res);
+  bookArray.value = res.data.data.books;
+})
+
 onMounted(async () => {
-  let res = await getRec('张三','per');
+  let res = await getRec(username.value,'per');
   console.log(res);
   bookArray.value = res.data.data.books;
 })

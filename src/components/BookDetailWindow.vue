@@ -52,11 +52,11 @@
                             </h1>
                         </div>
 
-                        <div class="h-10 w-full flex justify-center my-2"> 
+                        <button class="h-10 w-full flex justify-center my-2" @click="hideWindow('/CreatorMenu/?uname='+bookInfo['author'])"> 
                             <span class="text-xl font-bold mx-auto ">
                                 {{ bookInfo['author'] }}
                             </span>
-                        </div>
+                        </button>
                         
                         <div class="flex justify-center my-2">
                             <span class="text-lg mx-2">全站评分</span>

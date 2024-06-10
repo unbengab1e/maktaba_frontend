@@ -1,7 +1,7 @@
 <template >
   <div v-if="!hideOthers" class="fixed right-0 w-auto h-[100vh] flex flex-col justify-center z-50">
 
-    <Dock @leaveHome="leaveHome" :show-dock="isNormal"></Dock>
+    <Dock @leaveHome="leaveHome" :show-dock="isNormal" :change-user-name="isLogin"></Dock>
   </div>
 
   <div class="flex flex-col">
@@ -18,7 +18,7 @@
     
 
     <div ref="cont" class="w-full h-auto z-0 flex justify-center items-center"  :class="{'px-24':isNormal,'px-8':!isNormal}">
-      <RouterView ref="view"  @showDetailWindow="showDetailWindow"   @leaveHome="leaveHome()" @backHome="backHome" :search-content="searchContent" :is-wide="isWide" @edit="showEditWindow" @create="getCreate" @notCreator="notCreator"></RouterView>
+      <RouterView ref="view"  @showDetailWindow="showDetailWindow"   @leaveHome="leaveHome()" @backHome="backHome" :search-content="searchContent" :is-wide="isWide" @edit="showEditWindow" @create="getCreate" @notCreator="notCreator" :change-user-name="isLogin"></RouterView>
     </div>
 
   </div>
