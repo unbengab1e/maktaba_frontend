@@ -14,7 +14,7 @@
     <div v-if="showSearchBlur" ref="searchBlur" class="transition-all fixed  flex h-screen w-screen z-[90]" @click="stopSearching()">
     </div>
 
-    <BaseHeader v-if="!hideOthers"  @startSearching="startSearching()" @doSearching="doSearching" :show-all-button="isNormal"></BaseHeader>
+    <BaseHeader v-if="!hideOthers"  @startSearching="startSearching()" @doSearching="doSearching" :show-all-button="isNormal" @tryLogin="showLoginWindow"></BaseHeader>
     
 
     <div ref="cont" class="w-full h-auto z-0 flex justify-center items-center"  :class="{'px-24':isNormal,'px-8':!isNormal}">
@@ -98,8 +98,6 @@ async function showDetailWindow(param) {
   bid.value=param
   stopMove()
   // let res = await recordReading(param,Cookies.get('username'));
-  // console.log(res);
-  // bookArray.value = res.data.data.books;
 }
 
 function closeDetailWindow(param) {
