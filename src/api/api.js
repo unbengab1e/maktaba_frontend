@@ -555,7 +555,7 @@ export function getReadingNum(username) {
 export function getReadingProcess(userid,bid) {
     return service({
         method: 'GET',
-        url: '/center/myReading',
+        url: '/reader/readingProgress',
         params: {
             userid:userid,
             bid:bid,

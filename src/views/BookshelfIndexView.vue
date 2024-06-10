@@ -1,6 +1,6 @@
 <template>
   <div class="container flex flex-wrap justify-around ">
-    <NormalBookCard v-for="book in books"  :img-src="book.img" :book-name="book.name" :book-reference="book.bookReference" :book-author="book.author" :book-score="book.score" :book-tag="book.tag" :is-read="book.isRead" class="m-4" @click="jump">
+    <NormalBookCard v-for="book in books"  :img-src="book.img" :book-name="book.name" :book-reference="book.mess" :book-author="book.author" :book-score="book.score" :book-tag="book.tag" :is-read="book.isRead" class="m-4" @click="jump">
 
     </NormalBookCard>
   </div>
@@ -9,10 +9,12 @@
 import NormalBookCard from "@/components/NormalBookCard.vue";
 import {onMounted, ref} from "vue";
 import Cookies from "js-cookie";
-import {getDetail, getMyCollect} from "@/api/api.js";
+import {getDetail, getMyCollect, getReadingProcess} from "@/api/api.js";
+import {temp} from "three/nodes";
 const bookArray = ref([])
 const books = ref([])
 const booksCopy = ref([])
+const tempCopy = ref()
 let username = Cookies.get("username");
 let userid = Cookies.get("user_id");
 onMounted(async () => {
@@ -24,7 +26,12 @@ onMounted(async () => {
     console.log(bookArray.value[i].bid);
     let dres = await getDetail(username, bookArray.value[i].bid);
     console.log(dres);
-    booksCopy.value.push(dres.data)
+    let rres = await getReadingProcess(userid,bookArray.value[i].bid);
+    console.log(rres)
+    tempCopy.value = dres.data
+    tempCopy.value.author = rres.data.message
+    booksCopy.value.push(tempCopy.value)
+
   }
   books.value = booksCopy.value;
 })
