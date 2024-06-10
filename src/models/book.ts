@@ -25,12 +25,12 @@ export type Tag = {
 };
 
 export type Setting = {
-  backgroundColor: string;
+  // backgroundColor: string;
   flipByChapter: boolean;
   fontSize: number;
   showPrivate: boolean;
   showPublic: boolean;
-  textColor: string;
+  // textColor: string;
 };
 
 export type Comment = {

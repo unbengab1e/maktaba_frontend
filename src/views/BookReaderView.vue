@@ -3,18 +3,18 @@
     <input id="my-drawer" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content">
       <div ref="bookReader" class="h-full flex flex-row justify-stretch items-stretch overflow-hidden"
-        :style="`background-color: ${setting.backgroundColor}; color: ${setting.textColor}; font-size: ${setting.fontSize};`"
+        :style="`font-size: ${setting.fontSize}px;`"
         id="book-reader" @mouseup="setTooltip">
         <SelectionTooltip :selection="selection" :bid="bid" :chapter="curChapter.chapter" :offset="selectionOffset"
           :direction="changeDirection" v-model:mode="modeStr" :curTag="curTag" :user_id="user_id"
           @updateNotes="renderAllTag()" />
         <ModalDialog />
         <SettingModal v-model:setting="setting" @refresh="refresh()" />
-        <CommentModal :bid="bid" :chapter="curChapter.chapter" />
+        <CommentModal :bid="bid" :chapter="curChapter.chapter" :offset="curOffset"/>
       </div>
     </div>
     <div class="fixed right-0 w-auto h-[100vh] flex flex-col justify-center z-50">
-      <ReaderDock />
+      <ReaderDock @changeTheme="changeTheme" :bid="bid" :chapter="curChapter.chapter"/>
     </div>
     <div class="drawer-side">
       <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
@@ -41,6 +41,7 @@ import Cookies from 'js-cookie';
 import SettingModal from '../components/SettingModal.vue';
 import CommentModal from '../components/CommentModal.vue';
 import ReaderDock from '@/components/ReaderDock.vue';
+import BookMark from '../components/BookMark.vue'
 
 let route = useRoute();
 let bookName = route.query.bookName as string;
@@ -55,6 +56,7 @@ const selection: Ref<string> = ref("");
 const changeDirection = ref(false);
 // 选中文字偏移量
 const selectionOffset: Ref<number> = ref(0);
+const curOffset: Ref<number> = ref(0);
 
 const curChapter = reactive<Chapter>({
   chapter,
@@ -69,17 +71,18 @@ const curChapter = reactive<Chapter>({
   words: [],
 })
 const setting = reactive<Setting>({
-  backgroundColor: '#faebd7',
+  // backgroundColor: '#faebd7',
   flipByChapter: false,
   fontSize: 18,
   showPrivate: true,
   showPublic: true,
-  textColor: '#000000',
+  // textColor: '#000000',
 })
 const nav: Ref<String[]> = ref([])
 const bookReader: Ref<HTMLElement | null> = ref(null)
 const modeStr = ref("FunctionMenu")
 const curTag = ref()
+const isDark = ref(false)
 
 let tags: Ref<Tag[]> = ref([]);
 let user_id: string;
@@ -173,6 +176,7 @@ const renderChapter = (chapterDetail: string, content: string): number => {
     const page = document.createElement('div');
     page.className = 'my-page';
     page.appendChild(p);
+    page.classList.add(`bg-${setting.backgroundColor}`);
     curChapter.words.push(page.innerText.length);
 
     const pageTitle = document.createElement('div');
@@ -338,6 +342,7 @@ async function renderBook(chapter: number, offset: number | 'last' | 'first') {
   console.log(curChapter, offset)
 
   await renderAllTag();
+
 }
 
 function renderTag(tag: Tag) {
@@ -350,6 +355,13 @@ function renderTag(tag: Tag) {
   let startNode, endNode, startOffset = tag.offset, endOffset;
   for (let index = curChapter.pageNum.pre; index < pageIndex; index++) {
     startOffset -= curChapter.words[index];
+  }
+
+  // bookmark
+  if (tag.offset === 0) {
+    const mark = document.createElement('span');
+    mark.className = 'h-8 w-8 icon-[material-symbols--bookmark]'
+    page.appendChild(mark)
   }
 
   page.childNodes.forEach((e) => {
@@ -431,6 +443,22 @@ const refresh = () => {
     offset += curChapter.words[index];
   }
   renderBook(curChapter.chapter, offset);
+}
+
+const changeTheme = (isDark) => {
+  // refresh();
+  let pages = document.querySelectorAll('.my-page')
+  if (isDark) {
+    bookReader.value.classList.add('black-page')
+    pages.forEach((e) => {
+      e.classList.add('black-page');
+    })
+  } else {
+    bookReader.value.classList.remove('black-page')
+    pages.forEach((e) => {
+      e.classList.remove('black-page');
+    })  
+  }
 }
 
 const parseSetting = () => {
@@ -571,7 +599,7 @@ function getHtmlPosition(rect: DOMRect) {
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 * {
   font-family: "Noto Serif SC", serif;
 }
@@ -586,9 +614,19 @@ html::-webkit-scrollbar {
   display: none;
 }
 
+#book-reader {
+  background-color: antiquewhite;
+}
+
+.black-page {
+  background-color: rgb(38, 38, 40) !important;
+  color: rgb(208, 211, 216) !important;
+}
+
 .my-page {
   /* text-align: center; */
   padding: 4%;
+  background-color: antiquewhite;
   text-align: justify;
   overflow: scroll;
 
@@ -617,6 +655,29 @@ html::-webkit-scrollbar {
       11px 11px 0 0px floralwhite,
       12px 12px 2px 0px rgba(0, 0, 0, 0.2);
   }
+
+  &.black-page.--left {
+    border-radius: 0 6px 3px 0;
+    box-shadow: 0 0 20px 0 rgba(208, 211, 216, 0.5),
+      inset -6px 0 30px -6px rgba(208, 211, 216, 0.2),
+      0 1px 1px rgba(208, 211, 216, 0.1),
+      -5px 5px 0 0px black,
+      -6px 6px 1px 0px rgba(208, 211, 216, 0.2),
+      -11px 11px 0 0px black,
+      -12px 12px 2px 0px rgba(208, 211, 216, 0.2);
+  }
+
+  &.black-page.--right {
+    border-radius: 6px 0 0 3px;
+    box-shadow: 0 0 20px 0 rgba(208, 211, 216, 0.5),
+      inset 12px 0 30px -6px rgba(208, 211, 216, 0.2),
+      0 1px 1px rgba(208, 211, 216, 0.1),
+      5px 5px 0 0px black,
+      6px 6px 1px 0px rgba(208, 211, 216, 0.2),
+      11px 11px 0 0px black,
+      12px 12px 2px 0px rgba(208, 211, 216, 0.2);
+  }
+
 
   .page-title,
   .page-number {

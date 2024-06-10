@@ -482,3 +482,31 @@ export function getLittleTag(littletag) {
         timeout: 10000,
     });
 }
+
+
+export function addHistory(bid, time, duration) {
+    return service({
+        method: "POST",
+        url: "/reader/addHistory/",
+        data: {
+            bid,
+            time,
+            duration,
+        },
+        timeout: 10000,
+    });
+}
+
+export function updateTimeEveryBook(user_id, bid, time) {
+    return service({
+        method: "POST",
+        url: "/reader/readingTimeEveryBook/",
+        data: {
+            user_id,
+            bid,
+            time,
+        },
+        timeout: 10000,
+    });
+}
+
