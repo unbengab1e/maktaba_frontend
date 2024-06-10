@@ -1,14 +1,14 @@
 <template>
   <dialog id="setting" class="modal">
     <div class="modal-box">
-      <div>
+      <!-- <div>
         <span>背景颜色</span>
         <input type="color" v-model="setting.backgroundColor" />
       </div>
       <div>
         <span>文字颜色</span>
         <input type="color" v-model="setting.textColor" />
-      </div>
+      </div> -->
       <div>
         <span>文字大小</span>
         <input type="number" v-model="setting.fontSize" min="1" max="100" class="input input-bordered input-sm" />
