@@ -279,7 +279,7 @@ async function doReadMessage(message_id) {
 }
 
 async function readAll() {
-  let res = await readMessage(userid,0);
+  let res = await readMessage(userid.value,0);
   console.log(res);
   let i=0
   if (res.status == 200) {

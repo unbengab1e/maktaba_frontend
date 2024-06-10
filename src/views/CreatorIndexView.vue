@@ -2,7 +2,7 @@
   <div class="w-full h-full flex flex-col bg-white">
 
     <div class="w-full flex   parent-div " :class="{'flex-col':!showLine, 'h-[300px]':showLine}">
-      <div class="w-1/3 my-auto flex " :class="{'flex-col':showLine }">
+      <div class="w-1/3 my-auto flex mt-8 ml-8" :class="{'flex-col':showLine }">
         <div class="w-full h-1/2 flex mt-1">
           <div class=" h-full flex justify-start items-center">
             <div class="rounded-full  w-[75px] h-[75px] min-w-[75px]">
