@@ -100,7 +100,7 @@ emit('leaveHome')
     
     let res = await getMyWorks(route.query.uname);
     username.value=route.query.uname;
-    if(username === userName)
+    if(username.value === userName)
     {
       isMine.value = true;
     }

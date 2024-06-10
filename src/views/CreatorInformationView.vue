@@ -20,13 +20,13 @@ const myPopularized = ref([])
 
 let username = Cookies.get("username");
 onMounted(async ()=>{
-  let res = await getMyPopularizing('张三');
+  let res = await getMyPopularizing(username);
   console.log(res);
   myPopularize.value=res.data.data;
 
   console.log(Object.keys(myPopularize.value).length);
   for(let i=0;i<Object.keys(myPopularize.value).length;i++){
-    let dres = await  getDetail('张三',myPopularize.value[i].book)
+    let dres = await  getDetail(username,myPopularize.value[i].book)
     myPopularized.value.push  (dres.data);
     console.log(dres);
   }

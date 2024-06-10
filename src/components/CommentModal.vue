@@ -46,19 +46,20 @@ const comments: Ref<Comment[]> = ref([]);
 const chapter = ref(props.chapter);
 const myComment: Ref<string> = ref("");
 
-onMounted(() => {
+const updateChapterComment = async () =>{
   getComment(props.bid, props.chapter).then((res) => {
     comments.value = res.data;
     console.log(comments.value)
   });
+}
+
+onMounted(() => {
+  updateChapterComment();
 })
 
-// watch(() => props.chapter, (new, old) => {
-//   getComment(props.bid, props.chapter).then((res) => {
-//     comments.value = res.data;
-//     console.log(comments.value)
-//   });
-// });
+watch(() => props.chapter, (newVal) => {
+  updateChapterComment();
+});
 
 async function doComment() {
   let res = await postComment(name, props.bid, props.chapter, myComment.value);

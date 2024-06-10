@@ -5,7 +5,7 @@
     <Icon icon="ph:highlighter-fill" @mouseup.stop="emit('note')" />
     <Icon icon="hugeicons:search-list-01" />
     <Icon icon="mdi:search-web" @click="searchWeb" />
-    <Icon icon="streamline:dictionary-language-book-solid" onclick="modal.showModal()" />
+    <Icon icon="streamline:dictionary-language-book-solid" @click="searchDict" />
     <Icon icon="material-symbols:text-to-speech-rounded" @click="speech" />
     <Icon icon="material-symbols:translate-rounded" @click="translate" />
   </div>
@@ -44,6 +44,10 @@ function copy() {
 
 function searchWeb() {
   window.open(`https://www.baidu.com/s?wd=${encodeURI(props.selection)}`)
+}
+
+function searchDict() {
+  window.open(`https://cn.bing.com/dict/search?q=${encodeURI(props.selection)}`)
 }
 
 function translate() {

@@ -114,7 +114,7 @@ async function handleSignIn() {
     console.log(response); // 打印登录请求的响应数据
 
     Cookies.set('username',signInUsername.value,{expires:7});
-    Cookies.set('user_id',response.id);
+    Cookies.set('user_id',response.data.id);
     emit("signInSuccess");
     toast.success('登录成功')
     // 在这里可以根据后端返回的数据进行相应的处理，例如跳转到登录成功后的页面等

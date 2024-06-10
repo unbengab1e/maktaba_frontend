@@ -20,7 +20,7 @@ const myWorks = ref([])
 
 let username = Cookies.get("username");
 onMounted(async ()=>{
-  let res = await getMyWorks('张三');
+  let res = await getMyWorks(username);
   console.log(res);
   myWorks.value=res.data.message;
   console.log(myWorks.value);

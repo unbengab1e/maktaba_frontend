@@ -10,11 +10,11 @@
           @updateNotes="renderAllTag()" />
         <ModalDialog />
         <SettingModal v-model:setting="setting" @refresh="refresh()" />
-        <CommentModal :bid="bid" :chapter="curChapter.chapter" :offset="curOffset"/>
+        <CommentModal :bid="bid" :chapter="curChapter.chapter" :offset="curOffset" @updateChapterComment="updateChapterComment"/>
       </div>
     </div>
     <div class="fixed right-0 w-auto h-[100vh] flex flex-col justify-center z-50">
-      <ReaderDock @changeTheme="changeTheme" @addBookMark="addBookMark" :bid="bid" :chapter="curChapter.chapter"/>
+      <ReaderDock @changeTheme="changeTheme" @addBookMark="addBookMark" @updateChapterComment="updateChapterComment" @leave="leave" :bid="bid" :chapter="curChapter.chapter" v-model:comments="comments"/>
     </div>
     <div class="drawer-side">
       <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
@@ -30,7 +30,7 @@ import { computed, onBeforeMount, onMounted, reactive, Ref, ref } from 'vue';
 
 // import text from '../assets/UDHR.txt?raw'
 import { PageFlip } from 'page-flip';
-import { addBookTag, getBookTag, getChapter, getIndex } from '../api/api';
+import { addBookTag, addHistory, getBookTag, getChapter, getComment, getIndex, postReadingProgress, updateTimeForEveryBook } from '../api/api';
 import { Icon } from '@iconify/vue';
 import { Chapter, findPageByOffset, Setting, Tag } from '../models/book';
 import { useRoute } from 'vue-router'
@@ -41,7 +41,6 @@ import Cookies from 'js-cookie';
 import SettingModal from '../components/SettingModal.vue';
 import CommentModal from '../components/CommentModal.vue';
 import ReaderDock from '@/components/ReaderDock.vue';
-import BookMark from '../components/BookMark.vue'
 
 let route = useRoute();
 let bookName = route.query.bookName as string;
@@ -57,6 +56,7 @@ const changeDirection = ref(false);
 // 选中文字偏移量
 const selectionOffset: Ref<number> = ref(0);
 const curOffset: Ref<number> = ref(0);
+const comments: Ref<Comment[]> = ref([]);
 
 const curChapter = reactive<Chapter>({
   chapter,
@@ -86,6 +86,7 @@ const isDark = ref(false)
 
 let tags: Ref<Tag[]> = ref([]);
 let user_id: string;
+let username: string;
 let pageFlip: PageFlip; // 分页对象
 let width = window.innerWidth * 0.36; // 单页宽度
 let height = window.innerHeight * 0.9; // 单页高度
@@ -121,79 +122,100 @@ const getPage = (paginator: HTMLElement, w: number, h: number): DocumentFragment
 };
 
 const renderChapter = (chapterDetail: string, content: string): number => {
-  // padding: 4% -> 1 - padding * 4 = 0.84
-  const w = width * 0.84;
-  // padding: 4% -> padding * 4 = 0.16
-  const h = height - width * 0.16;
-  let paginator: HTMLElement = document.createElement('div');
-  paginator.style.columns = `${w}px auto`
-  paginator.style.columnFill = 'auto'
-  paginator.style.columnGap = '0'
-  paginator.style.fontSize = `${setting.fontSize}px`
-  paginator.style.height = `${h}px`
-  paginator.style.position = 'absolute'
-  paginator.style.textAlign = 'justify'
-  paginator.style.zIndex = '999'
-
-  paginator.innerText = content;
-
-  let title = document.createElement('h1');
-  title.style.textAlign = 'center';
-  title.style.fontSize = '24px';
-  title.style.fontWeight = '700';
-  title.style.margin = '2.5%';
-
-  title.innerText = chapterDetail;
-  title.style.userSelect = 'none';
-  paginator.insertBefore(title, paginator.firstChild);
-  bookReader.value!.appendChild(paginator)
-
-  let pageContents: DocumentFragment[] = [];
-
-  // https://drafts.csswg.org/css-multicol-1/#cw
-  // The reason for making column-width somewhat flexible is to achieve scalable designs that can fit many screen sizes. To set an exact column width, the column gap and the width of the multicol container (assuming horizontal text) must also be specified.
-  paginator.style.width = `16777200px`
-  let pageNum = 0;
-  while (true) {
-    let p = getPage(paginator, w, h);
-    if (p === null) {
-      break;
-    } else {
-      pageContents.push(p);
-      pageNum++;
-    }
-  }
-
-  // make page
-  if (pageNum % 2 == 1) {
-    pageContents.push(document.createDocumentFragment());
-    pageNum++;
-  }
-
-  bookReader.value!.removeChild(paginator)
-
-  pageContents.forEach((p, i) => {
+  if (setting.flipByChapter) {
     const page = document.createElement('div');
     page.className = 'my-page';
-    page.appendChild(p);
-    page.classList.add(`bg-${setting.backgroundColor}`);
-    curChapter.words.push(page.innerText.length);
-
+    page.innerText = content;
+    if (isDark.value) {
+      page.classList.add("black-page");
+    }
+    curChapter.words.push(content.length);
     const pageTitle = document.createElement('div');
     pageTitle.className = 'page-title';
-    if (i % 2 === 1) {
-      pageTitle.innerText = chapterDetail;
-    } else {
-      pageTitle.innerText = bookName;
-    }
+    pageTitle.innerText = chapterDetail;
     const pageNumber = document.createElement('div');
     pageNumber.className = 'page-number';
-    pageNumber.innerText = (i + 1).toString();
+    pageNumber.innerText = bookName;
     page.appendChild(pageTitle);
     page.appendChild(pageNumber);
     curChapter.pages.push(page);
-  });
-  return pageNum;
+    return 1;
+  } else {
+    // padding: 4% -> 1 - padding * 4 = 0.84
+    const w = width * 0.84;
+    // padding: 4% -> padding * 4 = 0.16
+    const h = height - width * 0.16;
+    let paginator: HTMLElement = document.createElement('div');
+    paginator.style.columns = `${w}px auto`
+    paginator.style.columnFill = 'auto'
+    paginator.style.columnGap = '0'
+    paginator.style.fontSize = `${setting.fontSize}px`
+    paginator.style.height = `${h}px`
+    paginator.style.position = 'absolute'
+    paginator.style.textAlign = 'justify'
+    paginator.style.zIndex = '999'
+    paginator.innerText = content;
+
+    let title = document.createElement('h1');
+    title.style.textAlign = 'center';
+    title.style.fontSize = '24px';
+    title.style.fontWeight = '700';
+    title.style.margin = '2.5%';
+
+    title.innerText = chapterDetail;
+    title.style.userSelect = 'none';
+    paginator.insertBefore(title, paginator.firstChild);
+    bookReader.value!.appendChild(paginator)
+
+    let pageContents: DocumentFragment[] = [];
+
+    // https://drafts.csswg.org/css-multicol-1/#cw
+    // The reason for making column-width somewhat flexible is to achieve scalable designs that can fit many screen sizes. To set an exact column width, the column gap and the width of the multicol container (assuming horizontal text) must also be specified.
+    paginator.style.width = `16777200px`
+    let pageNum = 0;
+    while (true) {
+      let p = getPage(paginator, w, h);
+      if (p === null) {
+        break;
+      } else {
+        pageContents.push(p);
+        pageNum++;
+      }
+    }
+
+    // make page
+    if (pageNum % 2 == 1) {
+      pageContents.push(document.createDocumentFragment());
+      pageNum++;
+    }
+
+    bookReader.value!.removeChild(paginator)
+
+    pageContents.forEach((p, i) => {
+      const page = document.createElement('div');
+      page.className = 'my-page';
+      page.appendChild(p);
+      if (isDark.value) {
+        page.classList.add("black-page");
+      }
+      curChapter.words.push(page.innerText.length);
+
+      const pageTitle = document.createElement('div');
+      pageTitle.className = 'page-title';
+      if (i % 2 === 1) {
+        pageTitle.innerText = chapterDetail;
+      } else {
+        pageTitle.innerText = bookName;
+      }
+      const pageNumber = document.createElement('div');
+      pageNumber.className = 'page-number';
+      pageNumber.innerText = (i + 1).toString();
+      page.appendChild(pageTitle);
+      page.appendChild(pageNumber);
+      curChapter.pages.push(page);
+    });
+    return pageNum;
+  }
 }
 
 const resetPageFlipProperties = () => {
@@ -238,7 +260,7 @@ const createPageFlip = (pages, startPage: number) => {
 
   pageFlip = new PageFlip(book, {
     startPage,
-    width,
+    width: setting.flipByChapter ? width * 2 : width,
     height,
     // size: 'stretch',
     // usePortrait: false,
@@ -260,11 +282,6 @@ const createPageFlip = (pages, startPage: number) => {
       renderBook(curChapter.chapter, 'first');
     }
   });
-
-  document.querySelectorAll('.my-page').forEach((e) => {
-    console.log(e.getAttribute('style'))
-    e.setAttribute('style', `background-color: ${setting.backgroundColor}`);
-  })
 }
 
 async function loadBookIndex(bid: number) {
@@ -343,6 +360,8 @@ async function renderBook(chapter: number, offset: number | 'last' | 'first') {
 
   await renderAllTag();
 
+  await updateChapterComment();
+
 }
 
 function renderTag(tag: Tag) {
@@ -350,24 +369,35 @@ function renderTag(tag: Tag) {
   const pageIndex = findPageByOffset(curChapter, tag.offset);
   // wrong
   let page = curChapter.pages[pageIndex]!;
-
-
+  
   let startNode, endNode, startOffset = tag.offset, endOffset;
   for (let index = curChapter.pageNum.pre; index < pageIndex; index++) {
     startOffset -= curChapter.words[index];
   }
-
+    
   // bookmark
   if (tag.length === 0) {
-    page = curChapter.pages[pageIndex + 1]!;
     const mark = document.createElement('span');
-    mark.className = 'h-8 w-8 icon-[material-symbols--bookmark] text-red-400'
-    mark.style.position = 'relative'
-    mark.style.left = `${width - 86}px`
-    mark.style.bottom = `${height - 57}px`
-    page.appendChild(mark)
-  }
-  else{
+    mark.className = 'h-8 w-8 icon-[material-symbols--bookmark]'
+    mark.style.position = 'absolute'
+    mark.style.right = '4px'
+    mark.style.top = '-4px'
+    page.prepend(mark)
+    tag.dom = mark;
+    if ((tag.private && setting.showPrivate) || (!tag.private && setting.showPublic)) {
+      mark.classList.add('text-red-400');
+      mark.addEventListener('click', function () {
+        setTooltipByRect(this.getBoundingClientRect());
+        modeStr.value = "NoteTag";
+        curTag.value = tag;
+      })
+    } else {
+      mark.classList.add('text-transparent')
+    }
+    mark.addEventListener('mouseup', function (e) {
+      e.stopPropagation();
+    })
+  } else {
     page.childNodes.forEach((e) => {
       if (e.nodeType === Node.TEXT_NODE || e.nodeName === 'SPAN') {
         if (!startNode) {
@@ -427,13 +457,12 @@ function renderTag(tag: Tag) {
 
 const renderAllTag = async () => {
   tags.value.forEach((e) => {
-    e.dom.parentNode?.replaceChild(document.createTextNode(e.dom.innerText), e.dom);
+    e.dom?.parentNode?.replaceChild(document.createTextNode(e.dom.innerText), e.dom);
   })
   await loadBookTag(user_id, bid, curChapter.chapter);
   tags.value.forEach((e) => {
     renderTag(e);
   })
-
 }
 
 const jumpTag = (chapter, offset) => {
@@ -442,9 +471,9 @@ const jumpTag = (chapter, offset) => {
 
 const getCurrentPageOffset = () => {
   let offset = 0;
-  const pageNow = document.querySelector('.my-page:not([style*="display: none"]');
+  const pageNow = getCurrentLeftPage();
   const pageIndex = Array.prototype.indexOf.call(pageNow!.parentElement!.children, pageNow);
-  for (let index = 0; index < pageIndex; index++) {
+  for (let index = curChapter.pageNum.pre; index < pageIndex; index++) {
     offset += curChapter.words[index];
   }
   return offset;
@@ -455,10 +484,11 @@ const refresh = () => {
   renderBook(curChapter.chapter, offset);
 }
 
-const changeTheme = (isDark) => {
+const changeTheme = (dark) => {
   // refresh();
+  isDark.value = dark;
   let pages = document.querySelectorAll('.my-page')
-  if (isDark) {
+  if (dark) {
     bookReader.value.classList.add('black-page')
     pages.forEach((e) => {
       e.classList.add('black-page');
@@ -472,13 +502,29 @@ const changeTheme = (isDark) => {
 }
 
 const addBookMark = () => {
-  addBookTag(user_id, bid, curChapter.chapter, getCurrentPageOffset(), 0, "", 0, false, true).then(() => {
-    toast.success("添加成功")
-    renderAllTag();
-  }).catch((e) => {
-    toast.error(`添加失败：${e}`)
-  });
+  if (getCurrentLeftPage().firstChild.nodeName === 'SPAN') {
+    toast.error("当前页面已有书签");
+  } else {
+    addBookTag(user_id, bid, curChapter.chapter, getCurrentPageOffset(), 0, "", 0, true, true).then(() => {
+      toast.success("添加成功");
+      renderAllTag();
+    }).catch((e) => {
+      toast.error(`添加失败：${e}`);
+    });
+  }
 }
+
+const leave = async () => {
+  const duration = Date.now() - Cookies.get('startTime');
+  await postReadingProgress(user_id, bid, curChapter.chapter, getCurrentPageOffset());
+  await addHistory(bid, username, duration);
+  await updateTimeForEveryBook(user_id, bid, duration);
+}
+
+window.addEventListener('load', () => {
+  Cookies.set('startTime', Date.now());
+});
+window.addEventListener('beforeunload', leave);
 
 const parseSetting = () => {
   for (const key in setting) {
@@ -496,6 +542,7 @@ const parseSetting = () => {
 
 onMounted(async () => {
   user_id = Cookies.get('user_id');
+  username = Cookies.get('username');
   parseSetting();
   createPageFlip([], 0);
   tooltip = document.getElementById('tooltip')!;
@@ -576,16 +623,26 @@ function setTooltipBySelection(sel: Selection) {
   const range = sel!.getRangeAt(0);
   selectionOffset.value = getRangeOffset(range);
   const rect = range.getBoundingClientRect();
+  setTooltipByRect(rect);
+}
+
+function setTooltipByRect(rect: DOMRect) {
+  const { posX, posY } = getHtmlPosition(rect);
   tooltip.style.opacity = '1';
   tooltip.style.zIndex = '1';
   tooltip.style.display = 'block';
-  const { posX, posY } = getHtmlPosition(rect);
+  tooltip.style.left = `${posX}px`;
+  tooltip.style.top = `${posY}px`;
   tooltip.style.left = `${posX}px`;
   tooltip.style.top = `${posY}px`;
 }
 
+const getCurrentLeftPage = () : HTMLElement => {
+  return document.querySelector('.my-page:not([style*="display: none"]')!;
+}
+
 function getPageSize() {
-  let ele: HTMLElement = document.querySelector('.my-page:not([style*="display: none"]')!;
+  const ele = getCurrentLeftPage();
   return {
     width: ele.clientWidth,
     height: ele.clientHeight,
@@ -635,11 +692,13 @@ html::-webkit-scrollbar {
 
 #book-reader {
   background-color: antiquewhite;
+  transition: 0.1s;
 }
 
 .black-page {
   background-color: rgb(38, 38, 40) !important;
   color: rgb(208, 211, 216) !important;
+  transition: 0.1s;
 }
 
 .my-page {

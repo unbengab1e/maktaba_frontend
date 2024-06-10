@@ -77,15 +77,17 @@ import { useFileSystemAccess } from '@vueuse/core'
 import StarRating from "@/components/StarRating.vue";
 import {bookRating, postPopularize} from "@/api/api.js";
 import {toast} from "vue3-toastify";
+import Cookies from "js-cookie";
 const props = defineProps(['imgSrc', 'bookName','bookAuthor','bookScore','bookReference','bookRank','bookTag','readingCnt','score','commentCnt','showCover','isCreator','isPopularize','isShowing','bid']);
 const bid = props.bid;
 const bookTag = props.bookTag;
+const username = Cookies.get('username');
 // const sendBid = () => {
 //   // 在点击事件触发时，将 bid 传递给父组件
 //   emit('targetBid', bid);
 // };
 async function handlePopularize(){
-  let res = await postPopularize('张三', bid, "precise",bookTag);
+  let res = await postPopularize('username', bid, "precise",bookTag);
    console.log(res);
   if (res.status == 200||res.status==201) {
     toast.success('推广成功')

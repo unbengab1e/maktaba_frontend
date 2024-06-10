@@ -470,11 +470,12 @@ export function getMyRating(username) {
     });
 }
 
-export function postReadingProgress(bid, chapter, offset) {
+export function postReadingProgress(user_id, bid, chapter, offset) {
     return service({
         method: "POST",
         url: "/reader/readingProgress/",
         data: {
+            user_id,
             bid,
             chapter,
             offset,
@@ -494,24 +495,23 @@ export function getLittleTag(littletag) {
     });
 }
 
-
-export function addHistory(bid, time, duration) {
+export function addHistory(bid, username, duration) {
     return service({
         method: "POST",
         url: "/reader/addHistory/",
         data: {
             bid,
-            time,
+            username,
             duration,
         },
         timeout: 10000,
     });
 }
 
-export function updateTimeEveryBook(user_id, bid, time) {
+export function updateTimeForEveryBook(user_id, bid, time) {
     return service({
         method: "POST",
-        url: "/reader/readingTimeEveryBook/",
+        url: "/reader/readingTimeForEveryBook/",
         data: {
             user_id,
             bid,
@@ -520,6 +520,7 @@ export function updateTimeEveryBook(user_id, bid, time) {
         timeout: 10000,
     });
 }
+
 export function getMyComment(username) {
     return service({
         method: 'GET',

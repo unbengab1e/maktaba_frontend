@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-col  h-auto w-[200px] z-50 bg-white" :class="{'w-[200px] min-w-[200px]':showContent,'w-[50px] min-w-[50px]':!showContent}">
     <RouterLink v-for="sideBarItem in sideBarItems" :to="sideBarItem['path']" :key="sideBarItem.path" class="sidebar iii">
-      <div :class="{ 'bg-gray-100': sideBarItem.path === currentRoute.path }" class="transition w-full h-20 flex my-1 hover:bg-gray-50 justify-center items-center">
-        <i :class="sideBarItem['icon']" :style="{ color: sideBarItem.path === currentRoute.path ? 'blue' : '' }" class="h-6 w-6 m-auto"></i>
+      <div :class="{ 'bg-gray-100': currentRoute.path.startsWith(sideBarItem.path) }" class="transition w-full h-20 flex my-1 hover:bg-gray-50 justify-center items-center">
+        <i :class="sideBarItem['icon']" :style="{ color: currentRoute.path.startsWith(sideBarItem.path) ? 'blue' : '' }" class="h-6 w-6 m-auto"></i>
         <span v-if="showContent" style="{ color: sideBarItem.path == currentRoute.path ? 'blue' : '' }" class="font-medium mr-auto">
           {{ sideBarItem['content'] }}
         </span>

@@ -20,12 +20,14 @@
 import {onMounted, ref} from 'vue'
 import NormalBookCard from '@/components/NormalBookCard.vue';
 import {getBrowsingHistory} from "@/api/api.js";
+import Cookies from "js-cookie";
 
 const emit=defineEmits(['leaveHome'])
 const bookArray= ref([
 ])
+const username = Cookies.get('username')
 onMounted(async ()=> {
-  let res = await getBrowsingHistory('张三');
+  let res = await getBrowsingHistory(username);
   console.log(res);
   bookArray.value = res.data.data;
   console.log(bookArray.value);

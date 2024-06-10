@@ -169,7 +169,7 @@ onMounted(async ()=>{
   });
 
   console.log()
-  let res = await getDetail('张三',bid);
+  let res = await getDetail('userName',bid);
   console.log(res);
   bookInfo.value=res.data;
   console.log(bookInfo.value);
@@ -202,8 +202,8 @@ async function handleCreate() {
 
       const formData = new FormData();
       formData.append('name', bookName.value);
-      formData.append('user_name', '张三');
-      formData.append('user_id', '14');
+      formData.append('user_name', userName);
+      formData.append('user_id', userID);
       formData.append('tag',bookTag.value);
       formData.append('little_tag',bookLittleTag.value);
       formData.append('mess',bookMess.value);
@@ -230,7 +230,7 @@ async function handleOpen() {
 
       const formData = new FormData();
       formData.append('name', chapterName.value);
-      formData.append('user_id', '1');
+      formData.append('user_id', userID);
       formData.append('id', '10611');
       formData.append('file', res.file.value); // 添加文件到 FormData
 

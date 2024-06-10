@@ -32,7 +32,7 @@
         </button>
         <button
             class="transition w-full aspect-square border-[1px] rounded-full flex my-1 hover:scale-125 hover:bg-gray-300 shadow-md"
-            onclick="comment.showModal()">
+            onclick="comment.showModal()" @click="emit('updateChapterComment')">
             <i class="icon-[mdi--comment-processing-outline] h-6 w-6 m-auto"></i>
         </button>
     </div>
@@ -41,7 +41,7 @@
 <script setup>
 import { addHistory, postReadingProgress } from "@/api/api";
 import { computed, ref, watch } from "vue"
-import { onBeforeRouteUpdate } from "vue-router";
+import { onBeforeRouteLeave } from "vue-router";
 
 const dockItems = ref([
     {
@@ -67,7 +67,7 @@ const props = defineProps(['showDock', 'bid', 'chapter'])
 const showDock = computed(() => props.showDock)
 const dock = ref()
 const isDark = ref(false)
-const emit = defineEmits('changeTheme', 'addBookMark');
+const emit = defineEmits('changeTheme', 'addBookMark', 'leave', 'updateChapterComment');
 
 watch(showDock, (newShow, oldShow) => {
     if (newShow) {
@@ -84,9 +84,8 @@ function changeTheme() {
     emit('changeTheme', isDark.value)
 }
 
-onBeforeRouteUpdate(async (to, from, next) => {
-    await postReadingProgress(props.bid, props.chapter)
-    await addHistory(props.bid)
-    next(); // 继续导航
+onBeforeRouteLeave(async (to, from, next) => {
+    emit('leave');
+    next();
 });
 </script>

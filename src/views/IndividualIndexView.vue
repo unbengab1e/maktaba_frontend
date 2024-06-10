@@ -11,7 +11,7 @@
           </div>
         <div class="w-[100px] min-w-[100px] h-full flex flex-col ml-[8px]">
         <span class="w-full h-1/2 font-bold mb-auto text-left">
-          张三
+          {{username}}
         </span>
         <span class="w-auto h-auto font-light text-gray-500 text-left ">
           今天我，寒夜里看雪飘过~
@@ -80,9 +80,11 @@ const collectCnt = ref();
 const imgSrc = ref();
 const readingTime = ref(0);
 const readings =ref([])
+const username = Cookies.get('username');
+const userid = Cookies.get('user_id')
 onMounted(async () => {
   await getAvatar()
-  let res = await getReadingTime('张三')
+  let res = await getReadingTime(username)
   readings.value=res.data;
   console.log(readings.value);
   readingTime.value=0;
@@ -95,7 +97,7 @@ onMounted(async () => {
 
 })
 async function getAvatar(){
-  let res = await getMyAvatar('张三');
+  let res = await getMyAvatar(username);
   console.log(res)
   imgSrc.value=res.data.avatar;
 }
@@ -113,6 +115,7 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import {useFileSystemAccess} from "@vueuse/core";
 import {getDetail, getMyAvatar, getMyCollect, getReadingTime, postNewChapter, postUploadAvatar} from "@/api/api.js";
 import {toast} from "vue3-toastify";
+import Cookies from "js-cookie";
 const currentRoute = useRoute();
 async function handleUpload(){
   return new Promise((resolve, reject) => {
@@ -120,7 +123,7 @@ async function handleUpload(){
       console.log(res.file.value);
 
       const formData = new FormData();
-      formData.append('user_id', '14');
+      formData.append('user_id', userid);
       formData.append('avatar', res.file.value); // 添加文件到 FormData
 
       let ares = await postUploadAvatar(formData); // 传递 FormData 对象
