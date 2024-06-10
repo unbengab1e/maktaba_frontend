@@ -10,11 +10,11 @@
           @updateNotes="renderAllTag()" />
         <ModalDialog />
         <SettingModal v-model:setting="setting" @refresh="refresh()" />
-        <CommentModal :bid="bid" :chapter="curChapter.chapter" :offset="curOffset" @updateChapterComment="updateChapterComment"/>
+        <CommentModal :bid="bid" :chapter="curChapter.chapter" :offset="curOffset" />
       </div>
     </div>
     <div class="fixed right-0 w-auto h-[100vh] flex flex-col justify-center z-50">
-      <ReaderDock @changeTheme="changeTheme" @addBookMark="addBookMark" @updateChapterComment="updateChapterComment" @leave="leave" :bid="bid" :chapter="curChapter.chapter" v-model:comments="comments"/>
+      <ReaderDock @changeTheme="changeTheme" @addBookMark="addBookMark" @leave="leave" :bid="bid" :chapter="curChapter.chapter" v-model:comments="comments"/>
     </div>
     <div class="drawer-side">
       <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
@@ -359,9 +359,6 @@ async function renderBook(chapter: number, offset: number | 'last' | 'first') {
   console.log(curChapter, offset)
 
   await renderAllTag();
-
-  await updateChapterComment();
-
 }
 
 function renderTag(tag: Tag) {
