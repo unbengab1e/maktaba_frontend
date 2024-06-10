@@ -88,7 +88,7 @@ async function handlePopularize(){
   let res = await postPopularize('张三', bid, "precise",bookTag);
    console.log(res);
   if (res.status == 200||res.status==201) {
-    toast.success('评分成功')
+    toast.success('推广成功')
   }
 }
 

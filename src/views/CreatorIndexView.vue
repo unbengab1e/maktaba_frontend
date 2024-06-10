@@ -6,15 +6,15 @@
         <div class="w-full h-1/2 flex mt-1">
           <div class=" h-full flex justify-start items-center">
             <div class="rounded-full bg-black w-[75px] h-[75px] min-w-[75px]">
-<!--              <img>-->
+              <img class="circle-image" src="../assets/img/head2.jpg">
             </div>
           </div>
-        <div class="w-[100px] min-w-[100px] h-full flex flex-col">
-        <span class="w-full h-1/2 font-bold mb-auto text-center">
-          用户名称
+          <div class="w-[100px] min-w-[100px] h-full flex flex-col ml-[8px]">
+        <span class="w-full h-1/2 font-bold mb-auto text-left">
+          张三
         </span>
-            <span class="w-full h-1/2 font-light text-gray-500 text-center">
-          用户签名
+            <span class="w-auto h-auto font-light text-gray-500 text-left ">
+          今天我，寒夜里看雪飘过~
         </span>
 
           </div>
@@ -132,7 +132,11 @@
   background-image: linear-gradient(to right bottom, transparent 49.5%, #5c5959 50%, transparent 50.5%);
   background-size: 100% 100%;
 }
-
+.circle-image {
+  width: 100%; /* 图片宽度填充容器 */
+  height: 100%; /* 根据容器宽度自动调整高度 */
+  border-radius: 50%; /* 将图片也设置为圆形 */
+}
 
 
 
