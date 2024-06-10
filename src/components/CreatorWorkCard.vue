@@ -21,10 +21,10 @@
             <span class="text-4xl bookHead text-left overflow-hidden overflow-ellipsis break-normal break-words line-clamp-1" >{{ bookName }}</span>
           </div>
           <!-- 指标 -->
-          <div class="flex mb-2">
-            <span class="text-xl text-gray-600">{{ 1}}字</span>
+<!--          <div class="flex mb-2">-->
+<!--            <span class="text-xl text-gray-600">{{ 1}}字</span>-->
 
-          </div>
+<!--          </div>-->
           <!-- 指标 -->
           <div class="flex mb-2">
             <icon class="icon-[ant-design--read-outlined] my-auto"></icon>
@@ -34,7 +34,7 @@
             <span class="text-xl text-gray-600">{{ commentCnt }}</span>
             <span class="text-xl text-gray-600"></span>
             <icon v-if="!isShowing" class="icon-[whh--favoritealt] my-auto ml-[15px]"></icon>
-            <span v-if="!isShowing" class="text-xl text-gray-600">{{ score }}</span>
+            <span v-if="!isShowing" class="text-xl text-gray-600">{{ score.toFixed(1) }}</span>
             <span class="text-xl text-gray-600"></span>
           </div>
           <!-- 指标 -->
@@ -47,10 +47,10 @@
               <icon class="icon-[ph--thumbs-up-bold] bg-white ml-[5px]"></icon>
               <span class="ml-[18px] text-white font-bold">点赞</span>
             </button>
-            <button v-if="isCreator" class="gradient-red ml-[15px] hover:drop-shadow-xl shadow-md hover:bg-red-600">
-              <icon class="icon-[material-symbols--delete-outline] bg-white ml-[5px]"></icon>
-              <span class="ml-[18px] text-white font-bold">删除</span>
-            </button>
+<!--            <button v-if="isCreator" class="gradient-red ml-[15px] hover:drop-shadow-xl shadow-md hover:bg-red-600">-->
+<!--              <icon class="icon-[material-symbols&#45;&#45;delete-outline] bg-white ml-[5px]"></icon>-->
+<!--              <span class="ml-[18px] text-white font-bold">删除</span>-->
+<!--            </button>-->
             <button @click="$emit('edit',bid);" v-if="isCreator" class="gradient-blue ml-[15px] hover:drop-shadow-xl shadow-md hover:bg-blue-600">
               <icon class="icon-[material-symbols-light--edit-square-outline] bg-white ml-[5px]"></icon>
               <span class="ml-[18px] text-white font-bold">编辑</span>
