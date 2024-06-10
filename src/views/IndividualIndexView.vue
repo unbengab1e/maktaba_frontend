@@ -6,8 +6,8 @@
         <div class="w-full h-1/2 flex mt-1">
           <div class=" h-full flex justify-start items-center flex-col">
 
-              <img class="circle-image" :src="imgSrc">
-            <input type="file" ref="fileInput" class="  w-[80px] h-[30px] min-w-[80px] hover:scale-110 z-50 hover:shadow-xl" @change="handleUpload">
+              <img class="circle-image" :src="imgSrc" @click="fileInput.click()">
+            <input style="display: none" type="file" ref="fileInput" class="  w-[80px] h-[30px] min-w-[80px] hover:scale-110 z-50 hover:shadow-xl" @change="handleUpload">
           </div>
         <div class="w-[100px] min-w-[100px] h-full flex flex-col ml-[8px]">
         <span class="w-full h-1/2 font-bold mb-auto text-left">
@@ -127,6 +127,7 @@ const handleUpload = async () => {
   try {
     const ares = await postUploadAvatar(formData);
     console.log(ares);
+    emit("changeHead");
     if (ares.status === 200) {
       toast.success('上传成功');
     }

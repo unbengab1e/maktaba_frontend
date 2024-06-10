@@ -9,7 +9,8 @@
       <div class="flex container h-full">
         <!-- 封面 -->
         <div class="h-full w-2/5 bg-white flex justify-center border-r-2 bg-cover aaa"  >
-          <img :src="bookInfo['img']" alt="书籍封面" class="m-auto h-full aspect-[5/7]">
+          <img v-if="!ownCover" src="../assets/img/defaultCover.jpg" class="m-auto h-full aspect-[5/7]">
+          <img v-if="ownCover" :src="newBookImg" alt="书籍封面" class="m-auto h-full aspect-[5/7]">
         </div>
 
         <div class="flex flex-col-reverse w-3/5 bg-white">
@@ -34,18 +35,29 @@
 <!--              <span>-->
 <!--                {{uploadFileName}}-->
 <!--              </span>-->
-              <div v-if="!isCreating" class="txt-one w-full h-[60px]">
-                <input v-model="chapterName" type="email" >
-                <span data-placeholder="chapterName"></span>
+              <div>
+                <div v-if="!isCreating" class="txt-one w-full h-[60px]">
+                  <input v-model="chapterName" type="email" >
+                  <span data-placeholder="chapterName"></span>
+                </div>
+                <input ref="uploadFile" type="file" class="mt-[80%]">
               </div>
 
+
             </div>
-            <input v-if="isCreating" type="file" ref="uploadFile">
-            <button v-if="!isCreating" class="gradient-blue ml-[15px] hover:drop-shadow-xl shadow-md hover:bg-blue-600 ml-auto my-auto " @click="!isUploading&&toggleUploading();handleOpen();" >
-              <icon class="icon-[solar--upload-outline] ml-[4px] bg-white"></icon>
-              <span class="ml-[18px] text-white font-bold">上传</span>
-            </button>
-            <button v-if="isCreating" class="gradient-blue ml-[15px] hover:drop-shadow-xl shadow-md hover:bg-blue-600 ml-auto my-auto "@click="handleCreate()" >
+            <input style="display: none;" v-if="isCreating" type="file" ref="uploadFile" class="mr-auto" @change="handleCreate()">
+            <div>
+              <button v-if="!isCreating" class="gradient-blue ml-[15px] hover:drop-shadow-xl shadow-md hover:bg-blue-600 ml-auto my-auto " @click="!isUploading&&toggleUploading()" >
+
+                <span class="ml-[34px] text-white font-bold">展开</span>
+              </button>
+              <button v-if="!isCreating&&isUploading" class="gradient-blue ml-[15px] hover:drop-shadow-xl shadow-md hover:bg-blue-600 ml-auto mt-[70%] " @click="handleOpen()" >
+                <icon class="icon-[solar--upload-outline] ml-[4px] bg-white"></icon>
+                <span class="ml-[18px] text-white font-bold">上传</span>
+              </button>
+            </div>
+
+            <button v-if="isCreating" class="gradient-blue ml-[15px] mr-[15px] hover:drop-shadow-xl shadow-md hover:bg-blue-600 ml-auto my-auto "@click="uploadFile.click(); handleCreate()" >
               <icon class="icon-[solar--upload-outline] ml-[4px] bg-white"></icon>
               <span class="ml-[18px] text-white font-bold">创建</span>
             </button>
@@ -126,6 +138,7 @@ import { useFileSystemAccess } from '@vueuse/core'
 import Cookies from "js-cookie";
 import {getDetail, getMyWorks, postNewBook, postNewChapter} from "@/api/api.js";
 import {toast} from "vue3-toastify";
+const newBookImg = ref();
 const handleFocus = (event) => {
   event.target.classList.add('focus');
 };
@@ -161,6 +174,7 @@ const bookInfo = ref({
   brief: 'sb数分',
   rank:'90'
 })
+const ownCover =ref(false);
 
 onMounted(async ()=>{
   const inputs = document.querySelectorAll('.txt-one input');
@@ -196,6 +210,8 @@ async function handleCreate() {
       {
         toast.success('创建成功')
       }
+      ownCover.value=true;
+     newBookImg.value=ares.data.newbook_image;
 
 }
 async function handleOpen() {

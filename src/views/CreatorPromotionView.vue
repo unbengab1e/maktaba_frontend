@@ -5,8 +5,8 @@
 
       </LongBookCard>
     </div>
-    <button @click="$emit('create')" class="w-[97%] bg-gray-200 bg-opacity-50 flex justify-center items-center mx-auto hover:shadow-md ">
-      <icon class="icon-[material-symbols--add-circle-outline-rounded] text-black bg-gray-400 bg-opacity-50 scale-[200%] hover:scale-[220%]"></icon>
+    <button @click="$emit('create')" class="w-[97%] bg-gray-200 bg-opacity-50 flex justify-center items-center mx-auto hover:shadow-md  min-h-[100px] mb-[20px]">
+      <icon class="icon-[material-symbols--add-circle-outline-rounded] text-black bg-gray-400 bg-opacity-50 scale-[450%] hover:scale-[560%] w-[2em]"></icon>
       <!-- 可选的文本 -->
       <!-- <span class="ml-[18px] text-black font-bold">添加</span> -->
     </button>
