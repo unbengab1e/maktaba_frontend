@@ -1,6 +1,6 @@
 <template>
   <div class="container" >
-    <LongBookCard v-for="work in myWorks" @edit="$emit('edit')" :img-src="work.img"  :show-cover="isWide" :book-name="work.name" :reading-cnt="work.reading" :score="work.score"  :comment-cnt="work.judge" :is-creator="true" :is-popularize="work.popularized" :is-showing="true">
+    <LongBookCard v-for="work in myWorks" @edit="$emit('edit')" :img-src="work.img"  :show-cover="isWide" :book-name="work.name" :reading-cnt="work.reading" :score="work.score"  :comment-cnt="work.judge" :is-popularize="work.popularized" :is-showing="true" :book-rank="-1" >
 
     </LongBookCard>
   </div>
