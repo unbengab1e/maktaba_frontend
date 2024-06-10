@@ -4,7 +4,7 @@
 
     </div>
     <div ref="bkdtwd" class="transition-all duration-300 ease-in-out window fixed flex flex-col w-[768px] h-[70%] shadow-lg overflow-hidden rounded-2xl opacity-0 " @click.stop>
-      <LoginInCard @signInSuccess="$emit('signInSuccess')" class="w-full h-full ml-auto my-auto"></LoginInCard>
+      <LoginInCard @signInSuccess="signInSuccess" class="w-full h-full ml-auto my-auto"></LoginInCard>
     </div>
 
   </div>
@@ -18,24 +18,14 @@ import { getDetail,getComment } from '@/api/api.js';
 import LoginInCard from "@/components/LoginInCard.vue";
 const props = defineProps(['bid'])
 
-const emit = defineEmits(['closeLoginWindow'])
+const emit = defineEmits(['closeLoginWindow','signInSuccess','closeLoginWindow'])
 const bkdtwd = ref(null)
 const windowBlur=ref(null)
-const bookInfo = ref({
-  name: '工科数学分析',
-  // cover: '../assests/books/shufen.jpg',
-  cover:'./shufen.jpg',
-  author: '孙玉泉',
-  tags: ['数学','国家精品课程','睡前读物','玄幻'],
-  brief: 'sb数分',
-  rank:'90'
-})
-const comments = [
-  {username:'用户名称',content:'bkdtwdbkdtwdbkdtwdbkdtwdbkdtwdbkdtwd'},
-  {username:'用户名称',content:'bbbbbbbbbbbbbbbbbb'},
-  {username:'用户名称',content:'cccccccccccccccccc'},
-  {username:'用户名称',content:'cccccccccccccccccc'},
-];
+
+function signInSuccess() {
+  emit('signInSuccess')
+  emit('closeLoginWindow')
+}
 
 onMounted(async () => {
   nextTick(() => {

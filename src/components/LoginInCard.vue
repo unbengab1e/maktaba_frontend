@@ -81,7 +81,7 @@ import {ref, onMounted, computed} from 'vue';
 import {postActivate, postFindPassword, postForgetPassword, postSignIn, postSignUp} from "@/api/api.js";
 import {compute} from "three/nodes";
 import Cookies from 'js-cookie';
-import {toast} from "vue3-toastify";
+import {ToastActions, toast} from "vue3-toastify";
 const isSignUp = ref(false);
 const isAlterPassword = ref(false);
 const signUpEmail = ref();
@@ -116,7 +116,7 @@ async function handleSignIn() {
     Cookies.set('username',signInUsername.value,{expires:7});
     Cookies.set('user_id',response.id);
     emit("signInSuccess");
-
+    toast.success('登录成功')
     // 在这里可以根据后端返回的数据进行相应的处理，例如跳转到登录成功后的页面等
   } catch (error) {
 
