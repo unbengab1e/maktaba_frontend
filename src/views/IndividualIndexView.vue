@@ -117,6 +117,7 @@ import {getDetail, getMyAvatar, getMyCollect, getReadingTime, postNewChapter, po
 import {toast} from "vue3-toastify";
 import Cookies from "js-cookie";
 const currentRoute = useRoute();
+const emit=defineEmits(['changeHead'])
 async function handleUpload(){
   return new Promise((resolve, reject) => {
     res.open().then(async () => {
@@ -133,6 +134,7 @@ async function handleUpload(){
         toast.success('上传成功')
       }
       await getAvatar();
+      emit('changeHead')
       resolve(); // 执行成功后调用 resolve
     }).catch(error => {
       reject(error); // 执行失败时调用 reject

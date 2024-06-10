@@ -87,7 +87,7 @@ const username = Cookies.get('username');
 //   emit('targetBid', bid);
 // };
 async function handlePopularize(){
-  let res = await postPopularize('username', bid, "precise",bookTag);
+  let res = await postPopularize(username, bid, "precise",bookTag);
    console.log(res);
   if (res.status == 200||res.status==201) {
     toast.success('推广成功')

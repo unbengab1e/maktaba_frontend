@@ -14,11 +14,11 @@
     <div v-if="showSearchBlur" ref="searchBlur" class="transition-all fixed  flex h-screen w-screen z-[90]" @click="stopSearching()">
     </div>
 
-    <BaseHeader v-if="!hideOthers"  @startSearching="startSearching()" @doSearching="doSearching" :show-all-button="isNormal" @tryLogin="showLoginWindow" :already-login="isLogin" @signOut="signOut"></BaseHeader>
+    <BaseHeader v-if="!hideOthers"  @startSearching="startSearching()" @doSearching="doSearching" :show-all-button="isNormal" @tryLogin="showLoginWindow" :already-login="isLogin" @signOut="signOut" :head-changed="headChanged"></BaseHeader>
     
 
     <div ref="cont" class="w-full h-auto z-0 flex justify-center items-center"  :class="{'px-24':isNormal,'px-8':!isNormal}">
-      <RouterView ref="view"  @showDetailWindow="showDetailWindow"   @leaveHome="leaveHome()" @backHome="backHome" :search-content="searchContent" :is-wide="isWide" @edit="showEditWindow" @create="getCreate" @notCreator="notCreator" :change-user-name="isLogin"></RouterView>
+      <RouterView ref="view"  @showDetailWindow="showDetailWindow"   @leaveHome="leaveHome()" @backHome="backHome" :search-content="searchContent" :is-wide="isWide" @edit="showEditWindow" @create="getCreate" @notCreator="notCreator" :change-user-name="isLogin" @changeHead="headChanged=!headChanged"></RouterView>
     </div>
 
   </div>
@@ -69,6 +69,7 @@ const isCreatorView = ref(false)
 const hideOthers = ref(false)
 const cont = ref()
 const isLogin = ref(false)
+const headChanged=ref(true)
 
 onMounted(() => {
   // console.log(getCookie('username'))

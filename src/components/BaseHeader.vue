@@ -11,7 +11,7 @@
     <!-- 头像 -->
     <div ref="head" type="button" class="h-11 w-11 rounded-full overflow-hidden inline-flex items-center justify-center text-gray-700 origin-top drop-shadow-xl z-[52] normalAnimation" @mouseenter="showUserMenu=true" @mouseleave="leaveHead()" >
       <RouterLink v-if="isLogin" to="/Individual">
-        <img src="../assets/img/head2.jpg" class="image-full" alt="头像">
+        <img :src="headSrc" class="image-full" alt="头像">
       </RouterLink>
       <button v-if="!isLogin" @click="$emit('tryLogin')">
         <img src="../assets/img/未登录.jpg" class="image-full" alt="头像">
@@ -144,7 +144,7 @@ const isLogin = computed(() => {
 })
 const holdLogin = ref(false)
 const showLoginView = ref(false)
-const props = defineProps(['showAllButton','alreadyLogin'])
+const props = defineProps(['showAllButton','alreadyLogin','headChanged'])
 const emit = defineEmits(['search'])
 const showAllButton = computed(() => props.showAllButton)
 const sb = ref()
@@ -179,7 +179,8 @@ const hasNewChap = ref(false)
 const headSrc = ref('')
 const readingTime = ref(0)
 const readingNum = ref(0)
-const showMessages=ref(true)
+const showMessages = ref(true)
+const headChanged=computed(()=>props.headChanged)
 let cnt=0
 
 onMounted(async () => {
@@ -192,6 +193,9 @@ onMounted(async () => {
   let res2 = await getNewChap(userid.value)
   // console.log(res2)
   newChaps.value = res2.data.message
+
+  let res3 = await getMyAvatar(username.value)
+  headSrc.value = res3.data.avatar
 
   if (!isLogin.value) {
     username.value='未登录'
@@ -222,6 +226,11 @@ watch(showUserMenu, (newShow) => {
   }
 })
 
+watch(headChanged,async () => {
+  let res2 = await getMyAvatar(username.value)
+  headSrc.value = res2.data.avatar
+})
+
 //决定是否变短按钮栏
 watch(showAllButton, (newShow) => {
   if (newShow) {
@@ -246,7 +255,6 @@ watch(isLogin,async () => {
   username.value = Cookies.get('username')
   userid.value = Cookies.get('user_id')
   let res2 = await getMyAvatar(username.value)
-  console.log(res2)
   headSrc.value = res2.data.avatar
   let res3 = await getNewChap(userid.value)
   // console.log(res2)
