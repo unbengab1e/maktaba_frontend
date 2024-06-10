@@ -7,7 +7,7 @@
 
   <!-- 按钮区 -->
   <div class="flex fixed right-6 mt-4 z-50 p-1 rounded-full bg-white shadow-lg">
-    <div v-if="hasNewChap" class="absolute left-[72px] bg-red-400 w-4 h-4 rounded-full"></div>
+    <div v-if="showMessages &&hasNewChap" class="absolute left-[72px] bg-red-400 w-4 h-4 rounded-full"></div>
     <!-- 头像 -->
     <div ref="head" type="button" class="h-11 w-11 rounded-full overflow-hidden inline-flex items-center justify-center text-gray-700 origin-top drop-shadow-xl z-[52] normalAnimation" @mouseenter="showUserMenu=true" @mouseleave="leaveHead()" >
       <RouterLink v-if="isLogin" to="/Individual">
@@ -102,9 +102,9 @@
   <!-- 通知菜单 -->
   <div ref="messmenu" class="transition-all duration-300 ease-in-out justify-around fixed z-40 h-96 w-64 rounded-xl mt-24 bg-white right-12 p-4 shadow-md opacity-0 -translate-y-[600px] ">
     <div class="flex justify-between">
-      <div class="h-8 flex justify-center rounded-md w-20">
+      <button class="h-8 flex justify-center rounded-md w-20" @click="showMessages=!showMessages">
         <h2 class="my-auto">更新提醒</h2>
-      </div>
+      </button>
       <button class="hover:bg-gray-300 h-8 flex justify-center rounded-md w-20" @click="readAll()">
         <h2 class="my-auto">全部已读</h2>
       </button>
@@ -178,7 +178,8 @@ const newChaps = ref([])
 const hasNewChap = ref(false)
 const headSrc = ref('')
 const readingTime = ref(0)
-const readingNum=ref(0)
+const readingNum = ref(0)
+const showMessages=ref(true)
 let cnt=0
 
 onMounted(async () => {
