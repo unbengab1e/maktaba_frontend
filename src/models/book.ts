@@ -33,6 +33,14 @@ export type Setting = {
   textColor: string;
 };
 
+export type Comment = {
+  bid: number;
+  chapter: string;
+  content: string;
+  pid: number;
+  username: string;
+};
+
 export const findPageByOffset = (chapter: Chapter, offset: number) => {
   let target = 0,
     sum = 0;
