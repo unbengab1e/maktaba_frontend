@@ -5,8 +5,8 @@
       <div class="w-1/3 my-auto flex " :class="{'flex-col':showLine }">
         <div class="w-full h-1/2 flex mt-1">
           <div class=" h-full flex justify-start items-center">
-            <div class="rounded-full bg-black w-[75px] h-[75px] min-w-[75px]">
-              <img class="circle-image" src="../assets/img/head2.jpg">
+            <div class="rounded-full  w-[75px] h-[75px] min-w-[75px]">
+              <img class="circle-image" :src="imgSrc">
             </div>
           </div>
           <div class="w-[100px] min-w-[100px] h-full flex flex-col ml-[8px]">
@@ -82,14 +82,20 @@
   const myWorks = ref([])
   const isMine = ref(false);
   const isCreator = ref(false);
+  const imgSrc = ref();
   import {useRoute} from "vue-router";
   const userName = Cookies.get("username");
   const authorScore = ref();
   let route = useRoute();
   // let username = Cookies.get("username");
   const username = ref();
-
+  async function getAvatar(){
+    let res = await getMyAvatar('张三');
+    console.log(res)
+    imgSrc.value=res.data.avatar;
+  }
   onMounted(async ()=>{
+    await getAvatar();
     let res = await getMyWorks(route.query.uname);
     username.value=route.query.uname;
     if(username === userName)
@@ -119,7 +125,7 @@
   const props = defineProps(['fans', 'days','words','showLine']);
   import { ref, onMounted, onUnmounted } from 'vue';
 
-  import {bookRating, getAuthorScore, getMyWorks, postAuthorScore} from "@/api/api.js";
+  import {bookRating, getAuthorScore, getMyAvatar, getMyWorks, postAuthorScore} from "@/api/api.js";
   import StarRating from "@/components/StarRating.vue";
   import Cookies from "js-cookie";
   import {toast} from "vue3-toastify";
