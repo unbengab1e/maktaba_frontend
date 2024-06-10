@@ -560,7 +560,7 @@ document.addEventListener('keydown', (e: KeyboardEvent) => {
     case 'ArrowLeft':
     case 'ArrowUp':
     case 'PageUp':
-    case 'k':
+    // case 'k':
       if (pageFlip.render.orientation === 'portrait') {
         pageFlip.turnToPrevPage('top');
       } else {
@@ -571,7 +571,7 @@ document.addEventListener('keydown', (e: KeyboardEvent) => {
     case 'ArrowRight':
     case 'ArrowDown':
     case 'PageDown':
-    case 'j':
+    // case 'j':
       pageFlip.flipNext('bottom');
       break;
     default:
