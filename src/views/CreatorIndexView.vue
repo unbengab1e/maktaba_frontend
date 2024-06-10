@@ -20,12 +20,12 @@
           </div>
 
         </div>
-        <StarRating v-if="isMine" value="" :editable="false" :class="{'ml-[10%] mt-[10%]':showLine, 'ml-[90%]':!showLine}">
+        <StarRating v-if="ok" :value="authorScore" :editable="isMine" :class="{'ml-[10%] mt-[10%]':showLine, 'ml-[90%]':!showLine}">
 
         </StarRating>
-        <StarRating v-if="!isMine" value="0" :editable="true"  :class="{'ml-[10%] mt-[10%]':showLine, 'ml-[90%]':!showLine}" @rate="rating">
+        <!-- <StarRating v-if="!isMine&&ok" :value="authorScore" :editable="true"  :class="{'ml-[10%] mt-[10%]':showLine, 'ml-[90%]':!showLine}" @rate="rating">
 
-        </StarRating>
+        </StarRating> -->
       </div>
       <div class="w-[100px] slanted-divider-container" v-if="showLine">
         <div class="slanted-divider"></div>
@@ -86,6 +86,7 @@
   import {useRoute} from "vue-router";
   const userName = Cookies.get("username");
   const authorScore = ref();
+  const ok=ref(false)
 let route = useRoute();
 const emit=defineEmits(['leaveHome'])
 emit('leaveHome')
@@ -113,13 +114,14 @@ emit('leaveHome')
     myWorks.value=res.data.message;
     console.log(myWorks.value);
 
-    let res1 = await getAuthorScore('张三');
+    let res1 = await getAuthorScore(username.value);
     authorScore.value=res1.data.rate;
+    ok.value=true
     console.log(res1);
 
   });
   async function rating(param) {
-    let res = await postAuthorScore('张三', username.value, param / 2);
+    let res = await postAuthorScore(username, userName.value, param / 2);
     // console.log(res);
     if (res.status == 200) {
       toast.success('评分成功')
