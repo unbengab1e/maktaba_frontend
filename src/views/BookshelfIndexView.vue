@@ -14,18 +14,17 @@ const bookArray = ref([])
 const books = ref([])
 let username = Cookies.get("username");
 onMounted(async () => {
-  let res = await getMyCollect('1')
+  let res = await getMyCollect('1', 'order_by_like')
   console.log(res);
   bookArray.value = res.data.result;
-  for(let i=0;i<bookArray.value.length;i++){
-    //console.log(bookArray.value[i]);
-    let dres = await getDetail('张三',bookArray.value[i].book_id);
+  for (let i = 0; i < bookArray.value.length; i++) {
+    console.log(bookArray.value[i].bid);
+    let dres = await getDetail('张三', bookArray.value[i].bid);
     console.log(dres);
     books.value.push(dres.data)
   }
   //console.log(books.value.length)
 })
-
 
 
 </script>
