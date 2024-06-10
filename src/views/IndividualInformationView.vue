@@ -26,11 +26,11 @@ onMounted(async () => {
       lineChartData.value[i] = 0;
     }
     for (let j = missingCount; j < 7; j++) {
-      lineChartData.value[j] = data.value[j - missingCount] / 60;
+      lineChartData.value[j] = data.value[j - missingCount] / 60000;
     }
   } else {
     for (let i = 0; i < 7; i++) {
-      lineChartData.value[i] = data.value[i] / 60;
+      lineChartData.value[i] = data.value[i] / 60000;
     }
   }
 

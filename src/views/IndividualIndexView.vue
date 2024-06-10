@@ -39,7 +39,7 @@
            阅读时长
           </span>
           <span class="w-full text-center">
-            <span class="font-bold">10</span>
+            <span class="font-bold">{{ readingTime.toFixed(1) }}</span>
             <span class="font-light text-gray-500">h</span>
           </span>
         </div>
@@ -76,10 +76,23 @@
 </template>
 <script setup>
 import {useRoute} from "vue-router";
-const collectCnt = ref(5);
+const collectCnt = ref();
 const imgSrc = ref();
+const readingTime = ref();
+const readings =ref([])
 onMounted(async () => {
   await getAvatar()
+  let res = await getReadingTime('张三')
+  readings.value=res.data;
+  console.log(readings.value);
+  readingTime.value=0;
+
+  for(let i = 0; i < Object.keys(readings).length-1; i++) {
+
+    readingTime.value+=readings.value[i]/60000;
+
+  }
+
 })
 async function getAvatar(){
   let res = await getMyAvatar('张三');
@@ -98,7 +111,7 @@ const res = useFileSystemAccess({
 const props = defineProps(['fans', 'days','words','showLine']);
 import { ref, onMounted, onUnmounted } from 'vue';
 import {useFileSystemAccess} from "@vueuse/core";
-import {getDetail, getMyAvatar, getMyCollect, postNewChapter, postUploadAvatar} from "@/api/api.js";
+import {getDetail, getMyAvatar, getMyCollect, getReadingTime, postNewChapter, postUploadAvatar} from "@/api/api.js";
 import {toast} from "vue3-toastify";
 const currentRoute = useRoute();
 async function handleUpload(){
