@@ -133,7 +133,7 @@
 <script setup>
 import { onMounted, computed, ref ,watch} from "vue"
 import { mousePosition } from "../main.js";
-import Cookie from 'js-cookie'
+import Cookies from 'js-cookie'
 import { getNewChap,checkNewChap,readMessage } from '@/api/api.js';
 import { toast } from "vue3-toastify";
 
@@ -171,8 +171,8 @@ const menuItems = ref([
   },
 ])
 const searchContent = ref('')
-const username = Cookie.get('username')
-const userid=Cookie.get('userid')
+const username = ref(Cookies.get('username'))
+const userid=ref(Cookies.get('userid'))
 const messmenu = ref()
 const newChaps = ref([])
 const hasNewChap=ref(false)
@@ -222,6 +222,12 @@ watch(showAllButton, (newShow) => {
     head.value.classList.add('origin-top-right')
     usmn.value.classList.add('right-16')
   }
+})
+
+//检查是否登录
+watch(isLogin, () => {
+  username.value = Cookies.get('username')
+  userid.value=Cookies.get('userid')
 })
 
 //已读消息

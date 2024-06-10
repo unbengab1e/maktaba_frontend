@@ -49,7 +49,6 @@ import { recordReading } from '@/api/api.js';
 // 设置 Cookie
 Cookies.set('username', 'nobody', { expires: 7 });
 Cookies.set('userid', '14', { expires: 7 });
-// Cookies.set('userid', '14', { expires: 7 });
 
 const detailWindow = ref(false)
 const route = useRoute()
@@ -67,13 +66,7 @@ const loginWindow = ref(false)
 const isCreatorView = ref(false)
 const hideOthers = ref(false)
 const cont = ref()
-const isLogin = computed(() => {
-  if (Cookies.get('username')=='nobody') {
-    return false
-  } else {
-    return true
-  }
-})
+const isLogin = ref(Cookies.get('username')!='nobody')
 
 window.addEventListener('resize', () => {
   if (window.innerWidth < 750) {
@@ -198,8 +191,9 @@ function notCreator() {
 }
 
 function signInSuccess() {
-  // isLogin.value=true
+  isLogin.value=true
   console.log(isLogin)
+  console.log(Cookies.get('username'))
 }
 
 watch(route, () => {
