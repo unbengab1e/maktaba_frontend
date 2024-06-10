@@ -6,11 +6,6 @@
         <div class="cont_img_back bg-black">
           <img :src="imgSrc" alt="书籍封面" class="w-[200px] h-[280px] max-w-[1000px] hover:scale-[1.2]" >
         </div>
-        <div v-if="showCover" class="cont_mins">
-          <div class="sub_mins">
-            <h1 class="mt-3 text-3xl text-center">{{bookRank+1}}</h1>
-          </div>
-        </div>
       </div>
       <!-- 文本卡片 -->
       <div class="cont_text_ingredients p-6 pl-8 " :class="{'ml-[190px]':showCover,'ml-[30px]':!showCover,'aaa':showCover,'bbb':!showCover}">

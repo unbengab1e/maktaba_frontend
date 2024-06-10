@@ -7,7 +7,7 @@
           <img :src="imgSrc" alt="书籍封面" class="w-[250px] h-[350px] max-w-[1000px] hover:scale-[1.2]" >
         </div>
         <div v-if="showCover" class="cont_mins">
-          <div v-if="bookRankCopy!=-1" class="sub_mins">
+          <div class="sub_mins">
             <h1 class="mt-3 text-3xl text-center">{{bookRank+1}}</h1>
           </div>
         </div>
@@ -42,12 +42,7 @@
 </template>
 
 <script setup>
-import {computed} from "vue"
-
 const props = defineProps(['imgSrc', 'bookName', 'bookAuthor', 'bookScore', 'bookReference', 'bookRank', 'bookTag', 'readerCnt', 'showCover', 'type']);
-
-const bookRankCopy=computed(()=>props.bookRank)
-
 </script>
 
 <style scoped>
