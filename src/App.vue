@@ -220,7 +220,7 @@ function getCookie(user) {
 
 function signOut() {
   Cookies.remove('username')
-  Cookies.remove('userid')
+  Cookies.remove('user_id')
   isLogin.value = false
 }
 

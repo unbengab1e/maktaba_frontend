@@ -2,8 +2,8 @@
   <div class="w-full h-auto flex-col flex">
     <div class=" h-[100px]  min-h-[100px] flex ml-[50px]">
       <div class="change-container" :class=" {'change-container-1': currentRoute.path==='/Bookshelf/BookshelfIndex','change-container-2': currentRoute.path==='/Bookshelf/BookshelfHistory' }" >
-        <router-link class="absolute top-[70%] left-0 hover:text-red-400" to="/Bookshelf/BookshelfIndex">喜好顺序</router-link>
-        <router-link class="absolute top-[70%] left-[30%] hover:text-red-400" to="/Bookshelf/BookshelfHistory">更新顺序</router-link>
+        <router-link class="absolute top-[70%] left-0 hover:text-red-400 text-2xl" to="/Bookshelf/BookshelfIndex">喜好顺序</router-link>
+        <router-link class="absolute top-[70%] left-[40%] hover:text-red-400 text-2xl" to="/Bookshelf/BookshelfHistory">更新顺序</router-link>
       </div>
 
     </div>
@@ -59,17 +59,17 @@ emit('leaveHome')
   position: absolute;
   left: 6%;
   top: 100%;
-  width: 10%;
+  width: 15%;
   height: 2px;
   background-image: linear-gradient(120deg, #7a2133, #6c0808);
   transition: .5s;
 
 }
 .change-container-1::after{
-  left: 6%;
+  left: 10%;
 }
 .change-container-2::after{
-  left: 30%;
+  left: 49%;
 }
 
 .change-container span:nth-child(1):focus + .change-container::after{

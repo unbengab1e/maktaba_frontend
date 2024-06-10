@@ -31,7 +31,7 @@
     </div>
     <!-- 历史 -->
     <div ref="history" class="normalAnimation h-6 w-6 my-auto m-2 rounded-full">
-      <RouterLink to="/Bookshelf/BookshelfHistory" class="w-full h-full">
+      <RouterLink to="/Individual/IndividualHistory" class="w-full h-full">
         <icon class="icon-[material-symbols--history] w-full h-full" />
       </RouterLink>
     </div>
@@ -172,7 +172,7 @@ const menuItems = ref([
 ])
 const searchContent = ref('')
 const username = ref(Cookies.get('username'))
-const userid=ref(Cookies.get('userid'))
+const userid=ref(Cookies.get('user_id'))
 const messmenu = ref()
 const newChaps = ref([])
 const hasNewChap = ref(false)
@@ -203,6 +203,7 @@ onMounted(async () => {
     console.log(res4)
     readingNum.value = res4.data.count
   }
+  console.log(Cookies.get('user_id'))
 })
 
 //  决定是否show用户菜单
@@ -242,7 +243,7 @@ watch(showAllButton, (newShow) => {
 //检查是否登录
 watch(isLogin,async () => {
   username.value = Cookies.get('username')
-  userid.value = Cookies.get('userid')
+  userid.value = Cookies.get('user_id')
   let res2 = await getMyAvatar(username.value)
   console.log(res2)
   headSrc.value = res2.data.avatar

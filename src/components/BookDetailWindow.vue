@@ -145,7 +145,7 @@ const noComments = computed(() => {
 })
 const myComment = ref('')
 const name = Cookies.get('username')
-const uid = Cookies.get('userid')
+const uid = Cookies.get('user_id')
 console.log(typeof uid)
 
 onMounted(async () => {
