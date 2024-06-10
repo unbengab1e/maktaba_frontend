@@ -408,7 +408,7 @@ export function getAuthorScore(authorname) {
     return service({
         method: 'GET',
         url: '/booksection/rateForAuthor',
-        data: {
+        params: {
             authorname:authorname,
         },
         timeout: 10000,
@@ -442,7 +442,17 @@ export function getBrowsingHistory(username) {
     return service({
         method: 'GET',
         url: '/center/getHistory',
-        data: {
+        params: {
+            username:username,
+        },
+        timeout: 10000,
+    });
+}
+export function getIsAuthor(username) {
+    return service({
+        method: 'GET',
+        url: '/center/isAuthor',
+        params: {
             username:username,
         },
         timeout: 10000,

@@ -27,29 +27,29 @@
       <div class="w-1/2  mx-auto flex flex-wrap " :class="{'flex-nowrap':!showLine}">
         <div class="w-1/2 h-1/2 flex flex-col justify-center items-center">
           <span class="w-full text-center font-light text-gray-500 flex-grow flex items-end justify-center">
-           粉丝数
+           收藏数
           </span>
           <span class="w-full text-center">
-            <span class="font-bold">200</span>
-            <span class="font-light text-gray-500">人</span>
+            <span class="font-bold">{{collectCnt}}</span>
+            <span class="font-light text-gray-500">本</span>
           </span>
         </div>
         <div class="w-1/2 h-1/2 flex flex-col justify-center items-center">
           <span class="w-full text-center font-light text-gray-500 flex-grow flex items-end justify-center">
-           创作天数
+           阅读时长
           </span>
           <span class="w-full text-center">
-            <span class="font-bold">200</span>
-            <span class="font-light text-gray-500">天</span>
+            <span class="font-bold">10</span>
+            <span class="font-light text-gray-500">h</span>
           </span>
         </div>
         <div class="w-1/2 h-1/2 flex flex-col justify-center items-center">
           <span class="w-full text-center font-light text-gray-500 flex-grow flex items-end justify-center">
-           关注
+
           </span>
           <span class="w-full text-center">
-            <span class="font-bold">200</span>
-            <span class="font-light text-gray-500">人</span>
+            <span class="font-bold"></span>
+            <span class="font-light text-gray-500"></span>
           </span>
         </div>
 
@@ -60,7 +60,7 @@
     <div class="bg-white h-[100px]  min-h-[100px] flex ">
       <div class="change-container" :class=" {'change-container-1': currentRoute.path==='/Individual/IndividualIndex/IndividualComment','change-container-2': currentRoute.path==='/Individual/IndividualIndex/IndividualLike','change-container-3': currentRoute.path==='/Individual/IndividualIndex/IndividualWorks' }" >
         <router-link class="absolute top-[70%] left-0 hover:text-red-400 hhh" to="/Individual/IndividualIndex/IndividualComment">我的评论</router-link>
-        <router-link class="absolute top-[70%] left-[30%] hover:text-red-400 hhh" to="/Individual/IndividualIndex/IndividualLike">我的点赞</router-link>
+        <router-link class="absolute top-[70%] left-[30%] hover:text-red-400 hhh" to="/Individual/IndividualIndex/IndividualLike">我的评分</router-link>
         <router-link class="absolute top-[70%] left-[60%] hover:text-red-400 hhh" to="/Individual/IndividualIndex/IndividualWorks">我的作品</router-link>
 
       </div>
@@ -76,6 +76,8 @@
 </template>
 <script setup>
 import {useRoute} from "vue-router";
+const collectCnt = ref(5);
+
 const res = useFileSystemAccess({
   types: [{
     description: 'img',

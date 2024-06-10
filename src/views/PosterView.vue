@@ -1,6 +1,6 @@
 <template>
-  <div class="w-screen h-screen " >
-    <button class="w-[400px] h-[160px] z-50 rounded-2xl" id="btn">
+  <div class="w-screen flex justify-center items-center" style="height: calc(100vh - 100px);">
+    <button @click="$emit('beCreator')" class="w-[400px] h-[160px] z-50 rounded-2xl my-auto " id="btn">
       <span class="hhh text-2xl">
         成为创作者
       </span>
@@ -13,17 +13,9 @@
 
 <script setup>
 import {onMounted} from "vue";
+import {getDetail, getIsAuthor, getMyCollect} from "@/api/api.js";
 
-const imagePath = './poster.img'; // 本地图片的路径
 
-// onMounted(() => {
-//   setImageBackground(imagePath); // 设置 div 背景图片
-// });
-
-function setImageBackground(imagePath) {
-  const imageContainer = document.querySelector('.image-container');
-  imageContainer.style.backgroundImage = `url(${imagePath})`; // 设置 div 背景图片
-}
 </script>
 
 <style scoped>
@@ -39,12 +31,12 @@ button {
   border-radius: 8px;
   font-size: 17px;
   font-weight: 500;
-  color: rgba(177, 57, 57, 0.5);
+  color: rgba(255, 255, 255, 0.5);
   text-shadow: none;
   background: transparent;
   cursor: pointer;
   box-shadow: transparent;
-  border: 1px solid rgba(142, 42, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   transition: 0.5s ease;
   user-select: none;
 }

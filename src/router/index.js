@@ -20,6 +20,7 @@ import BookshelfHistoryView from "../views/BookshelfHistoryView.vue";
 import SearchView from "../views/SearchView.vue";
 import BookReaderView from "../views/BookReaderView.vue";
 import PosterView from "@/views/PosterView.vue";
+import IndividualWorksView from "@/views/IndividualWorksView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -94,7 +95,7 @@ const router = createRouter({
           path: 'IndividualIndex', // 注意：不需要再重复写 /Creator 前缀
           name: 'individualIndex',
           component: IndividualIndexView,
-          redirect:'/Individual/IndividualIndex/IndividualFocus',
+          redirect:'/Individual/IndividualIndex/IndividualComment',
           children: [
             {
               path: 'IndividualLike',
@@ -102,9 +103,9 @@ const router = createRouter({
               component: IndividualLikeView
             },
             {
-              path: 'IndividualFocus',
-              name: 'individualFocus',
-              component: IndividualFocusView
+              path: 'IndividualWorks',
+              name: 'individualWorks',
+              component: IndividualWorksView
             },
             {
               path: 'IndividualComment',

@@ -14,7 +14,7 @@ const bookArray = ref([])
 const books = ref([])
 let username = Cookies.get("username");
 onMounted(async () => {
-  let res = await getMyCollect('1', 'order_by_update_time')
+  let res = await getMyCollect('14', 'order_by_update_time')
   console.log(res);
   bookArray.value = res.data.result;
   for (let i = 0; i < bookArray.value.length; i++) {
