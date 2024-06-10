@@ -8,7 +8,7 @@ import axios from "axios";
 import Vue3Toasity, { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 
-axios.defaults.baseURL='http://49.232.145.124:8000'
+axios.defaults.baseURL='http://49.232.145.124:8000/api'
 
 const app = createApp(App)
 
