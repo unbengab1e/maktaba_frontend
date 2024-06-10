@@ -530,4 +530,13 @@ export function getMyComment(username) {
         timeout: 10000,
     });
 }
-
+    export function getMyAvatar(username) {
+        return service({
+            method: 'GET',
+            url: '/center/getAvatar',
+            params: {
+                username:username
+            },
+            timeout: 10000,
+        });
+    }

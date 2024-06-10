@@ -28,8 +28,9 @@ onMounted(async ()=>{
     let dres = await getDetail('张三', myWorks.value[i].bid);
     console.log(dres);
     temp.value=dres.data;
-    temp.value.score=myWorks.value[i].score;
-    myRateBooks.value.push(dres.data)
+    temp.value.score=myWorks.value[i].rate*2;
+    myRateBooks.value.push(temp.value)
+    console.log(myRateBooks.value);
 
   }
 

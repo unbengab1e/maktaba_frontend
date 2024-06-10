@@ -6,7 +6,7 @@
         <div class="w-full h-1/2 flex mt-1">
           <div class=" h-full flex justify-start items-center">
             <div class="rounded-full  w-[75px] h-[75px] min-w-[75px] hover:scale-110 z-50 hover:shadow-xl" @click="handleUpload">
-              <img class="circle-image" src="../assets/img/head2.jpg">
+              <img class="circle-image" :src="imgSrc">
             </div>
           </div>
         <div class="w-[100px] min-w-[100px] h-full flex flex-col ml-[8px]">
@@ -77,7 +77,15 @@
 <script setup>
 import {useRoute} from "vue-router";
 const collectCnt = ref(5);
-
+const imgSrc = ref();
+onMounted(async () => {
+  await getAvatar()
+})
+async function getAvatar(){
+  let res = await getMyAvatar('张三');
+  console.log(res)
+  imgSrc.value=res.data.avatar;
+}
 const res = useFileSystemAccess({
   types: [{
     description: 'img',
@@ -90,7 +98,7 @@ const res = useFileSystemAccess({
 const props = defineProps(['fans', 'days','words','showLine']);
 import { ref, onMounted, onUnmounted } from 'vue';
 import {useFileSystemAccess} from "@vueuse/core";
-import {postNewChapter, postUploadAvatar} from "@/api/api.js";
+import {getDetail, getMyAvatar, getMyCollect, postNewChapter, postUploadAvatar} from "@/api/api.js";
 import {toast} from "vue3-toastify";
 const currentRoute = useRoute();
 async function handleUpload(){
@@ -108,6 +116,7 @@ async function handleUpload(){
       {
         toast.success('上传成功')
       }
+      await getAvatar();
       resolve(); // 执行成功后调用 resolve
     }).catch(error => {
       reject(error); // 执行失败时调用 reject
