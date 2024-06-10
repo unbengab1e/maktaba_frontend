@@ -27,7 +27,7 @@
         </button>
         <button
             class="transition w-full aspect-square border-[1px] rounded-full flex my-1 hover:scale-125 hover:bg-gray-300 shadow-md"
-            onclick="setting.showModal()">
+            @click="emit('addBookMark')">
             <i class="icon-[material-symbols--bookmark-add-outline-rounded] h-6 w-6 m-auto"></i>
         </button>
         <button
@@ -67,7 +67,7 @@ const props = defineProps(['showDock', 'bid', 'chapter'])
 const showDock = computed(() => props.showDock)
 const dock = ref()
 const isDark = ref(false)
-const emit = defineEmits('changeTheme');
+const emit = defineEmits('changeTheme', 'addBookMark');
 
 watch(showDock, (newShow, oldShow) => {
     if (newShow) {

@@ -50,7 +50,7 @@ export const findPageByOffset = (chapter: Chapter, offset: number) => {
     index++
   ) {
     sum += chapter.words[index];
-    if (sum >= offset) {
+    if (sum > offset) {
       target = index;
       break;
     }
