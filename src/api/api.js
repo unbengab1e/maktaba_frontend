@@ -283,12 +283,13 @@ export function getMyWorks(user_name) {
         timeout:10000,
     });
 }
-export function getMyCollect(user_id) {
+export function getMyCollect(user_id,type) {
     return service({
         method: 'GET',
         url: '/center/getbookshelf',
         params: {
             user_id:user_id,
+            type:type,
         },
         timeout:10000,
     });
@@ -452,6 +453,16 @@ export function getIsAuthor(username) {
     return service({
         method: 'GET',
         url: '/center/isAuthor',
+        params: {
+            username:username,
+        },
+        timeout: 10000,
+    });
+}
+export function getMyRating(username) {
+    return service({
+        method: 'GET',
+        url: '/center/myRating',
         params: {
             username:username,
         },

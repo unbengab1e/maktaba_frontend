@@ -9,7 +9,7 @@
       <div class="flex container h-full">
         <!-- 封面 -->
         <div class="h-full w-2/5 bg-white flex justify-center border-r-2 bg-cover aaa"  >
-          <img :src="bookInfo['img  ']" alt="书籍封面" class="m-auto h-full aspect-[5/7]">
+          <img :src="bookInfo['img']" alt="书籍封面" class="m-auto h-full aspect-[5/7]">
         </div>
 
         <div class="flex flex-col-reverse w-3/5 bg-white">
@@ -35,7 +35,7 @@
 <!--                {{uploadFileName}}-->
 <!--              </span>-->
               <div v-if="!isCreating" class="txt-one w-full h-[60px]">
-                <input v-model="chapterName" type="text" >
+                <input v-model="chapterName" type="email" >
                 <span data-placeholder="chapterName"></span>
               </div>
 
@@ -126,6 +126,15 @@ import { useFileSystemAccess } from '@vueuse/core'
 import Cookies from "js-cookie";
 import {getDetail, getMyWorks, postNewBook, postNewChapter} from "@/api/api.js";
 import {toast} from "vue3-toastify";
+const handleFocus = (event) => {
+  event.target.classList.add('focus');
+};
+
+const handleBlur = (event) => {
+  if (event.target.value === '') {
+    event.target.classList.remove('focus');
+  }
+};
  const props = defineProps(['bid','isCreating'])
 const emit = defineEmits(['closeEditWindow'])
 const bkdtwd = ref(null)
@@ -153,6 +162,12 @@ const bookInfo = ref({
 })
 
 onMounted(async ()=>{
+  const inputs = document.querySelectorAll('.txt-one input');
+  inputs.forEach(input => {
+    input.addEventListener('focus', handleFocus);
+    input.addEventListener('blur', handleBlur);
+  });
+
   console.log()
   let res = await getDetail('张三',bid);
   console.log(res);

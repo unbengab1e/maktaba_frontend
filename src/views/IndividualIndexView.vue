@@ -5,13 +5,13 @@
       <div class="w-1/3 my-auto">
         <div class="w-full h-1/2 flex mt-1">
           <div class=" h-full flex justify-start items-center">
-            <div class="rounded-full bg-black w-[75px] h-[75px] min-w-[75px] hover:scale-110 z-50 hover:shadow-xl" @click="handleUpload">
-              <!--              <img>-->
+            <div class="rounded-full  w-[75px] h-[75px] min-w-[75px] hover:scale-110 z-50 hover:shadow-xl" @click="handleUpload">
+              <img class="circle-image" src="../assets/img/head2.jpg">
             </div>
           </div>
         <div class="w-[100px] min-w-[100px] h-full flex flex-col ml-[8px]">
         <span class="w-full h-1/2 font-bold mb-auto text-left">
-          用户名称
+          张三
         </span>
         <span class="w-auto h-auto font-light text-gray-500 text-left ">
           今天我，寒夜里看雪飘过~
@@ -99,8 +99,8 @@ async function handleUpload(){
       console.log(res.file.value);
 
       const formData = new FormData();
-      formData.append('user_id', '1');
-      formData.append('file', res.file.value); // 添加文件到 FormData
+      formData.append('user_id', '14');
+      formData.append('avatar', res.file.value); // 添加文件到 FormData
 
       let ares = await postUploadAvatar(formData); // 传递 FormData 对象
       console.log(ares);
@@ -149,6 +149,10 @@ async function handleUpload(){
 .change-container span:nth-child(1):focus + .change-container::after{
   left: 10%;
 }
-
+.circle-image {
+  width: 100%; /* 图片宽度填充容器 */
+  height: 100%; /* 根据容器宽度自动调整高度 */
+  border-radius: 50%; /* 将图片也设置为圆形 */
+}
 
 </style>

@@ -34,29 +34,29 @@
       <div class="w-1/2  mx-auto flex flex-wrap " :class="{'flex-nowrap':!showLine}">
         <div class="w-1/2 h-1/2 flex flex-col justify-center items-center">
           <span class="w-full text-center font-light text-gray-500 flex-grow flex items-end justify-center">
-           粉丝数
+           作品数
           </span>
           <span class="w-full text-center">
-            <span class="font-bold">200</span>
-            <span class="font-light text-gray-500">人</span>
+            <span class="font-bold">2</span>
+            <span class="font-light text-gray-500">本</span>
           </span>
         </div>
         <div class="w-1/2 h-1/2 flex flex-col justify-center items-center">
           <span class="w-full text-center font-light text-gray-500 flex-grow flex items-end justify-center">
-           创作天数
+           评分
           </span>
           <span class="w-full text-center">
-            <span class="font-bold">200</span>
-            <span class="font-light text-gray-500">天</span>
+            <span class="font-bold">{{authorScore}}</span>
+            <span class="font-light text-gray-500"></span>
           </span>
         </div>
         <div class="w-1/2 h-1/2 flex flex-col justify-center items-center">
           <span class="w-full text-center font-light text-gray-500 flex-grow flex items-end justify-center">
-           创作字数
+
           </span>
           <span class="w-full text-center">
-            <span class="font-bold">200</span>
-            <span class="font-light text-gray-500">万字</span>
+            <span class="font-bold"></span>
+            <span class="font-light text-gray-500"></span>
           </span>
         </div>
 
@@ -71,7 +71,7 @@
       <div class="h-[1px] w-full bg-gray-200 mt-2" >
 
       </div>
-      <LongBookCard v-for="work in myWorks" @edit="$emit('edit')" :show-cover="showLine" :book-name="work.name" :reading-cnt="work.reading" :score="work.score"  :comment-cnt="work.judge" :is-creator="true" :is-popularize="work.popularized" :is-showing="true">
+      <LongBookCard v-for="work in myWorks" @edit="$emit('edit')" :img-src="work.img" :show-cover="showLine" :book-name="work.name" :reading-cnt="work.reading" :score="work.score"  :comment-cnt="work.judge" :is-creator="true" :is-popularize="work.popularized" :is-showing="true">
 
       </LongBookCard>
     </div>
@@ -104,7 +104,8 @@
     myWorks.value=res.data.message;
     console.log(myWorks.value);
 
-    let res1 = await getAuthorScore(username.value);
+    let res1 = await getAuthorScore('张三');
+    authorScore.value=res1.data.rate;
     console.log(res1);
 
   });
