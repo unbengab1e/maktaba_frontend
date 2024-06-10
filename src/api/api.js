@@ -520,4 +520,14 @@ export function updateTimeEveryBook(user_id, bid, time) {
         timeout: 10000,
     });
 }
+export function getMyComment(username) {
+    return service({
+        method: 'GET',
+        url: '/center/myComments',
+        params: {
+            username:username
+        },
+        timeout: 10000,
+    });
+}
 
