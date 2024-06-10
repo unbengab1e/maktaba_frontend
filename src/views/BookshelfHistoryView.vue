@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-full flex flex-wrap ml-5 justify-around">
-    <NormalBookCard v-for="book in books"   :img-src="book.img" :book-name="book.name" :book-reference="book.mess" :book-author="book.author" :book-score="book.score" :book-tag="book.tag" :is-read="book.isRead" class="m-4" @click="jump(book)">
+    <NormalBookCard v-for="book in books"   :img-src="book.img" :book-name="book.name" :book-reference="book.mess" :book-author="book.author" :book-score="book.score" :book-tag="book.tag" :is-read="book.isRead" class="m-4" @click="jump(book['name'],book['bid'])">
 
     </NormalBookCard>
   </div>
@@ -21,13 +21,21 @@ onMounted(async () => {
   console.log(res);
   bookArray.value = res.data.result;
   for (let i = 0; i < bookArray.value.length; i++) {
-    console.log(bookArray.value[i].bid);
+
     let dres = await getDetail(username, bookArray.value[i].bid);
     console.log(dres);
     let rres = await getReadingProcess(userid,bookArray.value[i].bid);
     console.log(rres)
     tempCopy.value = dres.data
-    tempCopy.value.author = rres.data.message
+
+    if(rres.data.message==="还未阅读过本书"){
+      tempCopy.value.author = rres.data.message
+    }else{
+      tempCopy.value.author = "已阅读到第"+rres.data.message[0].chapter+"章"
+    }
+
+
+
     booksCopy.value.push(tempCopy.value)
 
   }
@@ -35,8 +43,8 @@ onMounted(async () => {
   //console.log(books.value.length)
 })
 
-function jump(book) {
-  window.location.replace('/reader/?bookName='+book['name']+'&bid='+book['bid']+'&chapter=1&offset=0')
+function jump(name,bid) {
+  window.location.replace('/reader/?bookName='+name+'&bid='+bid+'&chapter=1&offset=0')
 }
 
 </script>
