@@ -9,12 +9,14 @@
   <div class="flex fixed right-6 mt-4 z-50 p-1 rounded-full bg-white shadow-lg">
     <div v-if="hasNewChap" class="absolute left-[72px] bg-red-400 w-4 h-4 rounded-full"></div>
     <!-- 头像 -->
-    <button ref="head" type="button" class="h-11 w-11 rounded-full overflow-hidden inline-flex items-center justify-center text-gray-700 origin-top drop-shadow-xl z-[52] normalAnimation" @mouseenter="showUserMenu=true" @mouseleave="leaveHead()" >
-      <RouterLink to="/Individual">
-        <img v-if="isLogin" src="../assets/img/head2.jpg" class="image-full" alt="头像">
+    <div ref="head" type="button" class="h-11 w-11 rounded-full overflow-hidden inline-flex items-center justify-center text-gray-700 origin-top drop-shadow-xl z-[52] normalAnimation" @mouseenter="showUserMenu=true" @mouseleave="leaveHead()" >
+      <RouterLink v-if="isLogin" to="/Individual">
+        <img src="../assets/img/head2.jpg" class="image-full" alt="头像">
       </RouterLink>
-      <span v-if="!isLogin" class="h-8 w-12 ">未登录</span>
-    </button>
+      <button v-if="!isLogin" @click="$emit('tryLogin')">
+        <img src="../assets/img/未登录.jpg" class="image-full" alt="头像">
+      </button>
+    </div>
     <!-- 消息 -->
     <div ref="message" class="normalAnimation h-6 w-6 my-auto m-2 rounded-full">
       <button @click="showMessMenu()" class="w-full h-full">
@@ -137,7 +139,7 @@ import { toast } from "vue3-toastify";
 
 const showUserMenu = ref(false)
 const showSearchButton = ref(false)
-const isLogin = ref(true)
+const isLogin = ref(false)
 const holdLogin = ref(false)
 const showLoginView = ref(false)
 const props = defineProps(['showAllButton'])
