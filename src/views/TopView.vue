@@ -36,7 +36,7 @@
         
         <div class="flex-grow flex flex-col" :class="{'ml-44':isWide}">
             <LongBookCard 
-            v-for="(book,key) in bookArray" @show="$emit('showDetailWindow',book['bid'])" :img-src="book['img']" :book-rank="key" :book-name="book['name']" :book-author="book['author']" :book-tag="book['tag']" :reader-cnt="book['reading']" :show-cover="isWide" :book-score="book['score']" :type="route.query.cate" 
+            v-for="(book,key) in bookArray" @show="$emit('showDetailWindow',book['bid'])" :img-src="book['img']" :book-rank="key" :book-name="book['name']" :book-author="book['author']" :book-tag="book['tag']" :reader-cnt="book['reading']" :show-cover="isWide" :book-score="book['score']" :book-reference="book['mess']" :type="route.query.cate" 
             ></LongBookCard>
         </div>
 

@@ -39,7 +39,9 @@
 </template>
 
 <script setup>
+import { addHistory, postReadingProgress } from "@/api/api";
 import { computed, ref, watch } from "vue"
+import { onBeforeRouteUpdate } from "vue-router";
 
 const dockItems = ref([
     {
@@ -58,13 +60,14 @@ const dockItems = ref([
         icon: "icon-[lucide--circle-plus]",
         path: "/Creator"
     },])
-const isDark = ref(false)
 const theme = computed(() => {
     return isDark.value ? 'icon-[ph--moon-bold]' : 'icon-[ph--sun-bold]';
 })
-const props = defineProps(['showDock'])
+const props = defineProps(['showDock', 'bid', 'chapter'])
 const showDock = computed(() => props.showDock)
 const dock = ref()
+const isDark = ref(false)
+const emit = defineEmits('changeTheme');
 
 watch(showDock, (newShow, oldShow) => {
     if (newShow) {
@@ -78,7 +81,12 @@ watch(showDock, (newShow, oldShow) => {
 
 function changeTheme() {
     isDark.value = !isDark.value
+    emit('changeTheme', isDark.value)
 }
 
-
+onBeforeRouteUpdate(async (to, from, next) => {
+    await postReadingProgress(props.bid, props.chapter)
+    await addHistory(props.bid)
+    next(); // 继续导航
+});
 </script>

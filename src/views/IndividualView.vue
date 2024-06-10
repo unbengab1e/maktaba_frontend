@@ -6,7 +6,7 @@
     </SideBar>
     <!--    </div>-->
     <div class="flex flex-grow h-full">
-      <RouterView :show-line="isWide">
+      <RouterView :show-line="isWide" >
 
       </RouterView>
     </div>
