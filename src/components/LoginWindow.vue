@@ -43,9 +43,6 @@ onMounted(async () => {
     bkdtwd.value.classList.remove("opacity-0")
     bkdtwd.value.classList.remove("translate-y-60")
   })
-  let res = await getDetail('张三',props.bid);
-  console.log(res);
-  bookInfo.value = res.data;
 })
 
 function hideWindow() {
