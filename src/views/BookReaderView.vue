@@ -309,7 +309,7 @@ const createPageFlip = (pages, startPage: number) => {
   pageFlip = new PageFlip(book, {
     startPage,
     width: setting.flipByChapter ? width * 2 : width,
-    height,
+    height: setting.flipByChapter ? height * 0.8 : height,
     // size: 'stretch',
     // usePortrait: false,
     // useMouseEvents: false,
@@ -397,12 +397,13 @@ async function renderBook(chapter: number, offset: number | "last" | "first") {
 
   pageFlip.destroy();
   if (offset === "first") {
-    offset = curChapter.pageNum.pre + 1;
+    offset = curChapter.pageNum.pre;
   } else if (offset === "last") {
     offset = curChapter.pageNum.pre + curChapter.pageNum.cur - 1;
   } else if (offset !== undefined) {
     offset = findPageByOffset(curChapter, offset);
   }
+  console.log(curChapter, offset)
 
   createPageFlip(curChapter.pages, offset);
 
