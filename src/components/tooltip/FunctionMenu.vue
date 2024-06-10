@@ -94,7 +94,7 @@ function speech() {
   // }
 
   if (synth.speaking) {
-    console.error("speechSynthesis.speaking");
+    toast.error("正在播放中");
     return;
   }
 
@@ -102,11 +102,11 @@ function speech() {
     const utterThis = new SpeechSynthesisUtterance(props.selection);
 
     utterThis.onend = function (event) {
-      console.log("SpeechSynthesisUtterance.onend");
+      toast.success("播放结束");
     };
 
     utterThis.onerror = function (event) {
-      console.error("SpeechSynthesisUtterance.onerror");
+      toast.error("服务出现错误");
     };
 
     // const selectedOption =
@@ -120,6 +120,7 @@ function speech() {
     // }
     // utterThis.pitch = pitch.value;
     // utterThis.rate = rate.value;
+    utterThis.lang = 'zh-CN';
     synth.speak(utterThis);
   }
 }

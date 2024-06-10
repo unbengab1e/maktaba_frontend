@@ -109,7 +109,7 @@ async function showDetailWindow(param) {
   detailWindow.value = true
   bid.value=param
   stopMove()
-  // let res = await recordReading(param,Cookies.get('username'));
+  let res = await recordReading(param,Cookies.get('username'));
 }
 
 function closeDetailWindow(param) {

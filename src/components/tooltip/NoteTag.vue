@@ -3,7 +3,7 @@
     <textarea name="" id="" v-model="content" class="textarea textarea-bordered h-1/2 w-5/6"></textarea>
     <div class="flex items-center gap-1">
       <input type="checkbox" v-model="fill" class="checkbox checkbox-sm checkbox-accent" :disabled="props.curTag && props.curTag.length === 0">下划线
-      <input type="color" ref="colorPicker" name="color" class="w-8 h-8">
+      <input type="color" ref="colorPicker" name="color" class="w-8 h-8" :disabled="props.curTag && props.curTag.length === 0">
       <input type="checkbox" class="toggle toggle-sm toggle-info" v-model="priv" /> 公开
       <button class="btn text-xs p-0 h-6 min-h-6 w-5 text-white btn-success" :title="props.curTag ? '更新' : '提交'"
         @click="submitNote">✔</button>

@@ -27,10 +27,10 @@
         <TabPanel
           class="rounded-xl h-full bg-white p-3 ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2">
           <ul>
-            <template v-for="tag in tags">
+            <template v-for="(tag) in tags">
               <li
-                v-if="tag.offset === 0 && ((tag.private && setting.showPrivate) || (!tag.private && setting.showPublic))">
-                <a @click="emit('jumpTag', tag.chapter, tag.offset)">{{ tag.content }}</a>
+                v-if="tag.length === 0 && ((tag.private && setting.showPrivate) || (!tag.private && setting.showPublic))">
+                <a @click="emit('jumpTag', tag.chapter, tag.offset)">{{ tag.content.length ? tag.content : '无附注' }}</a>
               </li>
             </template>
           </ul>
@@ -49,10 +49,10 @@
         <TabPanel
           class="rounded-xl h-full bg-white p-3 ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2">
           <ul>
-            <template v-for="tag in tags">
+            <template v-for="(tag, index) in tags">
               <li
                 v-if="tag.content.length === 0 && ((tag.private && setting.showPrivate) || (!tag.private && setting.showPublic))">
-                <a @click="emit('jumpTag', tag.chapter, tag.offset)">{{ tag.content
+                <a @click="emit('jumpTag', tag.chapter, tag.offset)">{{ index
                   }}</a>
               </li>
             </template>
