@@ -60,7 +60,7 @@
     <div class="bg-white h-[100px]  min-h-[100px] flex ">
       <div class="change-container" :class=" {'change-container-1': currentRoute.path==='/Individual/IndividualIndex/IndividualComment','change-container-2': currentRoute.path==='/Individual/IndividualIndex/IndividualLike','change-container-3': currentRoute.path==='/Individual/IndividualIndex/IndividualWorks' }" >
         <router-link class="absolute top-[70%] left-0 hover:text-red-400 hhh" to="/Individual/IndividualIndex/IndividualComment">我的评论</router-link>
-        <router-link class="absolute top-[70%] left-[30%] hover:text-red-400 hhh" to="/Individual/IndividualIndex/IndividualLike">我的点赞</router-link>
+        <router-link class="absolute top-[70%] left-[30%] hover:text-red-400 hhh" to="/Individual/IndividualIndex/IndividualLike">我的评分</router-link>
         <router-link class="absolute top-[70%] left-[60%] hover:text-red-400 hhh" to="/Individual/IndividualIndex/IndividualWorks">我的作品</router-link>
 
       </div>

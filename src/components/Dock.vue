@@ -19,7 +19,8 @@
 
 <script setup>
 import { computed, ref,watch } from "vue"
-
+import Cookies from "js-cookie";
+const uname=Cookies.get('username')
 const dockItems = ref([
     {
         icon: "icon-[material-symbols--home]",
@@ -35,7 +36,7 @@ const dockItems = ref([
         path:"/Bookshelf"
     },{
         icon: "icon-[lucide--circle-plus]",
-        path:"/Creator"
+        path:"/Creator/CreatorIndex/?uname="+uname
     },])
 const isDark = ref(false)
 const theme = computed(() => {

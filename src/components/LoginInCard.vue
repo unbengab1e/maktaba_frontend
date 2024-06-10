@@ -3,32 +3,32 @@
 
     <div class="form-container sign-up-container">
       <div >
-<!--        v-if="isSignUp"-->
+        <!--        v-if="isSignUp"-->
         <h1 v-if="isSignUp">注册</h1>
         <h1 v-if="isAlterPassword">更改密码</h1>
         <div class="txt-one" >
-          <input type="text" v-model="currentUsername">
+          <input type="text" v-model="signUpUsername" maxlength="20">
           <span data-placeholder="Username" ></span>
         </div>
 
-          <div class="txt-one ">
-            <input type="email" v-model="currentEmail">
-            <span data-placeholder="Email" ></span>
-          </div>
+        <div class="txt-one ">
+          <input type="email" v-model="signUpEmail" maxlength="20">
+          <span data-placeholder="Email" ></span>
+        </div>
 
 
 
         <div class="txt-one">
-          <input type="password" v-model="currentPassword">
+          <input type="password" v-model="signUpPassword" maxlength="20">
           <span :data-placeholder="alternativePassword" ></span>
         </div>
         <div class="txt-one">
-          <input type="password" v-model="currentConfirmPassword">
+          <input type="password" v-model="signUpConfirmPassword" maxlength="20">
           <span data-placeholder="Confirm Password" ></span>
         </div>
         <div class="flex ">
           <div class="txt-one w-[45%]">
-            <input v-model="currentVerify">
+            <input v-model="signUpVerify" maxlength="20">
             <span data-placeholder="Verify" ></span>
           </div>
           <button class="mb-[5px] button1 w-[55%]" @click="isSignUp ? handleSignUp() : handleForgetPassword()">
@@ -38,7 +38,7 @@
           </button>
         </div>
 
-        <button @click="isSignUp ? handleActivate() : handleFindPassword()">注册</button>
+        <button @click="isSignUp ? handleActivate() : handleFindPassword();">注册</button>
       </div>
 
     </div>
@@ -46,14 +46,14 @@
       <div action="#">
         <h1>登录</h1>
         <div class="txt-one">
-          <input type="email" v-model="signInUsername">
+          <input type="email" v-model="signInUsername" maxlength="20">
           <span data-placeholder="Username" ></span>
         </div>
         <div class="txt-one">
-          <input type="password" v-model="signInPassword">
+          <input type="password" v-model="signInPassword" maxlength="20">
           <span data-placeholder="Password "></span>
         </div>
-        <span class="ml-auto h-[50px] hhh text-2xl" @click="alterPassword">忘记密码？</span>
+        <span class="ml-auto h-[50px] hhh text-2xl" @click="clearInputs();alterPassword()">忘记密码？</span>
         <button @click="handleSignIn()">登录</button>
       </div>
     </div>
@@ -68,7 +68,7 @@
         <div class="overlay-panel overlay-right">
           <h1>没有账号?</h1>
           <p>立即注册加入我们，和我们一起开始旅程吧</p>
-          <button class="ghost" @click="signUp">注册</button>
+          <button class="ghost" @click="signUp();clearInputs()">注册</button>
         </div>
       </div>
 
@@ -81,6 +81,7 @@ import {ref, onMounted, computed} from 'vue';
 import {postActivate, postFindPassword, postForgetPassword, postSignIn, postSignUp} from "@/api/api.js";
 import {compute} from "three/nodes";
 import Cookies from 'js-cookie';
+import {toast} from "vue3-toastify";
 const isSignUp = ref(false);
 const isAlterPassword = ref(false);
 const signUpEmail = ref();
@@ -97,36 +98,50 @@ const signInUsername = ref();
 const signInPassword = ref();
 const alternativePassword = ref('Password')
 
-const currentUsername = computed(() => isSignUp.value ? signUpUsername.value : forgetPasswordUsername.value);
-const currentEmail = computed(() => isSignUp.value ? signUpEmail.value : forgetPasswordEmail.value);
-const currentPassword = computed(() => isSignUp.value ? signUpPassword.value : forgetPasswordPassword.value);
-const currentConfirmPassword = computed(() => isSignUp.value ? signUpConfirmPassword.value : forgetPasswordConfirmPassword.value);
-const currentVerify = computed( ()=> isSignUp.value ? signUpVerify.value : forgetPasswordVerify.value );
 
+const clearInputs=()=>{
+  signUpUsername.value = "";
+  signUpConfirmPassword.value = "";
+  signUpVerify.value = "";
+  signUpPassword.value="";
+  signUpConfirmPassword.value="";
+  signUpEmail.value = "";
+}
 async function handleSignIn() {
   try {
+
     const response = await postSignIn(signInUsername.value, signInPassword.value); // 调用 postLogin 函数发送登录请求
     console.log(response); // 打印登录请求的响应数据
+
     Cookies.set('username',signInUsername.value,{expires:7});
     Cookies.set('user_id',response.id);
+
     // 在这里可以根据后端返回的数据进行相应的处理，例如跳转到登录成功后的页面等
   } catch (error) {
 
+    if(error.response.data.message=='用户未注册'){
+      toast.error('用户未注册')
+    }
+    if(error.response.data.message=='密码错误'){
+      toast.error('密码错误')
+    }
     console.error('登录失败:', error); // 打印登录失败的错误信息
     // error.response.data.message[0]
   }
 }
 async function handleSignUp() {
   try {
+    console.log(signUpUsername.value);
     const response = await postSignUp(signUpUsername.value, signUpPassword.value,signUpConfirmPassword.value,signUpEmail.value);
     console.log(response);
+
   } catch (error) {
     console.error('登录失败:', error);
   }
 }
 async function handleForgetPassword() {
   try {
-    const response = await postForgetPassword(forgetPasswordUsername.value, forgetPasswordPassword.value,forgetPasswordConfirmPassword.value,forgetPasswordEmail.value); // 调用 postLogin 函数发送登录请求
+    const response = await postForgetPassword(signUpUsername.value, signUpPassword.value,signUpConfirmPassword.value,signUpEmail.value); // 调用 postLogin 函数发送登录请求
     console.log(response); // 打印登录请求的响应数据
     // 在这里可以根据后端返回的数据进行相应的处理，例如跳转到登录成功后的页面等
   } catch (error) {
@@ -144,7 +159,7 @@ async function handleActivate() {
 }
 async function handleFindPassword() {
   try {
-    const response = await postFindPassword(forgetPasswordUsername.value,forgetPasswordPassword.value,forgetPasswordConfirmPassword.value,forgetPasswordEmail.value,forgetPasswordVerify.value); // 调用 postLogin 函数发送登录请求
+    const response = await postFindPassword(signUpUsername.value,signUpPassword.value,signUpConfirmPassword.value,signUpEmail.value,signUpVerify.value); // 调用 postLogin 函数发送登录请求
     console.log(response); // 打印登录请求的响应数据
     // 在这里可以根据后端返回的数据进行相应的处理，例如跳转到登录成功后的页面等
   } catch (error) {

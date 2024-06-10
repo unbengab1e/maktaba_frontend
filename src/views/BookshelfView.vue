@@ -2,8 +2,8 @@
   <div class="w-full h-auto flex-col flex">
     <div class=" h-[100px]  min-h-[100px] flex ml-[50px]">
       <div class="change-container" :class=" {'change-container-1': currentRoute.path==='/Bookshelf/BookshelfIndex','change-container-2': currentRoute.path==='/Bookshelf/BookshelfHistory' }" >
-        <router-link class="absolute top-[70%] left-0 hover:text-red-400" to="/Bookshelf/BookshelfIndex">我的书架</router-link>
-        <router-link class="absolute top-[70%] left-[30%] hover:text-red-400" to="/Bookshelf/BookshelfHistory">历史</router-link>
+        <router-link class="absolute top-[70%] left-0 hover:text-red-400" to="/Bookshelf/BookshelfIndex">喜好顺序</router-link>
+        <router-link class="absolute top-[70%] left-[30%] hover:text-red-400" to="/Bookshelf/BookshelfHistory">更新顺序</router-link>
       </div>
 
     </div>
