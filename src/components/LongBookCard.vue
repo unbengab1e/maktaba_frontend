@@ -28,7 +28,7 @@
           <div class="flex mb-2">
             <span v-if="type=='all'" class="text-xl text-gray-600">{{ readerCnt }}人读过</span>
             <span v-if="type=='recent'" class="text-xl text-gray-600">近三天{{ readerCnt }}人读过</span>
-            <span v-if="type=='score'" class="text-xl text-gray-600">推荐值: {{ bookScore }}</span>
+            <span v-if="type=='score'" class="text-xl text-gray-600">推荐值: {{ bookScore.toFixed(1) }}</span>
           </div>
           <!-- 简介 -->
           <div class="flex cursor-pointer" @click="$emit('show')">

@@ -61,12 +61,12 @@
   <!-- 用户下拉菜单 -->
   <div ref="usmn" @mouseleave="leaveUserMenu()" class="transition-all duration-300 ease-in-out flex flex-col justify-around fixed z-40 h-auto w-60 rounded-xl mt-24 bg-white right-24 p-2 shadow-md opacity-0 -translate-y-[600px] pt-12">
     <!-- id -->
-    <div class="w-full h-20 rounded-md flex flex-col p-2 py-1">
+    <div class="w-full h-12 rounded-md flex flex-col p-2 py-1">
       <div class="flex justify-center"> 
         <h1 class="text-3xl">{{username}}</h1>
       </div>
       <div class="border-[1px]"></div>
-      <div class="flex justify-center w-full h-full mt-1"> 
+      <!-- <div class="flex justify-center w-full h-full mt-1"> 
         <RouterLink to="/Individual/IndividualIndex/IndividualFocus" class="flex-grow h-full flex justify-center mt-1">
           <span class="text-sm">关注 200</span>
         </RouterLink>
@@ -74,7 +74,7 @@
         <RouterLink to="#" class="flex-grow h-full flex justify-center mt-1">
           <span class="text-sm">时长 30h</span>
         </RouterLink>
-      </div>
+      </div> -->
     </div>
 
     <RouterLink v-for="menuItem in menuItems" :to="menuItem['to']" class="w-full h-10 bg-gray-200 rounded-md shadow-sm my-1 flex justify-between p-2">
@@ -151,28 +151,19 @@ const shelf = ref()
 const history = ref()
 const menuItems = ref([
   {
-    name: '我的点赞',
-    icon: 'icon-[streamline--hearts-symbol-solid]',
-    color: 'red',
-    to:'/Individual/IndividualIndex/IndividualLike',
-  },
-  {
     name: '我的评论',
-    icon: 'icon-[streamline--hearts-symbol-solid]',
-    color: 'red',
+    icon: 'icon-[material-symbols--comment]',
     to:'/Individual/IndividualIndex/IndividualComment',
   },
   {
     name: '我的评分',
     icon: 'icon-[streamline--hearts-symbol-solid]',
-    color: 'red',
     to:'/Individual/IndividualIndex/IndividualLike',
   },
   {
     name: '我的作品',
-    icon: 'icon-[streamline--hearts-symbol-solid]',
-    color: 'red',
-    to:'/Individual/IndividualIndex/IndividualLike',
+    icon: 'icon-[ph--book-bookmark-fill]',
+    to:'/Individual/IndividualIndex/IndividualWorks',
   },
 ])
 const searchContent = ref('')
