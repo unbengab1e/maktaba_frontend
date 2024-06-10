@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="fixed right-0 w-auto h-[100vh] flex flex-col justify-center z-50">
-      <ReaderDock @changeTheme="changeTheme" :bid="bid" :chapter="curChapter.chapter"/>
+      <ReaderDock @changeTheme="changeTheme" @addBookMark="addBookMark" :bid="bid" :chapter="curChapter.chapter"/>
     </div>
     <div class="drawer-side">
       <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
@@ -30,7 +30,7 @@ import { computed, onBeforeMount, onMounted, reactive, Ref, ref } from 'vue';
 
 // import text from '../assets/UDHR.txt?raw'
 import { PageFlip } from 'page-flip';
-import { getBookTag, getChapter, getIndex } from '../api/api';
+import { addBookTag, getBookTag, getChapter, getIndex } from '../api/api';
 import { Icon } from '@iconify/vue';
 import { Chapter, findPageByOffset, Setting, Tag } from '../models/book';
 import { useRoute } from 'vue-router'
@@ -358,65 +358,70 @@ function renderTag(tag: Tag) {
   }
 
   // bookmark
-  if (tag.offset === 0) {
+  if (tag.length === 0) {
+    page = curChapter.pages[pageIndex + 1]!;
     const mark = document.createElement('span');
-    mark.className = 'h-8 w-8 icon-[material-symbols--bookmark]'
+    mark.className = 'h-8 w-8 icon-[material-symbols--bookmark] text-red-400'
+    mark.style.position = 'relative'
+    mark.style.left = `${width - 86}px`
+    mark.style.bottom = `${height - 57}px`
     page.appendChild(mark)
   }
-
-  page.childNodes.forEach((e) => {
-    if (e.nodeType === Node.TEXT_NODE || e.nodeName === 'SPAN') {
-      if (!startNode) {
-        if (startOffset < e.textContent!.length) {
-          startNode = e;
-          endOffset = startOffset + tag.length;
-        } else {
-          startOffset -= e.textContent!.length;
+  else{
+    page.childNodes.forEach((e) => {
+      if (e.nodeType === Node.TEXT_NODE || e.nodeName === 'SPAN') {
+        if (!startNode) {
+          if (startOffset < e.textContent!.length) {
+            startNode = e;
+            endOffset = startOffset + tag.length;
+          } else {
+            startOffset -= e.textContent!.length;
+          }
+        }
+        if (startNode && !endNode) {
+          if (endOffset <= e.textContent!.length) {
+            endNode = e;
+          } else {
+            endOffset -= e.textContent!.length;
+          }
         }
       }
-      if (startNode && !endNode) {
-        if (endOffset <= e.textContent!.length) {
-          endNode = e;
-        } else {
-          endOffset -= e.textContent!.length;
+    });
+
+    if (startNode && endNode) {
+      range.setStart(startNode, startOffset);
+      range.setEnd(endNode, endOffset);
+
+      if (startNode.nodeType === Node.TEXT_NODE) {
+        const bar = startNode.splitText(startOffset);
+        let newNode = document.createElement("span");
+
+        if ((tag.private && setting.showPrivate) || (!tag.private && setting.showPublic)) {
+          newNode.addEventListener('click', function () {
+            const sel = window.getSelection()!
+            setTooltipBySelection(sel);
+            modeStr.value = "NoteTag";
+            curTag.value = tag;
+          })
+          const colorStr = `#${tag.color.toString(16).padStart(6, '0')}`;
+          if (tag.fill) {
+            newNode.style.backgroundColor = colorStr
+          } else {
+            newNode.style.textDecoration = `underline ${colorStr}`
+          }
         }
-      }
-    }
-  });
-
-  if (startNode && endNode) {
-    range.setStart(startNode, startOffset);
-    range.setEnd(endNode, endOffset);
-
-    if (startNode.nodeType === Node.TEXT_NODE) {
-      const bar = startNode.splitText(startOffset);
-      let newNode = document.createElement("span");
-
-      if ((tag.private && setting.showPrivate) || (!tag.private && setting.showPublic)) {
-        newNode.addEventListener('click', function () {
-          const sel = window.getSelection()!
-          setTooltipBySelection(sel);
-          modeStr.value = "NoteTag";
-          curTag.value = tag;
+        newNode.addEventListener('mouseup', function (e) {
+          e.stopPropagation();
         })
-        const colorStr = `#${tag.color.toString(16).padStart(6, '0')}`;
-        if (tag.fill) {
-          newNode.style.backgroundColor = colorStr
-        } else {
-          newNode.style.textDecoration = `underline ${colorStr}`
-        }
+        tag.dom = newNode;
+        newNode.className = 'tag';
+        newNode.append(range.extractContents());
+        newNode.style.display = 'inline';
+        page.insertBefore(newNode, bar)
       }
-      newNode.addEventListener('mouseup', function (e) {
-        e.stopPropagation();
-      })
-      tag.dom = newNode;
-      newNode.className = 'tag';
-      newNode.append(range.extractContents());
-      newNode.style.display = 'inline';
-      page.insertBefore(newNode, bar)
+    } else {
+      toast.error('未找到指定偏移量和长度对应的文本区域');
     }
-  } else {
-    toast.error('未找到指定偏移量和长度对应的文本区域');
   }
 }
 
@@ -435,13 +440,18 @@ const jumpTag = (chapter, offset) => {
   renderBook(chapter, offset);
 }
 
-const refresh = () => {
+const getCurrentPageOffset = () => {
   let offset = 0;
   const pageNow = document.querySelector('.my-page:not([style*="display: none"]');
   const pageIndex = Array.prototype.indexOf.call(pageNow!.parentElement!.children, pageNow);
   for (let index = 0; index < pageIndex; index++) {
     offset += curChapter.words[index];
   }
+  return offset;
+}
+
+const refresh = () => {
+  const offset = getCurrentPageOffset();
   renderBook(curChapter.chapter, offset);
 }
 
@@ -459,6 +469,15 @@ const changeTheme = (isDark) => {
       e.classList.remove('black-page');
     })  
   }
+}
+
+const addBookMark = () => {
+  addBookTag(user_id, bid, curChapter.chapter, getCurrentPageOffset(), 0, "", 0, false, true).then(() => {
+    toast.success("添加成功")
+    renderAllTag();
+  }).catch((e) => {
+    toast.error(`添加失败：${e}`)
+  });
 }
 
 const parseSetting = () => {
