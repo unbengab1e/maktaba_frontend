@@ -242,6 +242,7 @@ watch(route, () => {
 
 
 <style> 
+@import './assets/main.css';
 html:has(.drawer-toggle:checked) {
   scrollbar-gutter: auto;
 }

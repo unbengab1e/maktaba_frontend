@@ -61,7 +61,7 @@
   </div>
 
   <!-- 用户下拉菜单 -->
-  <div ref="usmn" @mouseleave="leaveUserMenu()" class="transition-all duration-300 ease-in-out flex flex-col justify-around fixed z-40 h-auto w-60 rounded-xl mt-24 bg-white right-24 p-2 shadow-md opacity-0 -translate-y-[600px] pt-12">
+  <div ref="usmn" @mouseleave="leaveUserMenu()" class="transition-all duration-300 ease-in-out flex flex-col justify-around fixed z-40 h-auto w-60 rounded-xl mt-24 bg-white bg-opacity-50 right-24 p-2 shadow-md opacity-0 -translate-y-[600px] pt-12" style="backdrop-filter: var(--mak-glass-1);">
     <!-- id -->
     <div class="w-full h-24 rounded-md flex flex-col p-2 py-1">
       <div class="flex justify-center"> 
@@ -138,6 +138,7 @@ import { mousePosition } from "../main.js";
 import Cookies from 'js-cookie'
 import { getNewChap,checkNewChap,readMessage,getMyAvatar,getReadingTime,getReadingNum } from '@/api/api.js';
 import { toast } from "vue3-toastify";
+
 
 const showUserMenu = ref(false)
 const showSearchButton = ref(false)

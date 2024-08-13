@@ -6,7 +6,6 @@
                     <img ref="cover" :src="imgSrc" class="aspect-[5/7] h-full z-[80] shadow-lg rounded-md" alt="">
                     <div ref="content" class="window aspect-[5/7] h-full bg-white z-[90] shadow-lg rounded-md p-2 overflow-y-scroll" style="overflow-wrap: break-word;" > 
                         {{bookReference}}
-                        <!-- But ere she from the church-door stepped She smiled and told us why: 'It was a wicked woman's curse,' Quoth she, 'and what care I?' She smiled, and smiled, and passed it off Ere from the door she stept— -->
                     </div>
                 </div>
             </div>
