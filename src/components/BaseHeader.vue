@@ -1,12 +1,12 @@
 <template>
   <div class="fixed w-screen h-24 z-10 blurblock"></div>
   <!-- logo -->
-  <RouterLink to="/" class="fixed flex left-6 mt-4 z-50 p-1 rounded-full bg-white shadow-lg h-[52px]">
+  <RouterLink to="/" class="fixed flex left-6 mt-4 z-50 p-1 rounded-full bg-white shadow-lg h-[52px] bg-opacity-70" style="backdrop-filter: var(--mak-glass-2);">
     <span class="galada-regular my-2 text-3xl mx-2 align-baseline" style="background: -webkit-linear-gradient(315deg, #42d392 25%, #647eff);-webkit-background-clip: text; -webkit-text-fill-color: transparent;">Maktaba</span>
   </RouterLink>
 
   <!-- 按钮区 -->
-  <div class="flex fixed right-6 mt-4 z-50 p-1 rounded-full bg-white shadow-lg">
+  <div class="flex fixed right-6 mt-4 z-50 p-1 rounded-full bg-white shadow-lg bg-opacity-60" style="backdrop-filter: var(--mak-glass-2);">
     <div v-if="showMessages &&hasNewChap" class="absolute left-[72px] bg-red-400 w-4 h-4 rounded-full"></div>
     <!-- 头像 -->
     <div ref="head" type="button" class="h-11 w-11 rounded-full overflow-hidden inline-flex items-center justify-center text-gray-700 origin-top drop-shadow-xl z-[52] normalAnimation" @mouseenter="showUserMenu=true" @mouseleave="leaveHead()" >
@@ -51,8 +51,8 @@
 
   <!-- 搜索框 -->
   <div id="searchBar" class="transition-[margin-top] ease-in-out duration-500 flex flex-col mx-auto w-1/2 h-20 sticky top-4 z-30">
-    <div ref="sb" class="transition-[width,color,background-color,border-color,box-shadow] mx-auto ease-in-out duration-500 top-0 sticky flex shadow-lg w-full h-[52px] border-2 rounded-full -rounded-e-full focus-within:shadow-2xl focus-within:border-blue-500 focus-within:shadow-blue-400" @click.stop>
-      <input type="text" class="h-full w-full outline-none rounded-full pl-8" @focusin="showSearchButton=true;$emit('startSearching')" v-model="searchContent" @focusout="showSearchButton=false" placeholder="请输入搜索内容">
+    <div ref="sb" class="transition-[width,color,background-color,border-color,box-shadow] mx-auto ease-in-out duration-500 top-0 sticky flex shadow-lg w-full h-[52px] border-[1px] rounded-full -rounded-e-full focus-within:shadow-2xl focus-within:border-blue-500 focus-within:shadow-blue-400" @click.stop>
+      <input type="text" class="h-full w-full outline-none rounded-full pl-8 bg-white bg-opacity-60" style="backdrop-filter: var(--mak-glass-2);" @focusin="showSearchButton=true;$emit('startSearching')" v-model="searchContent" @focusout="showSearchButton=false" placeholder="">
 
       <RouterLink :to="'/Search/?q='+searchContent" class="absolute flex justify-center h-10 aspect-square right-1 mt-1 rounded-full " :class="{'bg-gray-300':showSearchButton,'shadow-sm':showSearchButton}" @click="doSearch">
         <i class="icon-[material-symbols--search] w-8 h-8 my-auto"></i>
@@ -61,7 +61,7 @@
   </div>
 
   <!-- 用户下拉菜单 -->
-  <div ref="usmn" @mouseleave="leaveUserMenu()" class="transition-all duration-300 ease-in-out flex flex-col justify-around fixed z-40 h-auto w-60 rounded-xl mt-24 bg-white bg-opacity-50 right-24 p-2 shadow-md opacity-0 -translate-y-[600px] pt-12" style="backdrop-filter: var(--mak-glass-1);">
+  <div ref="usmn" @mouseleave="leaveUserMenu()" class="transition-all duration-300 ease-in-out flex flex-col justify-around fixed z-40 h-auto w-60 rounded-xl mt-24 bg-white bg-opacity-50 right-24 p-2 shadow-md opacity-0 -translate-y-[600px] pt-12" style="backdrop-filter: var(--mak-glass-2);">
     <!-- id -->
     <div class="w-full h-24 rounded-md flex flex-col p-2 py-1">
       <div class="flex justify-center"> 

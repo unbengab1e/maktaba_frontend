@@ -1,17 +1,17 @@
 <template>
-    <div ref="dock" class="transition-all duration-300 ease-in-out flex flex-col justify-around fixed left-4 justify-self-center h-auto w-[60px] z-50 border-[1px] rounded-full backdrop-blur-md bg-base-200 bg-opacity-60 py-[6px] px-[7px] shadow-md">
+    <div ref="dock" class="transition-all duration-300 ease-in-out flex flex-col justify-around fixed left-4 justify-self-center h-auto w-[60px] z-50 border-[1px] rounded-full bg-white bg-opacity-50 py-[6px] px-[7px] shadow-md" style="backdrop-filter: var(--mak-glass-2);">
         <RouterLink v-for="dockItem in dockItems" :to="dockItem['path']">
-            <div class="transition w-full aspect-square border-[1px] rounded-full flex my-1 hover:scale-125 hover:bg-gray-300 shadow-md">
+            <div class="transition w-full aspect-square border-[1px] rounded-full flex my-1 hover:scale-125 hover:bg-gray-300 shadow-md bg-white bg-opacity-50">
                 <i :class="dockItem['icon']" class="h-6 w-6 m-auto"></i>
             </div>
         </RouterLink>
 
         <div class="w-full border-[1px] border-gray-600 my-2"></div>
 
-        <button class="transition w-full aspect-square border-[1px] rounded-full flex my-1 hover:scale-125 hover:bg-gray-300 shadow-md" @click="changeTheme()">
+        <button class="transition w-full aspect-square border-[1px] rounded-full flex my-1 hover:scale-125 hover:bg-gray-300 shadow-md bg-white bg-opacity-50" @click="changeTheme()">
             <i :class="theme" class="h-6 w-6 m-auto"></i>
         </button>
-        <button class="transition w-full aspect-square border-[1px] rounded-full flex my-1 hover:scale-125 hover:bg-gray-300 shadow-md">
+        <button class="transition w-full aspect-square border-[1px] rounded-full flex my-1 hover:scale-125 hover:bg-gray-300 shadow-md bg-white bg-opacity-50">
             <i class="icon-[material-symbols--settings] h-6 w-6 m-auto"></i>
         </button>
     </div>

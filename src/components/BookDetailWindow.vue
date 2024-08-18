@@ -3,8 +3,9 @@
         <div class="absolute bg-black opacity-30 w-full h-full">
         </div>
 
-
+        <!-- 浮窗 -->
         <div ref="bkdtwd" class="transition-all duration-500 ease-in-out window fixed flex flex-col w-[90%] md:w-3/4 h-4/5 mx-[5%] md:mx-[12.5%] shadow-lg overflow-y-auto overflow-x-hidden rounded-2xl opacity-0 translate-y-60" @click.stop>
+            <!-- 目录 -->
             <div ref="dirbg" class="transition-[opacity] duration-300 ease-in-out absolute right-0 h-full w-full bg-black opacity-0 z-[99] translate-x-full" @click="hideDirectory">
             </div>
             <ul ref="dir" class="transition-all duration-300 ease-in-out absolute right-0 h-full w-80 bg-base-200 z-[100] rounded-2xl p-4 min-h-full text-base-content translate-x-80 overflow-y-scroll window felx flex-col ">
@@ -19,9 +20,44 @@
                     </button>
                 </li>
             </ul>
+
+            <!-- 简介区骨架 -->
+            <div v-if="!isReadyInfo" class="flex w-full h-[400px] min-h-[400px] md:h-[500px] md:min-h-[500px] lg:h-[600px] lg:min-h-[600px]">
+                <!-- 封面 -->
+                <div class="h-full aspect-[5/7] flex justify-center border-r-2 skeleton" style="border-radius: 0px;">
+                </div>
+
+                <div class=" bg-white justify-start h-full flex flex-col-reverse flex-grow">
+                    <div class="flex p-2 h-16 bg-base-200 z-[60] justify-between "> 
+                        <div class="h-full flex">
+                            <span class="text-lg my-auto mx-2">我的评分</span>
+                            <StarRating :value="10" :editable="false"></StarRating>
+                        </div>
+                        <div class="h-full">
+                            <button class="btn bg-red-400 hover:bg-red-500 rounded-l-full">
+                                <span class="text-xl">收藏</span>
+                            </button>
+                            <button class="btn bg-sky-400 hover:bg-sky-600 rounded-r-full">
+                                <span class="text-xl">目录</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="window  flex-col overflow-y-auto p-2 h-full" >
+                        <div class="h-12 w-2/3 mx-auto my-4 skeleton"> 
+                        </div>
+
+                        <div class="h-8 w-1/4 mx-auto my-4 mb-8 skeleton"> 
+                        </div>
+                        
+                        <div v-for="i in 3" class=" h-6 skeleton my-2 mx-2"></div>
+                        <div class=" h-6 skeleton my-2 mx-2 mr-20"></div>
+                    </div>
+                </div>
+            </div>
             
             <!-- 简介区 -->
-            <div class="flex w-full h-[400px] min-h-[400px] md:h-[500px] md:min-h-[500px] lg:h-[600px] lg:min-h-[600px]">
+            <div v-if="isReadyInfo" class="flex w-full h-[400px] min-h-[400px] md:h-[500px] md:min-h-[500px] lg:h-[600px] lg:min-h-[600px]">
                 <!-- 封面 -->
                 <div class="h-full aspect-[5/7] bg-white flex justify-center border-r-2">
                     <img :src="bookInfo['img']" alt="书籍封面" class="w-full aspect-[5/7]">
@@ -31,7 +67,7 @@
                     <div class="flex p-2 h-16 bg-base-200 z-[60] justify-between "> 
                         <div class="h-full flex">
                             <span class="text-lg my-auto mx-2">我的评分</span>
-                            <StarRating v-if="ok" :value="bookInfo['score']" :editable="true" @rate="rating"></StarRating>
+                            <StarRating v-if="isReadyRating" :value="bookInfo['score']" :editable="true" @rate="rating"></StarRating>
                         </div>
 
                         <div class="h-full">
@@ -60,7 +96,7 @@
                         
                         <div class="flex justify-center my-2">
                             <span class="text-lg mx-2">全站评分</span>
-                            <StarRating v-if="ok" :value="bookInfo['score']" :editable="false"></StarRating>
+                            <StarRating v-if="isReadyRating" :value="bookInfo['score']" :editable="false"></StarRating>
                         </div>
                         <div class="border-t-2 mx-4" ></div>
                         <div class="flex justify-around w-full h-16 mt-2"> 
@@ -90,9 +126,21 @@
                 </div>
             </div>
 
+            <!-- 评论区骨架 -->
+            <div v-if="!isReadyComments" class="w-full h-auto bg-white z-50 drop-shadow-sm flex flex-col border-t-2">
+                <span class="text-black text-4xl font-black mr-auto ml-[8%] my-[2.5%]">
+                    书籍评论
+                </span>
+                <div class="container border-t-2"></div>
+
+                <div class="flex flex-col w-full h-auto mt-4 mb-24">
+                    <CommentCardSkeleton v-for="i in 5">
+                    </CommentCardSkeleton>
+                </div>
+            </div>
+
             <!-- 评论区 -->
-            <div class="w-full h-auto bg-white z-50 drop-shadow-sm flex flex-col pt-4 border-t-2">
-                
+            <div v-if="isReadyComments" class="w-full h-auto bg-white z-50 drop-shadow-sm flex flex-col pt-4 border-t-2">
                 <span class="text-black text-4xl font-black mr-auto ml-[8%] my-[2.5%]">
                     书籍评论
                 </span>
@@ -110,10 +158,8 @@
                 </div>
                 <div class="flex flex-col w-full h-auto -mt-16 mb-24">
                     <CommentCard v-for="(comment,index) in comments" :key="index" :content="comment.content" :username="comment.username" class="m-3">
-
                     </CommentCard>
                 </div>
-                
             </div>
         </div>
     </div>
@@ -126,9 +172,11 @@ import StarRating from "../components/StarRating.vue";
 import { getDetail,getComment,getDirectory,bookRating,postComment,postFavorite } from '@/api/api.js';
 import Cookies from 'js-cookie';
 import { toast } from "vue3-toastify";
+import CommentCardSkeleton from './CommentCardSkeleton.vue';
 
 const props = defineProps(['bid'])
-
+const isReadyInfo = ref(false)
+const isReadyComments=ref(false)
 const emit = defineEmits(['closeDetailWindow'])
 const bkdtwd = ref(null)
 const windowBlur = ref(null)
@@ -139,7 +187,7 @@ const bookInfo = ref({
 })
 const directory=ref()
 const comments = ref([])
-const ok = ref(false)
+const isReadyRating = ref(false)
 const noComments = computed(() => {
     return comments.value.length==0
 })
@@ -152,13 +200,16 @@ onMounted(async () => {
     //详情
     let res = await getDetail(name,props.bid);
     bookInfo.value = res.data;
+    isReadyInfo.value=true
     //评论
     let res3 = await getComment(props.bid,'all');
     comments.value = res3.data;
-    ok.value = true
+    isReadyRating.value = true
+    isReadyComments.value=true
     //目录
     let res2 = await getDirectory(props.bid);
     directory.value = res2.data.message;
+
 })
 
 function hideWindow(toURL) {
@@ -223,8 +274,5 @@ setTimeout(()=> {
 </script>
 
 <style scoped>
-.window::-webkit-scrollbar {
-  display: none; /* Chrome Safari */
-}
 
 </style>

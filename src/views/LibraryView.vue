@@ -206,15 +206,15 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.window{
-    scrollbar-width: none; /* firefox */
-    -ms-overflow-style: none; /* IE 10+ */
+/* .window{
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     overflow-x: hidden;
     overflow-y: auto;
 }
 
 .window::-webkit-scrollbar {
   display: none; 
-}
+} */
 
 </style>

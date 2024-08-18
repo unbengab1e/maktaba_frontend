@@ -1,9 +1,9 @@
 <template>
-  <div class="w-5/6 h-1/3 bg-pink-50 self-center rounded-2xl z-50 flex-col flex min-h-40 items-center">
-    <span class="font-bold text-xl text-gray-600 mr-auto ml-[2%] mt-5">
+  <div class="w-5/6 bg-pink-50 self-center rounded-2xl z-50 flex-col flex min-h-40 p-4 my-4">
+    <span class="font-bold text-2xl text-gray-600 mr-auto mt-2">
       {{username}}
     </span>
-    <span class="w-[96%] text-left overflow-hidden overflow-ellipsis break-normal break-words line-clamp-4 mt-5">
+    <span class="w-[96%] text-left overflow-hidden overflow-ellipsis break-normal break-words line-clamp-4 mt-4">
       {{content}}
     </span>
   </div>
