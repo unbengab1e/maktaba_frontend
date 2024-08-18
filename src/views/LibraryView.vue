@@ -30,7 +30,13 @@
             </div>
         </div>
 
-        <div class="container flex flex-col" :class="{'ml-44':isWide}">
+        <div v-if="!isReady" class="container flex flex-col" :class="{'ml-44':isWide}">
+            <div class="container flex flex-wrap justify-left" >
+                <NormalBookCardSkeleton v-for="i in 40"></NormalBookCardSkeleton>
+            </div>
+        </div>
+
+        <div v-if="isReady" class="container flex flex-col" :class="{'ml-44':isWide}">
             <div v-if="route.query.cate=='武侠'" class="flex p-2 mx-4 justify-start">
                 <button @click="doGetLittleTag('旧派武侠')" class="h-10 px-2 w-24  m-2 rounded-full flex justify-cente" :class="{'bg-sky-900/75':aaa,'shadow-lg':aaa ,'bg-white':!aaa}">
                     <h1 class="my-auto text-lg " :class="{'text-white':aaa}">
@@ -65,7 +71,9 @@ import { ref, onMounted,watch } from "vue";
 import {RadioGroup,RadioGroupLabel,RadioGroupDescription,RadioGroupOption} from '@headlessui/vue'
 import { getCate, recordReading, getAll,getLittleTag } from '@/api/api.js';
 import { useRoute } from "vue-router";
+import NormalBookCardSkeleton from "../components/NormalBookCardSkeleton.vue";
 
+const isReady=ref(false)
 const bookArray = ref()
 const cates = [
     {
@@ -167,6 +175,7 @@ async function doGetLittleTag(tagname) {
 }
 
 watch(route, async () => {
+    isReady.value=false
     let cate = route.query.cate
     if (cate == 'all') {
         let res = await getAll();
@@ -177,6 +186,7 @@ watch(route, async () => {
         console.log(res);
         bookArray.value = res.data.data;
     }
+    isReady.value=true
 })
 
 onMounted(async () => {
@@ -191,12 +201,20 @@ onMounted(async () => {
         console.log(res);
         bookArray.value = res.data.data;
     }
+    isReady.value=true
 })
 </script>
 
 <style scoped>
+.window{
+    scrollbar-width: none; /* firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
 .window::-webkit-scrollbar {
-  display: none; /* Chrome Safari */
+  display: none; 
 }
 
 </style>

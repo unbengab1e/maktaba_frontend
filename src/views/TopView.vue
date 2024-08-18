@@ -33,8 +33,13 @@
             </div>
         </div>
 
+
+        <div v-if="!isReady" class="flex-grow flex flex-col" :class="{'ml-44':isWide}">
+            <LongBookCardSkeleton 
+            v-for="i in 10" :show-cover="isWide"></LongBookCardSkeleton>
+        </div>
         
-        <div class="flex-grow flex flex-col" :class="{'ml-44':isWide}">
+        <div v-if="isReady" class="flex-grow flex flex-col" :class="{'ml-44':isWide}">
             <LongBookCard 
             v-for="(book,key) in bookArray" @show="$emit('showDetailWindow',book['bid'])" :img-src="book['img']" :book-rank="key" :book-name="book['name']" :book-author="book['author']" :book-tag="book['tag']" :reader-cnt="book['reading']" :show-cover="isWide" :book-score="book['score']" :book-reference="book['mess']" :type="route.query.cate" 
             ></LongBookCard>
@@ -48,8 +53,10 @@ import { ref, onMounted, computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import { RadioGroup, RadioGroupLabel, RadioGroupDescription, RadioGroupOption } from '@headlessui/vue'
 import LongBookCard from "../components/LongBookCard.vue";
+import LongBookCardSkeleton from "@/components/LongBookCardSkeleton.vue";
 import { getRec } from '@/api/api.js';
 
+const isReady=ref(false)
 const bookArray = ref()
 const cates = [
     {
@@ -81,14 +88,20 @@ emit('leaveHome')
 onMounted(async () => {
   let res = await getRec('张三',route.query.cate);
   console.log(res);
-  bookArray.value = res.data.data.books;
+    bookArray.value = res.data.data.books;
+    // setTimeout(() => {
+    //     isReady.value=true
+    // }, 3000);
+    isReady.value=true
 })
 
 watch(route, async () => {
+    isReady.value=false
     type.value = route.path
     let res = await getRec('张三',route.query.cate);
     console.log(res);
     bookArray.value = res.data.data.books;
+    isReady.value=true
 })
 </script>
 

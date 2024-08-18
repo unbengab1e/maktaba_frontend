@@ -1,5 +1,5 @@
 <template>
-        <div ref="cardContainer" class="flex-grow p-4 flex flex-col justify-between min-w-[200px] max-w-72 aspect-[5/7] bg-gray-100 rounded-xl overflow-hidden shadow-lg normalAnimation hover:bg-gray-300 hover:shadow-xl m-4 hover:scale-110 bg-opacity-90" style="flex-basis: 200px;"  @mouseenter="showScroll()" @mouseleave="hideDeatilCard()">
+        <div ref="cardContainer" class="flex-grow p-4 flex flex-col justify-between min-w-[200px] max-w-72 aspect-[5/7] bg-white rounded-xl overflow-hidden shadow-lg normalAnimation hover:bg-gray-300 hover:shadow-xl m-4 hover:scale-110 bg-opacity-50" style="flex-basis: 200px; backdrop-filter: var(--mak-glass-1);"  @mouseenter="showScroll()" @mouseleave="hideDeatilCard()">
             <div class="h-3/4 w-3/4 mx-auto">
                 <div ref="coverContainer" id="aaaa" class="book-cover h-full w-full
              cursor-pointer ">
@@ -30,7 +30,6 @@
 <script setup>
 import { nextTick, ref,onMounted, computed } from "vue";
 import { PageFlip } from 'page-flip';
-
 
 const props = defineProps(['imgSrc', 'bookName','bookAuthor','bookScore','bookReference','bookRank','bookTag','readerCnt','showCover','type','bid']);
 
@@ -78,14 +77,23 @@ function hideDeatilCard() {
 </script>
 
 <style scoped>
+@import '../assets/main.css';
+
 .text-container {
     @apply flex overflow-hidden;
     overflow: hidden;
     --overflowcount:100;
 }
 
+.window{
+    scrollbar-width: none; /* firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
 .window::-webkit-scrollbar {
-  display: none; /* Chrome Safari */
+  display: none; 
 }
 
 .scroll-text {

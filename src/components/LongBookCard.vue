@@ -2,7 +2,7 @@
   <!-- 顶层容器 -->
     <div class="cont_modal cont_modal_active m-4 flex ">
       <!-- 封面卡片 -->
-      <div class="cont_photo cursor-pointer" :class="{'w-[250px]':showCover,'w-10':!showCover}" @click="$emit('show')">
+      <div class="cont_photo cursor-pointer bg-white" :class="{'w-[250px]':showCover,'w-10':!showCover}" @click="$emit('show')">
         <div class="cont_img_back">
           <img :src="imgSrc" alt="书籍封面" class="w-[250px] h-[350px] max-w-[1000px] hover:scale-[1.2]" >
         </div>
@@ -13,12 +13,12 @@
         </div>
       </div>
       <!-- 文本卡片 -->
-      <div class="cont_text_ingredients flex-grow p-6 pl-8 bg-white bg-opacity-90" :class="{'ml-60':showCover,'ml-[30px]':!showCover}">
+      <div class="cont_text_ingredients flex-grow p-6 pl-8 bg-white bg-opacity-50" :class="{'ml-60':showCover,'ml-[30px]':!showCover}" style="backdrop-filter: var(--mak-glass-1);">
         <!-- 容器 -->
         <div class="w-full h-[290px] flex flex-col justify-between">
           <!-- 标题 -->
           <div class=" pb-2 h-20 overflow-hidden cursor-pointer flex justify-start" :title="bookName" @click="$emit('show')">
-            <h1 class="text-4xl my-auto">{{ bookName }}</h1>
+            <h1 class="text-4xl  mx-0 my-2">{{ bookName }}</h1>
           </div>
           <!-- 作者 -->
           <RouterLink :to="'/CreatorMenu/?uname='+bookAuthor" class="flex mb-2">
@@ -65,7 +65,6 @@ const props = defineProps(['imgSrc', 'bookName', 'bookAuthor', 'bookScore', 'boo
   position: absolute;
   height: 350px;
   overflow: hidden;
-  background-color: #eee;
   border-radius:20px;
   float: left;
   z-index: 2;
