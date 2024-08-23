@@ -9,8 +9,6 @@ import Vue3Toasity, { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import { createPinia } from 'pinia'
 
-axios.defaults.baseURL='http://127.0.0.1:8000/api'
-
 const pinia=createPinia()
 const app = createApp(App)
 
