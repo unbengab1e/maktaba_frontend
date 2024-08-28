@@ -1,1 +1,1 @@
-echo 'fuck jenkins'
+echo 'fuck aliyun'

@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.beta.kubernetes.io/alibaba-cloud-loadbalancer-spec: slb.s1.small
+  creationTimestamp: '2024-08-26T08:48:09Z'
+  finalizers:
+    - service.k8s.alibaba/resources
+  labels:
+    service.beta.kubernetes.io/hash: 4c1be7cd32c9899df69ffc822d39b82a29ddc9a774406ec3092d7b9a
+    service.k8s.alibaba/loadbalancer-id: lb-2ze1eqir6aaq76cba4jzh
+  managedFields:
+    - apiVersion: v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            .: {}
+            'f:service.beta.kubernetes.io/alibaba-cloud-loadbalancer-spec': {}
+        'f:spec':
+          'f:allocateLoadBalancerNodePorts': {}
+          'f:externalTrafficPolicy': {}
+          'f:internalTrafficPolicy': {}
+          'f:ports':
+            .: {}
+            'k:{"port":30080,"protocol":"TCP"}':
+              .: {}
+              'f:port': {}
+              'f:protocol': {}
+              'f:targetPort': {}
+          'f:selector': {}
+          'f:sessionAffinity': {}
+          'f:type': {}
+      manager: ACK-Console Apache-HttpClient
+      operation: Update
+      time: '2024-08-26T08:48:09Z'
+    - apiVersion: v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:finalizers':
+            .: {}
+            'v:"service.k8s.alibaba/resources"': {}
+      manager: cloud-controller-manager
+      operation: Update
+      time: '2024-08-26T08:48:09Z'
+    - apiVersion: v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:labels':
+            .: {}
+            'f:service.beta.kubernetes.io/hash': {}
+            'f:service.k8s.alibaba/loadbalancer-id': {}
+        'f:status':
+          'f:loadBalancer':
+            'f:ingress': {}
+      manager: cloud-controller-manager
+      operation: Update
+      subresource: status
+      time: '2024-08-26T08:48:19Z'
+  name: frontend-svc
+  namespace: default
+  resourceVersion: '8709406776'
+  uid: d498038d-8cdf-4bbf-af5f-6c7acb728291
+spec:
+  allocateLoadBalancerNodePorts: true
+  clusterIP: 192.168.174.215
+  clusterIPs:
+    - 192.168.174.215
+  externalTrafficPolicy: Local
+  healthCheckNodePort: 30956
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - nodePort: 32582
+      port: 30080
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: frontend
+  sessionAffinity: None
+  type: LoadBalancer
+status:
+  loadBalancer:
+    ingress:
+      - ip: 39.107.97.40
+        ipMode: VIP
