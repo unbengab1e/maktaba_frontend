@@ -3,7 +3,7 @@ import service from '.';
 export function getRec(username, rec) {
     return service({
         method: 'GET',
-        url: '/index/home',
+        url: '/book_mess/home',
         params: {
             username: username,
             rec: rec,
@@ -15,7 +15,7 @@ export function getRec(username, rec) {
 export function getDetail(username,bid) {
     return service({
         method: 'GET',
-        url: '/doclib/bookdetail',
+        url: '/books/bookdetail',
         params: {
             username: username,
             bid: bid,
@@ -27,7 +27,7 @@ export function getDetail(username,bid) {
 export function getComment(bid,chapter) {
     return service({
         method: 'GET',
-        url: '/doclib/comment',
+        url: '/books/comment',
         params: {
             bid: bid,
             chapter: chapter,
@@ -39,7 +39,7 @@ export function getComment(bid,chapter) {
 export function getDirectory(bid) {
     return service({
         method: 'GET',
-        url: '/booksection/getIndex/',
+        url: '/book_mess/getIndex/',
         params: {
             bid:bid,
         },
@@ -50,7 +50,7 @@ export function getDirectory(bid) {
 export function recordReading(bid,username) {
     return service({
         method: 'GET',
-        url: '/index/one/',
+        url: '/book_mess/one/',
         params: {
             bid: bid,
             username:username,
@@ -62,7 +62,7 @@ export function recordReading(bid,username) {
 export function bookRating(username,bid,rate) {
     return service({
         method: 'POST',
-        url: '/doclib/dorating/',
+        url: '/books/dorating/',
         params: {
             bid: bid,
             username:username,
@@ -79,7 +79,7 @@ export function bookRating(username,bid,rate) {
 export function searchBook(q) {
     return service({
         method: 'GET',
-        url: '/index/search/',
+        url: '/book_mess/search/',
         params: {
             q,
         },
@@ -90,7 +90,7 @@ export function searchBook(q) {
 export function postComment(username,bid,chapter,content) {
     return service({
         method: 'POST',
-        url: '/doclib/comment/',
+        url: '/books/comment/',
         data: {
             username,
             bid,
@@ -104,7 +104,7 @@ export function postComment(username,bid,chapter,content) {
 export function postFavorite(user_id,book_id) {
     return service({
         method: 'POST',
-        url: '/center/getbookshelf/',
+        url: '/center/addbooktoshelf/',
         data: {
             user_id,
             book_id,
@@ -116,7 +116,7 @@ export function postFavorite(user_id,book_id) {
 export function getAll() {
     return service({
         method: 'GET',
-        url: '/doclib/all',
+        url: '/books/all',
         timeout: 10000,
     });
 }
@@ -124,7 +124,7 @@ export function getAll() {
 export function getCate(tag) {
     return service({
         method: 'GET',
-        url: '/doclib/category/',
+        url: '/books/category/',
         params: {
             tag:tag,
         },
@@ -169,7 +169,7 @@ export function readMessage(user_id,message_id) {
 export function getChapter(bid, chapter) {
   return service({
     method: "GET",
-    url: "/booksection/getChapter/",
+    url: "/book_mess/getChapter/",
     params: {
       bid: bid,
       chapter: chapter,
@@ -181,7 +181,7 @@ export function getChapter(bid, chapter) {
 export function getIndex(bid) {
   return service({
     method: "GET",
-    url: "/booksection/getIndex/",
+    url: "/book_mess/getIndex/",
     params: {
       bid: bid,
     },
@@ -192,7 +192,7 @@ export function getIndex(bid) {
 export function getBookTag(user_id, bid, chapter) {
   return service({
     method: "GET",
-    url: "/reader/bookTag/",
+    url: "/books/bookTag/",
     params: {
       user_id: user_id,
       bid: bid,
@@ -215,7 +215,7 @@ export function addBookTag(
 ) {
   return service({
     method: "POST",
-    url: "/reader/bookTag/",
+    url: "/books/bookTag/",
     data: {
       user_id,
       bid,
@@ -234,7 +234,7 @@ export function addBookTag(
 export function updateBookTag(tag_id, user_id, content, color, fill, priv) {
   return service({
     method: "OPTIONS",
-    url: "/reader/bookTag/",
+    url: "/books/bookTag/",
     params: {
       tag_id,
       user_id,
@@ -252,7 +252,7 @@ export function updateBookTag(tag_id, user_id, content, color, fill, priv) {
 export function deleteBookTag(tag_id, user_id, bid, chapter) {
   return service({
     method: "DELETE",
-    url: "/reader/bookTag/",
+    url: "/books/bookTag/",
     params: {
       tag_id,
       user_id,
@@ -276,7 +276,7 @@ export function getReadingTime(username) {
 export function getMyWorks(user_name) {
     return service({
         method: 'GET',
-        url: '/booksection/GetMyBook',
+        url: '/book_mess/GetMyBook',
         params: {
             user_name:user_name,
         },
@@ -286,7 +286,7 @@ export function getMyWorks(user_name) {
 export function getMyCollect(user_id,type) {
     return service({
         method: 'GET',
-        url: '/center/getbookshelf',
+        url: '/center/getbookfromshelf',
         params: {
             user_id:user_id,
             type:type,
@@ -385,7 +385,7 @@ export function postPopularize(username,book,target,tag) {
 export function postNewChapter(formData) {
     return service({
         method: 'POST',
-        url: '/booksection/bookUpload/',
+        url: '/book_mess/bookUpload/',
         data: formData, // 使用 FormData 作为请求数据
         timeout: 10000,
         headers: {
@@ -397,7 +397,7 @@ export function postNewChapter(formData) {
     export function postNewBook(formData) {
         return service({
             method: 'POST',
-            url: '/booksection/NewBookUpload/',
+            url: '/book_mess/NewBookUpload/',
             data: formData, // 使用 FormData 作为请求数据
             timeout: 10000,
             headers: {
@@ -408,7 +408,7 @@ export function postNewChapter(formData) {
 export function getAuthorScore(authorname) {
     return service({
         method: 'GET',
-        url: '/booksection/rateForAuthor',
+        url: '/books/rateForAuthor',
         params: {
             authorname:authorname,
         },
@@ -418,7 +418,7 @@ export function getAuthorScore(authorname) {
 export function postAuthorScore(username,authorname,rate) {
     return service({
         method: 'POST',
-        url: '/booksection/rateForAuthor/',
+        url: '/books/rateForAuthor/',
         data: {
             username:username,
             authorname:authorname,
@@ -442,7 +442,7 @@ export function postAuthorScore(username,authorname,rate) {
 export function getBrowsingHistory(username) {
     return service({
         method: 'GET',
-        url: '/center/getHistory',
+        url: '/book_mess/getHistory',
         params: {
             username:username,
         },
@@ -452,7 +452,7 @@ export function getBrowsingHistory(username) {
 export function getIsAuthor(username) {
     return service({
         method: 'GET',
-        url: '/center/isAuthor',
+        url: '/api/users/isAuthor',
         params: {
             username:username,
         },
@@ -462,7 +462,7 @@ export function getIsAuthor(username) {
 export function getMyRating(username) {
     return service({
         method: 'GET',
-        url: '/center/myRating',
+        url: '/books/myRating',
         params: {
             username:username,
         },
@@ -473,7 +473,7 @@ export function getMyRating(username) {
 export function postReadingProgress(user_id, bid, chapter, offset) {
     return service({
         method: "POST",
-        url: "/reader/readingProgress/",
+        url: "/books/readingProgress/",
         data: {
             user_id,
             bid,
@@ -487,7 +487,7 @@ export function postReadingProgress(user_id, bid, chapter, offset) {
 export function getLittleTag(littletag) {
     return service({
         method: 'GET',
-        url: '/doclib/detail_category',
+        url: '/books/detail_category',
         params: {
             littletag,
         },
@@ -498,7 +498,7 @@ export function getLittleTag(littletag) {
 export function addHistory(bid, username, duration) {
     return service({
         method: "POST",
-        url: "/reader/addHistory/",
+        url: "/books/addHistory/",
         data: {
             bid,
             username,
@@ -511,7 +511,7 @@ export function addHistory(bid, username, duration) {
 export function updateTimeForEveryBook(user_id, bid, time) {
     return service({
         method: "POST",
-        url: "/reader/readingTimeForEveryBook/",
+        url: "/books/readingTimeForEveryBook/",
         data: {
             user_id,
             bid,
@@ -534,7 +534,7 @@ export function getMyComment(username) {
     export function getMyAvatar(username) {
         return service({
             method: 'GET',
-            url: '/center/getAvatar',
+            url: '/api/users/getAvatar',
             params: {
                 username:username
             },
@@ -555,7 +555,7 @@ export function getReadingNum(username) {
 export function getReadingProcess(user_id,bid) {
     return service({
         method: 'GET',
-        url: '/reader/readingProgress',
+        url: '/books/readingProgress',
         params: {
             user_id:user_id,
             bid:bid,
