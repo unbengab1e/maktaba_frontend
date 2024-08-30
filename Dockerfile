@@ -3,7 +3,7 @@ ARG NGINX=nginx
 FROM ${NODE} AS builder
 WORKDIR /app
 COPY . /app
-ENV VITE_API_URL=http://192.168.49.2:30020/api
+ENV VITE_API_URL=http://39.107.213.168/api
 RUN npm config set registry https://registry.npmmirror.com/
 RUN npm config get registry
 RUN npm install --verbose
